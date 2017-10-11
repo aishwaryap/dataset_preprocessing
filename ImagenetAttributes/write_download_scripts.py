@@ -24,7 +24,7 @@ def write_download_scripts(args):
         bash_script_file_name = os.path.join(args.bash_scripts_dir, synset_name + '.sh')
         bash_script_file = open(bash_script_file_name, 'w')
         bash_script_file.write('#!/usr/bin/env bash\n')
-        bash_script_file.write('cat ' + url_file_path + ' | parallel --colsep ' ' wget -O {1} {2}\n')
+        bash_script_file.write('cat ' + url_file_path + ' | parallel --colsep \' \' wget -O {1} {2}\n')
         bash_script_file.close()
 
         # Write Condor script
