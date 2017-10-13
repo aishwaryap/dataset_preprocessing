@@ -49,18 +49,14 @@ def split_region_graphs(args):
             minimal_region['phrase'] = region['phrase']
             minimal_region['objects'] = list()
             for object in region['objects']:
-                # Check that the object is actually in the region
-                if is_object_in_region(region, object):
-                    minimal_object = dict()
-                    minimal_object['object_id'] = object['object_id']
-                    minimal_object['x'] = object['x']
-                    minimal_object['y'] = object['y']
-                    minimal_object['w'] = object['w']
-                    minimal_object['h'] = object['h']
-                    minimal_region['objects'].append(minimal_object)
-                    num_objects += 1
-                else:
-                    num_objects_outside_region += 1
+                minimal_object = dict()
+                minimal_object['object_id'] = object['object_id']
+                minimal_object['x'] = object['x']
+                minimal_object['y'] = object['y']
+                minimal_object['w'] = object['w']
+                minimal_object['h'] = object['h']
+                minimal_region['objects'].append(minimal_object)
+                num_objects += 1
             if len(minimal_region['objects']) == 1:
                 num_regions_with_single_object += 1
             region_str = json.dumps(minimal_region)
@@ -84,4 +80,3 @@ if __name__ == '__main__':
                             help='Path to dataset')
     args = arg_parser.parse_args()
     split_region_graphs(args)
-
