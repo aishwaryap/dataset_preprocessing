@@ -14,11 +14,11 @@ from json_wrapper import *
 def is_object_in_region(region, object):
     if object['x'] < region['x']:
         return False
-    if object['x'] + object['width'] > region['x'] + region['width']:
+    if object['x'] + object['w'] > region['x'] + region['width']:
         return False
     if object['y'] < region['y']:
         return False
-    if object['y'] + object['height'] > region['y'] + region['height']:
+    if object['y'] + object['h'] > region['y'] + region['height']:
         return False
     return True
 
@@ -55,8 +55,8 @@ def split_region_graphs(args):
                     minimal_object['object_id'] = object['object_id']
                     minimal_object['x'] = object['x']
                     minimal_object['y'] = object['y']
-                    minimal_object['width'] = object['width']
-                    minimal_object['height'] = object['height']
+                    minimal_object['w'] = object['w']
+                    minimal_object['h'] = object['h']
                     minimal_region['objects'].append(minimal_object)
                     num_objects += 1
                 else:
