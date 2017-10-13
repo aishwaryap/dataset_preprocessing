@@ -1,3 +1,4 @@
+% Used to convert the attributes .mat file to text/csv for use in python
 function [] = write_cell_contents(filename, cell_array)
 %   Writes a cell array of strings to a file
     fid=fopen(filename,'wt');

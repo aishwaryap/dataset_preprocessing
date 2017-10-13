@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Writing scrpts to download images
 
 __author__ = 'aishwarya'
 
@@ -20,14 +21,14 @@ def write_download_scripts(args):
         if not os.path.isdir(image_dir):
             os.mkdir(image_dir)
 
-        # Write bash script
+        # Write bash script that downloads images of a synset in parallel
         bash_script_file_name = os.path.join(args.bash_scripts_dir, synset_name + '.sh')
         bash_script_file = open(bash_script_file_name, 'w')
         bash_script_file.write('#!/usr/bin/env bash\n')
         bash_script_file.write('cat ' + url_file_path + ' | parallel --colsep \' \' wget -O {1} {2}\n')
         bash_script_file.close()
 
-        # Write Condor script
+        # Write Condor script that submits the bash script on condor
         condor_script_file_name = os.path.join(args.condor_scripts_dir, synset_name + '.sh')
         condor_script_file = open(condor_script_file_name, 'w')
         condor_script_file.write('universe = vanilla\n')
@@ -46,6 +47,8 @@ def write_download_scripts(args):
         condor_script_file.write('Notify_user = aish@cs.utexas.edu\n')
         condor_script_file.write('Queue 1\n')
         condor_script_file.close()
+
+        # Write submit file that submits condor scripts to condor
         condor_submit_file.write('condor_submit ' + condor_script_file_name + '\n')
 
     condor_submit_file.close()
