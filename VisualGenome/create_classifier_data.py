@@ -41,9 +41,11 @@ def save_labels_and_regions(args):
     region_content_filename = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
     input_file = open(region_content_filename)
     regions_per_content_item = dict()
+    regions_with_content = dict()
     reader = csv.reader(input_file, delimiter=',')
     for row in reader:
         region_id = row[0]
+        regions_with_content[region_id] = row[1:]
         for content_item in row[1:]:
             if region_counts[content_item] >= args.frequency_threshold:
                 if content_item not in regions_per_content_item:
@@ -55,6 +57,7 @@ def save_labels_and_regions(args):
     reader = csv.reader(input_file, delimiter=',')
     for row in reader:
         region_id = row[0]
+        regions_with_content[region_id] = row[1:]
         for content_item in row[1:]:
             if region_counts[content_item] >= args.frequency_threshold:
                 if content_item not in regions_per_content_item:
@@ -105,19 +108,36 @@ def save_labels_and_regions(args):
     good_split_found = False
     num_trials = 0
 
-    # Keep shuffling the list till you find a train-test-split that works
+    print 'Starting search ...'
+    # Keep shuffling the list till you find a train-test-split that works : 1 is often enough
     while not good_split_found:
+        print 'Still looking...'
         random.shuffle(relevant_regions)
+        print '\t Shuffled...'
         test_set = relevant_regions[split_point:]
+        print '\t Test set size =', len(test_set)
+
         good_split_found = True
-        min_regions = sys.maxint
-        for label in relevant_labels:
-            regions_in_test_set = [region for region in regions_per_content_item[label] if region in test_set]
-            min_regions = min(min_regions, len(regions_in_test_set))
-            if len(regions_in_test_set) < args.test_frequency_threshold:
-                good_split_found = False
+
+        print '\t Checking test label frequency  ...'
+        label_counts = dict()
+        for region in test_set:
+            for label in regions_with_content[region]:
+                if label in relevant_labels:
+                    if label not in label_counts:
+                        label_counts[label] = 0
+                    label_counts[label] += 1
+
+        print '\t Computed label counts ...'
+        min_label_count = min(label_counts.values())
+        print '\t min_label_count =', min_label_count
+
+        if min_label_count >= args.test_frequency_threshold:
+            break
+
         num_trials += 1
-        print num_trials, 'trials made, min_regions =', min_regions
+        print num_trials, 'trials made'
+
     print 'Found a good split. Saving split ...'
 
     # Broke out of the while loop so current order is good
@@ -144,6 +164,8 @@ if __name__ == '__main__':
                             help='Fraction of data used for training')
     arg_parser.add_argument('--test-frequency-threshold', type=int, default=50,
                             help='Number of regions per label needed in test set')
+    arg_parser.add_argument('--batch-size', type=int, default=65536,
+                            help='Number of data points per file (features or labels)')
 
     args = arg_parser.parse_args()
     save_labels_and_regions(args)
