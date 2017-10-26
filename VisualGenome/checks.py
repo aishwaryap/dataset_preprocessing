@@ -4,6 +4,7 @@
 from argparse import ArgumentParser
 import json
 import sys
+import numpy as np
 from matplotlib import pyplot as plt
 from utils import *
 sys.path.append('../utils')
@@ -151,6 +152,76 @@ def check_vgg_feature_extraction(args):
         features_file.close()
 
 
+# A simple sanity check on reorganized data for classification
+def check_classifier_data(args):
+    metadata = [
+        {
+            'regions_filename' : os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'),
+            'features_dir' : os.path.join(args.dataset_dir, 'classifiers/data/features/train/'),
+            'multilabels_dir' : os.path.join(args.dataset_dir, 'classifiers/data/multilabels/train/'),
+            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/'),
+        },
+        {
+            'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'),
+            'features_dir': os.path.join(args.dataset_dir, 'classifiers/data/features/test/'),
+            'multilabels_dir': os.path.join(args.dataset_dir, 'classifiers/data/multilabels/test/'),
+            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/test/'),
+        }
+    ]
+
+    for metadata_instance in metadata:
+        if args.verbose:
+            print 'Checking regions file', metadata_instance['regions_filename']
+        num_regions = count_lines(metadata_instance['regions_filename'])
+
+        features_files = [os.path.join(metadata_instance['features_dir'], f)
+                          for f in os.listdir(metadata_instance['features_dir'])]
+        if args.verbose:
+            print 'Checking features'
+        num_feature_vectors = 0
+        num_batches_done = 0
+        for features_file in features_files:
+            features = np.loadtxt(features_file)
+            assert(features.shape[1] == 4096)
+            num_feature_vectors += features.shape[0]
+            num_batches_done += 1
+            if args.verbose:
+                print num_batches_done, 'batches checked'
+        assert(num_regions == num_feature_vectors)
+
+        if args.verbose:
+            print 'Checking multilabels'
+        with open(os.path.join(args.dataset_dir, 'classifiers/data/label_names.txt')) as label_names_file:
+            label_names = label_names_file.read().split('\n')
+        multilabels_files = [os.path.join(metadata_instance['multilabels_dir'], f)
+                             for f in os.listdir(metadata_instance['multilabels_dir'])]
+        num_multilabels = 0
+        num_batches_done = 0
+        for multilabels_file in multilabels_files:
+            multilabels = np.loadtxt(multilabels_file)
+            assert (multilabels.shape[1] == len(label_names))
+            num_multilabels += multilabels.shape[0]
+            num_batches_done += 1
+            if args.verbose:
+                print num_batches_done, 'batches checked'
+        assert (num_regions == num_multilabels)
+
+        if args.verbose:
+            print 'Checking individual labels'
+        individual_labels_files = [os.path.join(metadata_instance['individual_labels_dir'], f)
+                                   for f in os.listdir(metadata_instance['individual_labels_dir'])]
+        num_individual_labels = 0
+        num_batches_done = 0
+        for individual_labels_file in individual_labels_files:
+            individual_labels = np.loadtxt(individual_labels_file)
+            num_individual_labels += individual_labels.shape[0]
+            num_batches_done += 1
+            if args.verbose:
+                print num_batches_done, 'batches checked'
+        assert (num_regions == num_individual_labels)
+        print 'All checks passed'
+
+
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--dataset-dir', type=str, required=True,
@@ -168,6 +239,8 @@ if __name__ == '__main__':
                             help='Count greyscale images')
     arg_parser.add_argument('--check-vgg-features', action="store_true", default=False,
                             help='Check for errors in VGG feature extraction')
+    arg_parser.add_argument('--check-classifier-data', action="store_true", default=False,
+                            help='Check reorganized classifier data')
 
     args = arg_parser.parse_args()
 
@@ -181,3 +254,5 @@ if __name__ == '__main__':
         count_greyscale_images(args)
     if args.check_vgg_features:
         check_vgg_feature_extraction(args)
+    if args.check_classifier_data:
+        check_classifier_data(args)

@@ -32,3 +32,10 @@ def wrapped_next(file_handle):
         return line
     except StopIteration:
         return None
+
+
+def count_lines(filename):
+    file_handle = open(filename)
+    num_lines = len(file_handle.read().split('\n'))
+    file_handle.close()
+    return num_lines
