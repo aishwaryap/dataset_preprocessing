@@ -4,6 +4,7 @@
 from argparse import ArgumentParser
 import json
 import sys
+import csv
 import numpy as np
 from matplotlib import pyplot as plt
 from utils import *
@@ -153,41 +154,30 @@ def check_vgg_feature_extraction(args):
 
 
 # A simple sanity check on reorganized data for classification
-def check_classifier_data(args):
+def check_multilabels(args):
     metadata = [
-        {
-            'regions_filename' : os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'),
-            'features_dir' : os.path.join(args.dataset_dir, 'classifiers/data/features/train/'),
-            'multilabels_dir' : os.path.join(args.dataset_dir, 'classifiers/data/multilabels/train/'),
-            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/'),
-        },
+        # {
+        #     'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'),
+        #     'multilabels_dir': os.path.join(args.dataset_dir, 'classifiers/data/multilabels/train/'),
+        #     'is_train_set': True
+        # },
         {
             'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'),
-            'features_dir': os.path.join(args.dataset_dir, 'classifiers/data/features/test/'),
             'multilabels_dir': os.path.join(args.dataset_dir, 'classifiers/data/multilabels/test/'),
-            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/test/'),
+            'is_train_set': False
         }
     ]
 
+    rerun_file = open(args.rerun_script_filename, 'w')
+
     for metadata_instance in metadata:
-        if args.verbose:
-            print 'Checking regions file', metadata_instance['regions_filename']
+        print 'Checking regions file', metadata_instance['regions_filename']
         num_regions = count_lines(metadata_instance['regions_filename'])
 
-        features_files = [os.path.join(metadata_instance['features_dir'], f)
-                          for f in os.listdir(metadata_instance['features_dir'])]
-        if args.verbose:
-            print 'Checking features'
-        num_feature_vectors = 0
-        num_batches_done = 0
-        for features_file in features_files:
-            features = np.loadtxt(features_file)
-            assert(features.shape[1] == 4096)
-            num_feature_vectors += features.shape[0]
-            num_batches_done += 1
-            if args.verbose:
-                print num_batches_done, 'batches checked'
-        assert(num_regions == num_feature_vectors)
+        c1 = 'python create_classifier_data.py \\\n --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n' + \
+             '--write-multilabels \\\n --batch-num='
+        c2 = ' \\\n --verbose'
+        num_incomplete_batches = 0
 
         if args.verbose:
             print 'Checking multilabels'
@@ -197,15 +187,106 @@ def check_classifier_data(args):
                              for f in os.listdir(metadata_instance['multilabels_dir'])]
         num_multilabels = 0
         num_batches_done = 0
+
         for multilabels_file in multilabels_files:
-            multilabels = np.loadtxt(multilabels_file)
-            assert (multilabels.shape[1] == len(label_names))
-            num_multilabels += multilabels.shape[0]
+            if args.verbose:
+                print 'File: ', multilabels_file
+            multilabels = np.loadtxt(multilabels_file, delimiter=',')
+            if multilabels is None or len(multilabels.shape) < 2:
+                num_incomplete_batches += 1
+                batch_num = multilabels_file.split('.')[0].split('/')[-1]
+                command = c1 + str(batch_num) + c2
+                if metadata_instance['is_train_set']:
+                    command += ' \\\n --in-train-set'
+                rerun_file.write(command + '\n')
+            else:
+                assert (multilabels.shape[1] == len(label_names))
+                num_multilabels += multilabels.shape[0]
             num_batches_done += 1
             if args.verbose:
                 print num_batches_done, 'batches checked'
-        assert (num_regions == num_multilabels)
 
+        if args.verbose:
+            print 'num_incomplete_batches =', num_incomplete_batches
+        if num_incomplete_batches == 0:
+            assert (num_regions == num_multilabels)
+            print 'Multilabels check passed...'
+
+    rerun_file.close()
+
+
+# A simple sanity check on reorganized data for classification
+def check_features(args):
+    metadata = [
+        {
+            'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'),
+            'features_dir': os.path.join(args.dataset_dir, 'classifiers/data/features/train/'),
+            'multilabels_dir': os.path.join(args.dataset_dir, 'classifiers/data/multilabels/train/'),
+            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/'),
+            'is_train_set': True
+        },
+        {
+            'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'),
+            'features_dir': os.path.join(args.dataset_dir, 'classifiers/data/features/test/'),
+            'multilabels_dir': os.path.join(args.dataset_dir, 'classifiers/data/multilabels/test/'),
+            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/test/'),
+            'is_train_set': False
+        }
+    ]
+
+    rerun_file = open(args.rerun_script_filename, 'w')
+
+    for metadata_instance in metadata:
+        print 'Checking regions file', metadata_instance['regions_filename']
+        num_regions = count_lines(metadata_instance['regions_filename'])
+
+        c1 = 'python create_classifier_data.py \\\n --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n' + \
+             '--write-features \\\n --batch-num='
+        c2 = ' \\\n --verbose'
+        num_incomplete_batches = 0
+
+        features_files = [os.path.join(metadata_instance['features_dir'], f)
+                          for f in os.listdir(metadata_instance['features_dir'])]
+
+        if args.verbose:
+            print 'Checking features'
+        num_feature_vectors = 0
+        num_batches_done = 0
+        for features_file in features_files:
+            if args.verbose:
+                print 'File :', features_file
+            try:
+                features = np.loadtxt(features_file)
+                if features is None or len(features.shape) < 2:
+                    num_incomplete_batches += 1
+                    batch_num = features_file.split('.')[0].split('/')[-1]
+                    command = c1 + str(batch_num) + c2
+                    if metadata_instance['is_train_set']:
+                        command += ' \\\n --in-train-set'
+                    rerun_file.write(command + '\n')
+                else:
+                    assert (features.shape[1] == 4096)
+                    num_feature_vectors += features.shape[0]
+            except KeyboardInterrupt, SystemExit:
+                raise
+            except:
+                num_incomplete_batches += 1
+                batch_num = features_file.split('.')[0].split('/')[-1]
+                command = c1 + str(batch_num) + c2
+                if metadata_instance['is_train_set']:
+                    command += ' \\\n --in-train-set'
+                rerun_file.write(command + '\n')
+            num_batches_done += 1
+            if args.verbose:
+                print num_batches_done, 'batches checked'
+
+        if args.verbose:
+            print 'num_incomplete_batches =', num_incomplete_batches
+        if num_incomplete_batches == 0:
+            assert (num_regions == num_feature_vectors)
+            print 'Features check passed...'
+
+        '''
         if args.verbose:
             print 'Checking individual labels'
         individual_labels_files = [os.path.join(metadata_instance['individual_labels_dir'], f)
@@ -219,7 +300,9 @@ def check_classifier_data(args):
             if args.verbose:
                 print num_batches_done, 'batches checked'
         assert (num_regions == num_individual_labels)
-        print 'All checks passed'
+        '''
+
+    rerun_file.close()
 
 
 if __name__ == '__main__':
@@ -239,8 +322,14 @@ if __name__ == '__main__':
                             help='Count greyscale images')
     arg_parser.add_argument('--check-vgg-features', action="store_true", default=False,
                             help='Check for errors in VGG feature extraction')
-    arg_parser.add_argument('--check-classifier-data', action="store_true", default=False,
-                            help='Check reorganized classifier data')
+    arg_parser.add_argument('--check-multilabels', action="store_true", default=False,
+                            help='Check reorganized multilabels fore classifiers')
+    arg_parser.add_argument('--check-features', action="store_true", default=False,
+                            help='Check reorganized features fore classifiers')
+
+    # For checking classifier data
+    arg_parser.add_argument('--rerun-script-filename', type=str, default=None,
+                            help='Write commands to rerun')
 
     args = arg_parser.parse_args()
 
@@ -254,5 +343,7 @@ if __name__ == '__main__':
         count_greyscale_images(args)
     if args.check_vgg_features:
         check_vgg_feature_extraction(args)
-    if args.check_classifier_data:
-        check_classifier_data(args)
+    if args.check_multilabels:
+        check_multilabels(args)
+    if args.check_features:
+        check_features(args)

@@ -6,6 +6,7 @@ import os
 import csv
 import random
 import numpy as np
+import math
 
 __author__ = 'aishwarya'
 
@@ -169,6 +170,14 @@ def write_batch_features(args):
     start_idx = args.batch_num * args.batch_size
     end_idx = min(start_idx + args.batch_size, len(regions))
     batch_regions = regions[start_idx:end_idx]
+    if args.verbose:
+        print 'len(batch_regions) = ', len(batch_regions)
+        print 'args.batch_num =', args.batch_num
+        print 'args.batch_size =', args.batch_size
+        print 'start_idx =', start_idx
+        print 'len(regions) =', len(regions)
+        print 'start_idx + args.batch_size =', start_idx + args.batch_size
+
     completed_regions = list()
 
     orig_features_folder = os.path.join(args.dataset_dir, 'regions_vgg_features')
@@ -217,6 +226,13 @@ def write_batch_multilabels(args):
     start_idx = args.batch_num * args.batch_size
     end_idx = min(start_idx + args.batch_size, len(regions))
     batch_regions = regions[start_idx:end_idx]
+    if args.verbose:
+        print 'len(batch_regions) = ', len(batch_regions)
+        print 'args.batch_num =', args.batch_num
+        print 'args.batch_size =', args.batch_size
+        print 'start_idx =', start_idx
+        print 'len(regions) =', len(regions)
+        print 'start_idx + args.batch_size =', start_idx + args.batch_size
 
     with open(os.path.join(args.dataset_dir, 'classifiers/data/label_names.txt')) as label_names_file:
         label_names = label_names_file.read().split('\n')
@@ -254,12 +270,12 @@ def write_batch_multilabels(args):
         row = dict()
         for label_name in label_names:
             if label_name in regions_with_content[region]:
-                row[label_name] = True
+                row[label_name] = 1
             else:
-                row[label_name] = False
+                row[label_name] = 0
         writer.writerow(row)
         num_regions_processed += 1
-        if args.verbose and num_regions_processed % 1000 == 0:
+        if args.verbose and num_regions_processed % 1 == 0:
             print 'Batch', args.batch_num, 'multilabel :', num_regions_processed, 'regions processed'
 
     output_file.close()
@@ -268,9 +284,9 @@ def write_batch_multilabels(args):
 
 # Saves binary vector for the regions in batch_regions for the specified label.
 # This is a separate function to allow parallelism
-def write_batch_individual_label(args):
+def write_individual_label(args):
     if args.verbose:
-        print 'Batch', args.batch_num, ', label', args.label, ' : Started'
+        print 'Label', args.label, ' : Started'
 
     if args.in_train_set:
         regions_filename = os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt')
@@ -279,10 +295,11 @@ def write_batch_individual_label(args):
     with open(regions_filename) as regions_file:
         regions = regions_file.read().split('\n')
 
-    start_idx = args.batch_num * args.batch_size
-    end_idx = min(start_idx + args.batch_size, len(regions))
-    batch_regions = regions[start_idx:end_idx]
+    if args.verbose:
+        print 'len(regions) =', len(regions)
 
+    if args.verbose:
+        print 'Label', args.label, ' : Indexing regions'
     region_content_filename = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
     input_file = open(region_content_filename)
     regions_with_content = dict()
@@ -297,28 +314,39 @@ def write_batch_individual_label(args):
     for row in reader:
         region_id = row[0]
         regions_with_content[region_id] = row[1:]
+    if args.verbose:
+        print 'Label', args.label, ' : Indexed regions'
 
-    if args.in_train_set:
-        output_dir = os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/' + args.label)
-        if not os.path.isdir(output_dir):
-            os.mkdir(output_dir)
-        output_filename = os.path.join(output_dir, str(args.batch_num) + '.csv')
-    else:
-        output_dir = os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/test/' + args.label)
-        if not os.path.isdir(output_dir):
-            os.mkdir(output_dir)
-        output_filename = os.path.join(output_dir, str(args.batch_num) + '.csv')
-    output_file = open(output_filename, 'w')
-    label_values = list()
-    for region in batch_regions:
-        if args.label in regions_with_content[region]:
-            label_values.append(True)
+    max_batch_num = int(math.ceil(float(len(regions)) / args.batch_size))
+
+    for batch_num in range(max_batch_num):
+        start_idx = batch_num * args.batch_size
+        end_idx = min(start_idx + args.batch_size, len(regions))
+        batch_regions = regions[start_idx:end_idx]
+        if args.in_train_set:
+            output_dir = os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/' + args.label)
+            if not os.path.isdir(output_dir):
+                os.mkdir(output_dir)
+            output_filename = os.path.join(output_dir, str(args.batch_num) + '.csv')
         else:
-            label_values.append(False)
-    writer = csv.writer(output_file)
-    writer.writerow(label_values)
-    output_file.close()
-    print 'Batch', args.batch_num, ', label =', args.label, 'complete'
+            output_dir = os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/test/' + args.label)
+            if not os.path.isdir(output_dir):
+                os.mkdir(output_dir)
+            output_filename = os.path.join(output_dir, str(args.batch_num) + '.csv')
+        output_file = open(output_filename, 'w')
+        label_values = list()
+        for region in batch_regions:
+            if args.label in regions_with_content[region]:
+                label_values.append(1)
+            else:
+                label_values.append(0)
+        writer = csv.writer(output_file)
+        writer.writerow(label_values)
+        output_file.close()
+        if args.verbose:
+            print batch_num + 1, 'batches processed ...'
+
+    print 'Label =', args.label, 'complete'
 
 
 if __name__ == '__main__':
@@ -352,8 +380,8 @@ if __name__ == '__main__':
                             help='Number of data points per file (features or labels)')
     arg_parser.add_argument('--batch-num', type=int, default=None,
                             help='Start batch at this index in regions file')
-    arg_parser.add_argument('--in-train-set', type=bool, default=None,
-                            help='Is this part of train or test set')
+    arg_parser.add_argument('--in-train-set', action="store_true", default=False,
+                            help='To distinguish between train and test set')
 
     arg_parser.add_argument('--label', type=str, default=None,
                             help='Label for --write-individual-label')
@@ -372,9 +400,9 @@ if __name__ == '__main__':
         write_batch_multilabels(args)
 
     if args.write_individual_labels:
-        if args.batch_num is None or args.in_train_set is None or args.label is None:
+        if args.in_train_set is None or args.label is None:
             raise RuntimeError('--batch_num, --label and --in-train-set required with --write-individual-labels')
-        write_batch_individual_label(args)
+        write_individual_label(args)
 
     if args.write_features:
         if args.batch_num is None or args.in_train_set is None:

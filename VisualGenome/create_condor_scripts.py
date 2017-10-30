@@ -63,7 +63,7 @@ def write_features(args):
     # Pairs of region file name and is_train_set
     metadata = [
         (os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'), True),
-        (os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'), False)
+        (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
@@ -93,7 +93,8 @@ def write_features(args):
             condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
             condor_script_file.write('\t\t --write-features \\\n')
             condor_script_file.write('\t\t --batch-num=' + str(batch_num) + ' \\\n')
-            condor_script_file.write('\t\t --in-train-set=' + str(is_train_set) + ' \\\n')
+            if is_train_set:
+                condor_script_file.write('\t\t --in-train-set \\\n')
             condor_script_file.write('\t\t --verbose\n')
 
             condor_script_file.write('+Group   = "GRAD"\n')
@@ -132,7 +133,7 @@ def write_multilabels(args):
     # Pairs of region file name and is_train_set
     metadata = [
         (os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'), True),
-        (os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'), False)
+        (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
@@ -162,7 +163,8 @@ def write_multilabels(args):
             condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
             condor_script_file.write('\t\t --write-multilabels \\\n')
             condor_script_file.write('\t\t --batch-num=' + str(batch_num) + ' \\\n')
-            condor_script_file.write('\t\t --in-train-set=' + str(is_train_set) + ' \\\n')
+            if is_train_set:
+                condor_script_file.write('\t\t --in-train-set \\\n')
             condor_script_file.write('\t\t --verbose\n')
 
             condor_script_file.write('+Group   = "GRAD"\n')
@@ -201,7 +203,7 @@ def write_individual_labels(args):
     # Pairs of region file name and is_train_set
     metadata = [
         (os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'), True),
-        (os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'), False)
+        (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
     with open(os.path.join(args.dataset_dir, 'classifiers/data/label_names.txt')) as label_names_file:
@@ -212,71 +214,70 @@ def write_individual_labels(args):
 
     num_iterations_finished = 0
     for (regions_filename, is_train_set) in metadata:
+        print 'is_train_set =', is_train_set
         for label in label_names:
             with open(regions_filename) as regions_file:
                 regions = regions_file.read().split('\n')
-            max_batch_num = int(math.ceil(float(len(regions)) / args.batch_size))
 
-            for batch_num in range(max_batch_num):
-                if is_train_set:
-                    condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'train',
-                                                           str(batch_num) + '_' + label + '.sh'])
-                else:
-                    condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'test',
-                                                             str(batch_num) + '_' + label + '.sh'])
+            if is_train_set:
+                condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir,
+                                                         'train', label + '.sh'])
+            else:
+                condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir,
+                                                         'test', label + '.sh'])
 
-                condor_script_file = open(condor_script_file_name, 'w')
-                condor_script_file.write('universe = vanilla\n')
-                condor_script_file.write('Initialdir = ' +
-                                         '/u/aish/Documents/Research/Code/dataset_preprocessing/VisualGenome/\n')
+            condor_script_file = open(condor_script_file_name, 'w')
+            condor_script_file.write('universe = vanilla\n')
+            condor_script_file.write('Initialdir = ' +
+                                     '/u/aish/Documents/Research/Code/dataset_preprocessing/VisualGenome/\n')
 
-                condor_script_file.write('Executable = /lusr/bin/python\n')
+            condor_script_file.write('Executable = /lusr/bin/python\n')
 
-                condor_script_file.write('Arguments = create_classifier_data.py \\\n')
-                condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
-                condor_script_file.write('\t\t --write-individual-labels \\\n')
-                condor_script_file.write('\t\t --batch-num=' + str(batch_num) + ' \\\n')
-                condor_script_file.write('\t\t --label=' + label + ' \\\n')
-                condor_script_file.write('\t\t --in-train-set=' + str(is_train_set) + ' \\\n')
-                condor_script_file.write('\t\t --verbose\n')
+            condor_script_file.write('Arguments = create_classifier_data.py \\\n')
+            condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
+            condor_script_file.write('\t\t --write-individual-labels \\\n')
+            condor_script_file.write('\t\t --label=' + label + ' \\\n')
+            if is_train_set:
+                condor_script_file.write('\t\t --in-train-set \\\n')
+            condor_script_file.write('\t\t --verbose\n')
 
-                condor_script_file.write('+Group   = "GRAD"\n')
-                condor_script_file.write('+Project = "AI_ROBOTICS"\n')
-                condor_script_file.write('+ProjectDescription = "VisualGenome - Writing individual label data"\n')
-                condor_script_file.write('JobBatchName = "VisualGenome - Writing individual label data"\n')
-                condor_script_file.write('Requirements = InMastodon\n')
+            condor_script_file.write('+Group   = "GRAD"\n')
+            condor_script_file.write('+Project = "AI_ROBOTICS"\n')
+            condor_script_file.write('+ProjectDescription = "VisualGenome - Writing individual label data"\n')
+            condor_script_file.write('JobBatchName = "VisualGenome - Writing individual label data"\n')
+            condor_script_file.write('Requirements = InMastodon\n')
 
-                if is_train_set:
-                    condor_script_file.write('Log = ' +
-                                             os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                          'train/log', str(batch_num) + '_' + label + '.log']) + '\n')
-                    condor_script_file.write('Error = ' +
-                                             os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                          'train/err', str(batch_num) + '_' + label + '.err']) + '\n')
-                    condor_script_file.write('Output = ' +
-                                             os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                          'train/out', str(batch_num) + '_' + label + '.out']) + '\n')
-                else:
-                    condor_script_file.write('Log = ' +
-                                             os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                          'test/log', str(batch_num) + '_' + label + '.log']) + '\n')
-                    condor_script_file.write('Error = ' +
-                                             os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                          'test/err', str(batch_num) + '_' + label + '.err']) + '\n')
-                    condor_script_file.write('Output = ' +
-                                             os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                          'test/out', str(batch_num) + '_' + label + '.out']) + '\n')
+            if is_train_set:
+                condor_script_file.write('Log = ' +
+                                         os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                      'train/log', label + '.log']) + '\n')
+                condor_script_file.write('Error = ' +
+                                         os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                      'train/err', label + '.err']) + '\n')
+                condor_script_file.write('Output = ' +
+                                         os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                      'train/out', label + '.out']) + '\n')
+            else:
+                condor_script_file.write('Log = ' +
+                                         os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                      'test/log', label + '.log']) + '\n')
+                condor_script_file.write('Error = ' +
+                                         os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                      'test/err', label + '.err']) + '\n')
+                condor_script_file.write('Output = ' +
+                                         os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                      'test/out', label + '.out']) + '\n')
 
-                condor_script_file.write('Notification = complete\n')
-                condor_script_file.write('Notify_user = aish@cs.utexas.edu\n')
-                condor_script_file.write('Queue 1\n')
-                condor_script_file.close()
+            condor_script_file.write('Notification = complete\n')
+            condor_script_file.write('Notify_user = aish@cs.utexas.edu\n')
+            condor_script_file.write('Queue 1\n')
+            condor_script_file.close()
 
-                condor_submit_file.write('condor_submit ' + condor_script_file_name + '\n')
+            condor_submit_file.write('condor_submit ' + condor_script_file_name + '\n')
 
-                num_iterations_finished += 1
-                if num_iterations_finished % 1000 == 0:
-                    print num_iterations_finished
+            num_iterations_finished += 1
+            if num_iterations_finished % 100 == 0:
+                print num_iterations_finished, 'labels finished'
 
     condor_submit_file.close()
 
