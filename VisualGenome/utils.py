@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import os
+import re
+import nltk
 
 __author__ = 'aishwarya'
 
@@ -18,3 +20,15 @@ def get_image_path(dataset_dir, image_id, verify=False):
                 return None
         return path2
 
+
+def normalize_string(string):
+    stemmer = nltk.stem.snowball.SnowballStemmer("english")
+    string = string.lower().strip()
+    string = re.sub('[^a-z]', ' ', string)      # Replace anything other than letters with space
+    string = re.sub('\s+', ' ', string)         # Replace a sequence of spaces with a single space
+    tokens = string.split()
+    stemmed_tokens = [str(stemmer.stem(token)) for token in tokens]
+    stopwords = set(nltk.corpus.stopwords.words('english'))
+    useful_tokens = [token for token in stemmed_tokens if token not in stopwords]
+    string = '_'.join(useful_tokens)
+    return string.strip()

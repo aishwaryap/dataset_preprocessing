@@ -267,7 +267,9 @@ def check_features(args):
                 else:
                     assert (features.shape[1] == 4096)
                     num_feature_vectors += features.shape[0]
-            except KeyboardInterrupt, SystemExit:
+            except KeyboardInterrupt:
+                raise
+            except SystemExit:
                 raise
             except:
                 num_incomplete_batches += 1
@@ -286,21 +288,66 @@ def check_features(args):
             assert (num_regions == num_feature_vectors)
             print 'Features check passed...'
 
-        '''
+    rerun_file.close()
+
+
+# A simple sanity check on reorganized data for classification
+def check_individual_labels(args):
+    metadata = [
+        {
+            'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt'),
+            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/'),
+            'is_train_set': True
+        },
+        {
+            'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'),
+            'individual_labels_dir': os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/test/'),
+            'is_train_set': False
+        }
+    ]
+
+    rerun_file = open(args.rerun_script_filename, 'w')
+
+    for metadata_instance in metadata:
+        print 'Checking regions file', metadata_instance['regions_filename']
+        num_regions = count_lines(metadata_instance['regions_filename'])
+
+        c1 = 'python create_classifier_data.py \\\n --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n' + \
+             '--write-individual-labels \\\n --label='
+        c2 = ' \\\n --verbose'
+
         if args.verbose:
             print 'Checking individual labels'
-        individual_labels_files = [os.path.join(metadata_instance['individual_labels_dir'], f)
-                                   for f in os.listdir(metadata_instance['individual_labels_dir'])]
-        num_individual_labels = 0
-        num_batches_done = 0
-        for individual_labels_file in individual_labels_files:
-            individual_labels = np.loadtxt(individual_labels_file)
-            num_individual_labels += individual_labels.shape[0]
-            num_batches_done += 1
+        label_dirs = [os.path.join(metadata_instance['individual_labels_dir'], f)
+                      for f in os.listdir(metadata_instance['individual_labels_dir'])]
+
+        for label in label_dirs:
+            label_successful = True
+            label_name = label.split('/')[-1]
+            num_labels = 0
+
             if args.verbose:
-                print num_batches_done, 'batches checked'
-        assert (num_regions == num_individual_labels)
-        '''
+                print 'Label: ', label_name
+
+            label_files = [os.path.join(label, f) for f in os.listdir(label)]
+            for label_file in label_files:
+                labels = np.loadtxt(label_file, delimiter=',')
+                if labels is None:
+                    label_successful = False
+
+                    command = c1 + label_name + c2
+                    if metadata_instance['is_train_set']:
+                        command += ' \\\n --in-train-set'
+                    rerun_file.write(command + '\n')
+                    break   # No need to read more files of this label
+                else:
+                    num_labels += labels.shape[0]
+
+            if args.verbose:
+                print 'Label', label_name, ' success:', label_successful
+            if label_successful:
+                assert (num_regions == num_labels)
+                print 'All labels present'
 
     rerun_file.close()
 
@@ -326,6 +373,8 @@ if __name__ == '__main__':
                             help='Check reorganized multilabels fore classifiers')
     arg_parser.add_argument('--check-features', action="store_true", default=False,
                             help='Check reorganized features fore classifiers')
+    arg_parser.add_argument('--check-individual-labels', action="store_true", default=False,
+                            help='Check reorganized binary labels for classifiers')
 
     # For checking classifier data
     arg_parser.add_argument('--rerun-script-filename', type=str, default=None,
@@ -347,3 +396,5 @@ if __name__ == '__main__':
         check_multilabels(args)
     if args.check_features:
         check_features(args)
+    if args.check_individual_labels:
+        check_individual_labels(args)

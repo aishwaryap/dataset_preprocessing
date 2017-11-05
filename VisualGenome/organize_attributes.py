@@ -7,8 +7,7 @@ from argparse import ArgumentParser
 import json
 import sys
 import csv
-import os
-import re
+from utils import *
 sys.path.append('../utils')
 from json_wrapper import *
 
@@ -82,17 +81,6 @@ def create_contents_list(args):
     # unique_attributes_file.close()
 
     print 'Complete ...'
-
-
-def normalize_string(string):
-    string = string.lower().strip()
-    string = re.sub('[^a-z]', ' ', string)      # Replace anything other than letters with space
-    string = re.sub('\s+', ' ', string)         # Replace a sequence of spaces with a single space
-    tokens = string.split()
-    stopwords = ['a', 'an', 'the', 'is']
-    useful_tokens = [token for token in tokens if token not in stopwords]
-    string = '_'.join(useful_tokens)
-    return string.strip()
 
 
 # In the region attributes/objects file, check that the list of attributes/objects per row is unique

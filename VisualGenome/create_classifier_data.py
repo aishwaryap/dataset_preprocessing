@@ -327,12 +327,12 @@ def write_individual_label(args):
             output_dir = os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/' + args.label)
             if not os.path.isdir(output_dir):
                 os.mkdir(output_dir)
-            output_filename = os.path.join(output_dir, str(args.batch_num) + '.csv')
+            output_filename = os.path.join(output_dir, str(batch_num) + '.csv')
         else:
             output_dir = os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/test/' + args.label)
             if not os.path.isdir(output_dir):
                 os.mkdir(output_dir)
-            output_filename = os.path.join(output_dir, str(args.batch_num) + '.csv')
+            output_filename = os.path.join(output_dir, str(batch_num) + '.csv')
         output_file = open(output_filename, 'w')
         label_values = list()
         for region in batch_regions:
