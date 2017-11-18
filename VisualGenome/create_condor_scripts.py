@@ -66,6 +66,19 @@ def write_features(args):
         (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
+    # Make log dirs
+    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
+    if not os.path.isdir(log_dir):
+        os.mkdir(log_dir)
+    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
+    for log_sub_dir in log_sub_dirs:
+        if not os.path.isdir(log_sub_dir):
+            os.mkdir(log_sub_dir)
+        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
+        for log_sub_sub_dir in log_sub_sub_dirs:
+            if not os.path.isdir(log_sub_sub_dir):
+                os.mkdir(log_sub_sub_dir)
+
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
 
@@ -139,6 +152,19 @@ def write_multilabels(args):
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
 
+    # Make log dirs
+    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
+    if not os.path.isdir(log_dir):
+        os.mkdir(log_dir)
+    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
+    for log_sub_dir in log_sub_dirs:
+        if not os.path.isdir(log_sub_dir):
+            os.mkdir(log_sub_dir)
+        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
+        for log_sub_sub_dir in log_sub_sub_dirs:
+            if not os.path.isdir(log_sub_sub_dir):
+                os.mkdir(log_sub_sub_dir)
+
     for (regions_filename, is_train_set) in metadata:
         with open(regions_filename) as regions_file:
             regions = regions_file.read().split('\n')
@@ -211,6 +237,19 @@ def write_individual_labels(args):
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
+
+    # Make log dirs
+    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
+    if not os.path.isdir(log_dir):
+        os.mkdir(log_dir)
+    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
+    for log_sub_dir in log_sub_dirs:
+        if not os.path.isdir(log_sub_dir):
+            os.mkdir(log_sub_dir)
+        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
+        for log_sub_sub_dir in log_sub_sub_dirs:
+            if not os.path.isdir(log_sub_sub_dir):
+                os.mkdir(log_sub_sub_dir)
 
     num_iterations_finished = 0
     for (regions_filename, is_train_set) in metadata:
