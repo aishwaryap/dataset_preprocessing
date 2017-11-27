@@ -30,9 +30,12 @@ def create_contents_list(args):
     region_objects_writer = csv.writer(region_objects_file, delimiter=',')
     region_attributes_file = open(os.path.join(args.dataset_dir, 'region_attributes.csv'), 'w')
     region_attributes_writer = csv.writer(region_attributes_file, delimiter=',')
+    region_synsets_file = open(os.path.join(args.dataset_dir, 'region_synsets.csv'), 'w')
+    region_synsets_writer = csv.writer(region_synsets_file, delimiter=',')
     num_regions_processed = 0
 
     objects_file = open(os.path.join(args.dataset_dir, 'objects_list.txt'), 'w')
+    synsets_file = open(os.path.join(args.dataset_dir, 'synsets_list.txt'), 'w')
     attributes_file = open(os.path.join(args.dataset_dir, 'attributes_list.txt'), 'w')
 
     for line in region_graphs_file:
@@ -43,13 +46,17 @@ def create_contents_list(args):
         relevant_attributes = [object for object in image_attributes if object['object_id'] in region_objects]
         object_names = list()
         attribute_names = list()
+        synset_names = list()
         for object in relevant_attributes:
             if 'names' in object:
                 object_names += object['names']
             if 'attributes' in object:
                 attribute_names += object['attributes']
+            if 'synsets' in object:
+                synset_names += object['synsets']
         objects_file.write('\n'.join([unicode(s).encode('ascii',errors='ignore') for s in object_names]) + '\n')
         attributes_file.write('\n'.join([unicode(s).encode('ascii', errors='ignore') for s in attribute_names]) + '\n')
+        synsets_file.write('\n'.join([unicode(s).encode('ascii', errors='ignore') for s in synset_names]) + '\n')
         # unique_objects = unique_objects.union(object_names)
         # unique_attributes = unique_attributes.union(attribute_names)
         objects_row = [region['region_id']] + object_names
@@ -58,6 +65,9 @@ def create_contents_list(args):
         attributes_row = [region['region_id']] + attribute_names
         attributes_row_ascii = [unicode(s).encode('ascii',errors='ignore') for s in attributes_row]
         region_attributes_writer.writerow(attributes_row_ascii)
+        synsets_row = [region['region_id']] + synset_names
+        synsets_row_ascii = [unicode(s).encode('ascii', errors='ignore') for s in synsets_row]
+        region_synsets_writer.writerow(synsets_row_ascii)
         num_regions_processed += 1
         if num_regions_processed % 10000 == 0:
             print num_regions_processed, 'regions processed ...'
@@ -65,9 +75,11 @@ def create_contents_list(args):
     region_graphs_file.close()
     region_objects_file.close()
     region_attributes_file.close()
+    region_synsets_file.close()
 
     objects_file.close()
     attributes_file.close()
+    synsets_file.close()
 
     # unique_objects_file = open(os.path.join(args.dataset_dir, 'objects_list.txt'), 'w')
     # unique_objects = list(unique_objects)
@@ -143,6 +155,10 @@ if __name__ == '__main__':
         output_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
         make_region_contents_unique(input_file, output_file)
 
+        input_file = os.path.join(args.dataset_dir, 'region_synsets.csv')
+        output_file = os.path.join(args.dataset_dir, 'region_synsets_unique.csv')
+        make_region_contents_unique(input_file, output_file)
+
     if args.make_contents_list_unique:
         input_file = os.path.join(args.dataset_dir, 'objects_list.txt')
         output_file = os.path.join(args.dataset_dir, 'objects_list_unique.txt')
@@ -152,3 +168,6 @@ if __name__ == '__main__':
         output_file = os.path.join(args.dataset_dir, 'attributes_list_unique.txt')
         make_list_unique(input_file, output_file)
 
+        input_file = os.path.join(args.dataset_dir, 'synsets_list.txt')
+        output_file = os.path.join(args.dataset_dir, 'synsets_list_unique.txt')
+        make_list_unique(input_file, output_file)

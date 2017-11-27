@@ -9,4 +9,4 @@ Max frequency word = bottle (505 occurrences)
 
 ## Imagenet attributes
 25 images per class per attribute for fairly useful attributes
-# synsets = 384
+Number of synsets = 384

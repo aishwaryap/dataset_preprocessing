@@ -1,0 +1,3 @@
+artifact.n.01
+food.n.01
+part.n.02
