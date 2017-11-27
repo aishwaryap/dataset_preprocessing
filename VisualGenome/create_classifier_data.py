@@ -182,7 +182,7 @@ def write_batch_features(args):
 
     orig_features_folder = os.path.join(args.dataset_dir, 'regions_vgg_features')
     orig_features_files = [os.path.join(orig_features_folder, f) for f in os.listdir(orig_features_folder)]
-    features = np.zeros((args.batch_size, args.feature_vector_size))
+    features = np.zeros((args.batch_size, args.feature_vector_size), dtype=float)
 
     num_files_processed = 0
     for input_filename in orig_features_files:
@@ -198,7 +198,7 @@ def write_batch_features(args):
         input_file.close()
         num_files_processed += 1
         if args.verbose:
-            print 'Batch', args.batch_num, 'features :', num_files_processed, 'files processed'
+            print 'Batch', args.batch_num, 'features :', num_files_processed, 'files processed, dtype =', features.dtype
 
     if args.in_train_set:
         output_filename = os.path.join(args.dataset_dir, 'classifiers/data/features/train/'
@@ -206,7 +206,14 @@ def write_batch_features(args):
     else:
         output_filename = os.path.join(args.dataset_dir, 'classifiers/data/features/test/'
                                        + str(args.batch_num) + '.csv')
-    np.savetxt(output_filename, features)
+
+    # np.savetxt(output_filename, features)
+
+    with open(output_filename, 'w') as handle:
+        writer = csv.writer(handle, delimiter=',')
+        for i in range(features.shape[0]):
+            writer.writerow(features[i, :])
+
     print 'Batch', args.batch_num, 'features complete'
 
 

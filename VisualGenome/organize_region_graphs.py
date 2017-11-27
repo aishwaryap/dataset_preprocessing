@@ -60,6 +60,7 @@ def split_region_graphs(args):
                 minimal_object['y'] = object['y']
                 minimal_object['w'] = object['w']
                 minimal_object['h'] = object['h']
+                minimal_object['synsets'] = object['synsets']
                 minimal_region['objects'].append(minimal_object)
                 num_objects += 1
 
