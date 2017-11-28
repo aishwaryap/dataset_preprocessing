@@ -96,7 +96,7 @@ def create_contents_list(args):
 
 
 # In the region attributes/objects file, check that the list of attributes/objects per row is unique
-def make_region_contents_unique(input_filename, output_filename):
+def make_region_contents_unique(input_filename, output_filename, normalize=True):
     input_file = open(input_filename)
     reader = csv.reader(input_file, delimiter=',')
     output_file = open(output_filename, 'w')
@@ -104,8 +104,12 @@ def make_region_contents_unique(input_filename, output_filename):
 
     for row in reader:
         contents_list = row[1:]
-        new_row = [row[0]] + list(set([normalize_string(content_item) for content_item in contents_list
+        if normalize:
+            new_row = [row[0]] + list(set([normalize_string(content_item) for content_item in contents_list
                                        if len(normalize_string(content_item)) > 0]))
+        else:
+            new_row = [row[0]] + list(set([content_item.strip() for content_item in contents_list
+                                           if len(content_item.strip()) > 0]))
         writer.writerow(new_row)
 
     input_file.close()
@@ -114,13 +118,17 @@ def make_region_contents_unique(input_filename, output_filename):
 
 
 # For making list of objects and attributes unique
-def make_list_unique(input_filename, output_filename):
+def make_list_unique(input_filename, output_filename, normalize=True):
     input_file = open(input_filename)
     contents_list = input_file.read().split('\n')
     input_file.close()
 
-    contents = set([normalize_string(content_item) for content_item in contents_list
-                    if len(normalize_string(content_item)) > 0])
+    if normalize:
+        contents = set([normalize_string(content_item) for content_item in contents_list
+                        if len(normalize_string(content_item)) > 0])
+    else:
+        contents = set([content_item.strip() for content_item in contents_list
+                        if len(content_item.strip()) > 0])
     contents = list(contents)
     contents.sort()
 
@@ -147,27 +155,27 @@ if __name__ == '__main__':
         create_contents_list(args)
 
     if args.make_region_contents_unique:
-        input_file = os.path.join(args.dataset_dir, 'region_objects.csv')
-        output_file = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
-        make_region_contents_unique(input_file, output_file)
-
-        input_file = os.path.join(args.dataset_dir, 'region_attributes.csv')
-        output_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
-        make_region_contents_unique(input_file, output_file)
+        # input_file = os.path.join(args.dataset_dir, 'region_objects.csv')
+        # output_file = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
+        # make_region_contents_unique(input_file, output_file)
+        #
+        # input_file = os.path.join(args.dataset_dir, 'region_attributes.csv')
+        # output_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
+        # make_region_contents_unique(input_file, output_file)
 
         input_file = os.path.join(args.dataset_dir, 'region_synsets.csv')
         output_file = os.path.join(args.dataset_dir, 'region_synsets_unique.csv')
-        make_region_contents_unique(input_file, output_file)
+        make_region_contents_unique(input_file, output_file, False)
 
     if args.make_contents_list_unique:
-        input_file = os.path.join(args.dataset_dir, 'objects_list.txt')
-        output_file = os.path.join(args.dataset_dir, 'objects_list_unique.txt')
-        make_list_unique(input_file, output_file)
-
-        input_file = os.path.join(args.dataset_dir, 'attributes_list.txt')
-        output_file = os.path.join(args.dataset_dir, 'attributes_list_unique.txt')
-        make_list_unique(input_file, output_file)
+        # input_file = os.path.join(args.dataset_dir, 'objects_list.txt')
+        # output_file = os.path.join(args.dataset_dir, 'objects_list_unique.txt')
+        # make_list_unique(input_file, output_file)
+        #
+        # input_file = os.path.join(args.dataset_dir, 'attributes_list.txt')
+        # output_file = os.path.join(args.dataset_dir, 'attributes_list_unique.txt')
+        # make_list_unique(input_file, output_file)
 
         input_file = os.path.join(args.dataset_dir, 'synsets_list.txt')
         output_file = os.path.join(args.dataset_dir, 'synsets_list_unique.txt')
-        make_list_unique(input_file, output_file)
+        make_list_unique(input_file, output_file, False)
