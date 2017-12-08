@@ -17,7 +17,7 @@ def organize_labels_and_regions(args):
     # Read counts of objects and attributes
     region_counts = dict()
 
-    object_counts_filename = os.path.join(args.dataset_dir, 'region_objects_stats.csv')
+    object_counts_filename = os.path.join(args.dataset_dir, 'indoor/region_objects_stats.csv')
     objects = list()
     input_file = open(object_counts_filename)
     reader = csv.reader(input_file, delimiter=',')
@@ -28,7 +28,7 @@ def organize_labels_and_regions(args):
     input_file.close()
     print 'Indexed object counts'
 
-    attribute_counts_filename = os.path.join(args.dataset_dir, 'region_attributes_stats.csv')
+    attribute_counts_filename = os.path.join(args.dataset_dir, 'indoor/region_attributes_stats.csv')
     attributes = list()
     input_file = open(attribute_counts_filename)
     reader = csv.reader(input_file, delimiter=',')
@@ -40,7 +40,7 @@ def organize_labels_and_regions(args):
     print 'Indexed attribute counts'
 
     # Get a list of regions which contain selected synsets
-    allowed_regions_file = os.path.join(args.dataset_dir, 'allowed_regions.txt')
+    allowed_regions_file = os.path.join(args.dataset_dir, 'indoor/allowed_regions.txt')
     with open(allowed_regions_file) as handle:
         allowed_regions = handle.read().split('\n')
     print 'Read allowed regions'
@@ -144,8 +144,8 @@ def organize_labels_and_regions(args):
         train_set = list()
 
         filenames = [
-            os.path.join(args.dataset_dir, 'region_objects_unique.csv'),
-            os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
+            os.path.join(args.dataset_dir, 'indoor/region_objects_unique.csv'),
+            os.path.join(args.dataset_dir, 'indoor/region_attributes_unique.csv')
         ]
         handles = [open(f) for f in filenames]
         readers = [csv.reader(h) for h in handles]
@@ -163,18 +163,18 @@ def organize_labels_and_regions(args):
                     raise RuntimeError('Region contents files not synced. Mismatch at line '
                                        + str(num_regions_processed))
                 region_id = list(region_ids)[0]
-                if region_id in allowed_regions:
-                    if len(contents.intersection(test_set_labels)) > 0:
-                        test_set.append(region_id)
-                    else:
-                        train_set.append(region_id)
+                if len(contents.intersection(test_set_labels)) > 0:
+                    test_set.append(region_id)
+                else:
+                    train_set.append(region_id)
                 if num_regions_processed % 100 == 0:
                     print 'Building train and test sets :', num_regions_processed, 'regions processed ...'
             except StopIteration:
                 break
 
         test_set_fraction = len(test_set) / float(len(allowed_regions))
-        if test_set_fraction >= args.min_test_data_fraction and test_set_fraction <=  args.max_test_data_fraction):
+        if test_set_fraction >= args.min_test_data_fraction \
+                and test_set_fraction <= args.max_test_data_fraction:
             good_split_found = True
 
         print '\t Test set fraction =', test_set_fraction
@@ -292,7 +292,7 @@ def write_batch_multilabels(args):
 
     if args.verbose:
         print 'Batch', args.batch_num, 'multilabel : Indexing regions'
-    region_content_filename = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
+    region_content_filename = os.path.join(args.dataset_dir, 'indoor/region_objects_unique.csv')
     input_file = open(region_content_filename)
     regions_with_content = dict()
     reader = csv.reader(input_file, delimiter=',')
@@ -300,7 +300,7 @@ def write_batch_multilabels(args):
         region_id = row[0]
         regions_with_content[region_id] = row[1:]
 
-    region_content_filename = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
+    region_content_filename = os.path.join(args.dataset_dir, 'indoor/region_attributes_unique.csv')
     input_file = open(region_content_filename)
     reader = csv.reader(input_file, delimiter=',')
     for row in reader:
@@ -353,7 +353,7 @@ def write_individual_label(args):
 
     if args.verbose:
         print 'Label', args.label, ' : Indexing regions'
-    region_content_filename = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
+    region_content_filename = os.path.join(args.dataset_dir, 'indoor/region_objects_unique.csv')
     input_file = open(region_content_filename)
     regions_with_content = dict()
     reader = csv.reader(input_file, delimiter=',')
@@ -361,7 +361,7 @@ def write_individual_label(args):
         region_id = row[0]
         regions_with_content[region_id] = row[1:]
 
-    region_content_filename = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
+    region_content_filename = os.path.join(args.dataset_dir, 'indoor/region_attributes_unique.csv')
     input_file = open(region_content_filename)
     reader = csv.reader(input_file, delimiter=',')
     for row in reader:
