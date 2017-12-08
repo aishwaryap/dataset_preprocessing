@@ -11,6 +11,8 @@ from utils import *
 sys.path.append('../utils')
 from json_wrapper import *
 
+__author__ = 'aishwarya'
+
 
 def create_contents_list(args):
     attributes = load_json(os.path.join(args.dataset_dir, 'attributes.json'))
@@ -19,9 +21,6 @@ def create_contents_list(args):
     for image in attributes:
         indexed_attributes[image['image_id']] = image['attributes']
     print 'Indexed attributes ...'
-
-    # unique_attributes = set()
-    # unique_objects = set()
 
     region_graphs_filename = os.path.join(args.dataset_dir, 'region_graphs.txt')
     region_graphs_file = open(region_graphs_filename)
@@ -57,8 +56,6 @@ def create_contents_list(args):
         objects_file.write('\n'.join([unicode(s).encode('ascii',errors='ignore') for s in object_names]) + '\n')
         attributes_file.write('\n'.join([unicode(s).encode('ascii', errors='ignore') for s in attribute_names]) + '\n')
         synsets_file.write('\n'.join([unicode(s).encode('ascii', errors='ignore') for s in synset_names]) + '\n')
-        # unique_objects = unique_objects.union(object_names)
-        # unique_attributes = unique_attributes.union(attribute_names)
         objects_row = [region['region_id']] + object_names
         objects_row_ascii = [unicode(s).encode('ascii',errors='ignore') for s in objects_row]
         region_objects_writer.writerow(objects_row_ascii)
@@ -80,17 +77,6 @@ def create_contents_list(args):
     objects_file.close()
     attributes_file.close()
     synsets_file.close()
-
-    # unique_objects_file = open(os.path.join(args.dataset_dir, 'objects_list.txt'), 'w')
-    # unique_objects = list(unique_objects)
-    # unique_objects.sort()
-    # unique_objects_file.write('\n'.join(unique_objects).encode('ascii',errors='ignore'))
-    # unique_objects_file.close()
-    # unique_attributes_file = open(os.path.join(args.dataset_dir, 'attributes_list.txt'), 'w')
-    # unique_attributes = list(unique_attributes)
-    # unique_attributes.sort()
-    # unique_attributes_file.write('\n'.join(unique_attributes).encode('ascii',errors='ignore'))
-    # unique_attributes_file.close()
 
     print 'Complete ...'
 
@@ -155,26 +141,26 @@ if __name__ == '__main__':
         create_contents_list(args)
 
     if args.make_region_contents_unique:
-        # input_file = os.path.join(args.dataset_dir, 'region_objects.csv')
-        # output_file = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
-        # make_region_contents_unique(input_file, output_file)
-        #
-        # input_file = os.path.join(args.dataset_dir, 'region_attributes.csv')
-        # output_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
-        # make_region_contents_unique(input_file, output_file)
+        input_file = os.path.join(args.dataset_dir, 'region_objects.csv')
+        output_file = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
+        make_region_contents_unique(input_file, output_file)
+
+        input_file = os.path.join(args.dataset_dir, 'region_attributes.csv')
+        output_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
+        make_region_contents_unique(input_file, output_file)
 
         input_file = os.path.join(args.dataset_dir, 'region_synsets.csv')
         output_file = os.path.join(args.dataset_dir, 'region_synsets_unique.csv')
         make_region_contents_unique(input_file, output_file, False)
 
     if args.make_contents_list_unique:
-        # input_file = os.path.join(args.dataset_dir, 'objects_list.txt')
-        # output_file = os.path.join(args.dataset_dir, 'objects_list_unique.txt')
-        # make_list_unique(input_file, output_file)
-        #
-        # input_file = os.path.join(args.dataset_dir, 'attributes_list.txt')
-        # output_file = os.path.join(args.dataset_dir, 'attributes_list_unique.txt')
-        # make_list_unique(input_file, output_file)
+        input_file = os.path.join(args.dataset_dir, 'objects_list.txt')
+        output_file = os.path.join(args.dataset_dir, 'objects_list_unique.txt')
+        make_list_unique(input_file, output_file)
+
+        input_file = os.path.join(args.dataset_dir, 'attributes_list.txt')
+        output_file = os.path.join(args.dataset_dir, 'attributes_list_unique.txt')
+        make_list_unique(input_file, output_file)
 
         input_file = os.path.join(args.dataset_dir, 'synsets_list.txt')
         output_file = os.path.join(args.dataset_dir, 'synsets_list_unique.txt')

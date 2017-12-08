@@ -4,24 +4,33 @@
 from argparse import ArgumentParser
 from operator import itemgetter
 import csv
-import os
+from utils import *
 
 __author__ = 'aishwarya'
 
+
 # Count how many regions have an object/attribute
 def num_regions_per_content(input_filename, output_filename):
+    print 'Reading allowed regions'
+    # Get a list of regions which contain selected synsets
+    allowed_regions_file = os.path.join(args.dataset_dir, 'allowed_regions.txt')
+    with open(allowed_regions_file) as handle:
+        allowed_regions = handle.read().split('\n')
+    print 'Read allowed regions'
+
     region_counts = dict()
     input_file = open(input_filename)
     reader = csv.reader(input_file, delimiter=',')
 
     num_regions_processed = 0
     for row in reader:
-        for content_item in row[1:]:
-            if content_item not in region_counts:
-                region_counts[content_item] = 0
-            region_counts[content_item] += 1
+        if row[0] in allowed_regions:
+            for content_item in row[1:]:
+                if content_item not in region_counts:
+                    region_counts[content_item] = 0
+                region_counts[content_item] += 1
         num_regions_processed += 1
-        if num_regions_processed % 1000000 == 0:
+        if num_regions_processed % 100 == 0:
             print num_regions_processed, 'regions processed'
 
     input_file.close()
@@ -121,6 +130,10 @@ if __name__ == '__main__':
 
         input_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
         output_file = os.path.join(args.dataset_dir, 'region_attributes_stats.csv')
+        num_regions_per_content(input_file, output_file)
+
+        input_file = os.path.join(args.dataset_dir, 'region_synsets_unique.csv')
+        output_file = os.path.join(args.dataset_dir, 'region_synsets_stats.csv')
         num_regions_per_content(input_file, output_file)
 
     if args.above_threshold:

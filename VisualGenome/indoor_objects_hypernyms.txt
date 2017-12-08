@@ -1,3 +1,4 @@
 artifact.n.01
 food.n.01
-part.n.02
+fruit.n.01
+vegetable.n.01
