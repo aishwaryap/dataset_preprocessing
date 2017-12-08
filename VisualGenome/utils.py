@@ -3,6 +3,7 @@
 import os
 import re
 import nltk
+from nltk.corpus import wordnet as wn
 
 __author__ = 'aishwarya'
 
@@ -32,3 +33,15 @@ def normalize_string(string):
     useful_tokens = [token for token in stemmed_tokens if token not in stopwords]
     string = '_'.join(useful_tokens)
     return string.strip()
+
+
+def get_synset(synset_name):
+    try:
+        synset = wn.synset(synset_name)
+        return synset
+    except KeyboardInterrupt:
+        raise
+    except SystemExit:
+        raise
+    except:
+        return None

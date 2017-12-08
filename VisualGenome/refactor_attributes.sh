@@ -1,13 +1,13 @@
-python organize_attributes.py \
-    --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
-    --make-region-contents-unique \
-    --make-contents-list-unique
+# python organize_attributes.py \
+#     --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
+#     --make-region-contents-unique \
+#     --make-contents-list-unique
 
-python stats.py \
-    --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
-    --num-regions-per-content \
-    --above-threshold \
-    --regions-with-common-content
+# python stats.py \
+#     --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
+#     --num-regions-per-content \
+#     --above-threshold \
+#     --regions-with-common-content
 
 python create_classifier_data.py \
     --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
@@ -28,3 +28,18 @@ python create_condor_scripts.py \
     --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
     --condor-dir=write_features \
     --write-features
+
+python create_condor_scripts.py \
+    --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
+    --condor-dir=densities_process_pair \
+    --densities-process-pair
+
+python create_condor_scripts.py \
+    --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
+    --condor-dir=compute_densities \
+    --compute-densities
+
+python create_condor_scripts.py \
+    --dataset-dir=/scratch/cluster/aish/VisualGenome/ \
+    --condor-dir=compute_nbrs \
+    --compute-nbrs

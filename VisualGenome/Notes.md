@@ -1,10 +1,15 @@
-# Images = 108077
-# Regions = 5406592
-# Object instances in regions = 6385693
-# Regions with a single object = 1525549 (28.216%)
-# Greyscale images = 5376
-# Unique objects in regions = 104538
-# Unique attributes in regions = 79741
+Number of images = 108077
+Number of regions = 5406592
+Number of object instances in regions = 6385693
+Number of regions with a single object = 1525549 (28.216%)
+Number of greyscale images = 5376
+Number of unique objects in regions = 104538
+Number of unique attributes in regions = 79741
+
+# In selected regions
+Number of unique attributes = 44235
+Number of unique objects = 80908
+Number of unique synsets = 8065
 
 # Objects in
 > 100000  regions : 3
