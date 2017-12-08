@@ -35,13 +35,13 @@ def get_selected_synsets(args):
         handle.write('\n'.join(non_hyponyms))
 
 
-def filter_region_contents(args, region_contents_filename, target_dir):
+def filter_region_contents(args, target_dir):
     allowed_regions_file = os.path.join(*[args.dataset_dir, target_dir, 'allowed_regions.txt'])
     with open(allowed_regions_file) as handle:
         allowed_regions = [line.strip() for line in handle.readlines()]
 
-    contents_input_file = os.path.join(args.dataset_dir, region_contents_filename)
-    contents_output_file = os.path.join(*[args.dataset_dir, target_dir, region_contents_filename])
+    contents_input_file = os.path.join(args.dataset_dir, args.contents_file)
+    contents_output_file = os.path.join(*[args.dataset_dir, target_dir, args.contents_file])
 
     input_handle = open(contents_input_file)
     output_handle = open(contents_output_file, 'w')
@@ -54,7 +54,7 @@ def filter_region_contents(args, region_contents_filename, target_dir):
             writer.writerow(row)
         num_regions_processed += 1
         if num_regions_processed % 1000 == 0:
-            print region_contents_filename, ':', num_regions_processed, 'regions processed ...'
+            print args.contents_file, ':', num_regions_processed, 'regions processed ...'
     input_handle.close()
     output_handle.close()
 
@@ -65,9 +65,12 @@ if __name__ == '__main__':
                             help='Path to dataset')
     arg_parser.add_argument('--get-selected-synsets', action="store_true", default=False,
                             help='Identify which synsets are hyponyms (recursive) of a given hypernym list')
+
     arg_parser.add_argument('--filter-region-contents', action="store_true", default=False,
                             help='Create copies of any CSV whose first element in a row is a region ID which '
                                  'only contains allowed regions')
+    arg_parser.add_argument('--contents-file', type=str, required=True,
+                            help='Name of contents file to filter')
 
     args = arg_parser.parse_args()
 
@@ -75,23 +78,4 @@ if __name__ == '__main__':
         get_selected_synsets(args)
 
     if args.filter_region_contents:
-        threads = list()
-
-        thread = Thread(target=filter_region_contents, args=(args, 'region_objects_unique.csv', 'indoor'))
-        thread.daemon = True
-        thread.run()
-
-        thread = Thread(target=filter_region_contents, args=(args, 'region_attributes_unique.csv', 'indoor'))
-        thread.daemon = True
-        thread.run()
-
-        thread = Thread(target=filter_region_contents, args=(args, 'region_synsets_unique.csv', 'indoor'))
-        thread.daemon = True
-        thread.run()
-
-        thread = Thread(target=filter_region_contents, args=(args, 'region_descriptions.csv', 'indoor'))
-        thread.daemon = True
-        thread.run()
-
-        for thread in threads:
-            thread.join()
+        filter_region_contents(args, 'indoor')
