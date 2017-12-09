@@ -38,7 +38,7 @@ def get_selected_synsets(args):
 def filter_region_contents(args, target_dir):
     allowed_regions_file = os.path.join(*[args.dataset_dir, target_dir, 'allowed_regions.txt'])
     with open(allowed_regions_file) as handle:
-        allowed_regions = [line.strip() for line in handle.readlines()]
+        allowed_regions = set([line.strip() for line in handle.readlines()])
 
     contents_input_file = os.path.join(args.dataset_dir, args.contents_file)
     contents_output_file = os.path.join(*[args.dataset_dir, target_dir, args.contents_file])
