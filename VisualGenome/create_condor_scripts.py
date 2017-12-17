@@ -91,6 +91,8 @@ def density_process_batch_pair(args):
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
 
+    max_sub_batch_num = int(math.ceil(float(args.batch_size) / args.sub_batch_size))
+
     for (regions_filename, is_train_set) in metadata:
         with open(regions_filename) as regions_file:
             regions = regions_file.read().split('\n')
@@ -98,63 +100,70 @@ def density_process_batch_pair(args):
 
         for batch_num_i in range(max_batch_num):
             for batch_num_j in range(max_batch_num):
-                if is_train_set:
-                    condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir,
-                                                             'train/' + str(batch_num_i) + '_' + str(batch_num_j)
-                                                             + '.sh'])
-                else:
-                    condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir,
-                                                             'test/' + str(batch_num_i) + '_' + str(batch_num_j)
-                                                             + '.sh'])
+                for sub_batch_num in range(max_sub_batch_num):
+                    if is_train_set:
+                        condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir,
+                                                                 'train/' + str(batch_num_i) + '_' + str(batch_num_j)
+                                                                 + '_' + str(sub_batch_num) + '.sh'])
+                    else:
+                        condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir,
+                                                                 'test/' + str(batch_num_i) + '_' + str(batch_num_j)
+                                                                 + '_' + str(sub_batch_num) + '.sh'])
 
-                condor_script_file = open(condor_script_file_name, 'w')
-                condor_script_file.write('universe = vanilla\n')
-                condor_script_file.write('Initialdir = ' +
-                                         '/u/aish/Documents/Research/Code/dataset_preprocessing/VisualGenome/\n')
+                    condor_script_file = open(condor_script_file_name, 'w')
+                    condor_script_file.write('universe = vanilla\n')
+                    condor_script_file.write('Initialdir = ' +
+                                             '/u/aish/Documents/Research/Code/dataset_preprocessing/VisualGenome/\n')
 
-                condor_script_file.write('Executable = /lusr/bin/python\n')
+                    condor_script_file.write('Executable = /lusr/bin/python\n')
 
-                condor_script_file.write('Arguments = compute_densities_and_neighbours.py \\\n')
-                condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
-                condor_script_file.write('\t\t --process-batch-pair \\\n')
-                condor_script_file.write('\t\t --batch-num-i=' + str(batch_num_i) + ' \\\n')
-                condor_script_file.write('\t\t --batch-num-j=' + str(batch_num_j) + ' \\\n')
-                condor_script_file.write('\t\t --num-nbrs=' + str(args.num_nbrs) + ' \\\n')
-                if is_train_set:
-                    condor_script_file.write('\t\t --in-train-set \\\n')
-                condor_script_file.write('\t\t --verbose\n')
+                    condor_script_file.write('Arguments = compute_densities_and_neighbours.py \\\n')
+                    condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
+                    if is_train_set:
+                        condor_script_file.write('\t\t --in-train-set \\\n')
+                    condor_script_file.write('\t\t --process-batch-pair \\\n')
+                    condor_script_file.write('\t\t --batch-num-i=' + str(batch_num_i) + ' \\\n')
+                    condor_script_file.write('\t\t --batch-num-j=' + str(batch_num_j) + ' \\\n')
+                    condor_script_file.write('\t\t --sub-batch-num=' + str(sub_batch_num) + ' \\\n')
+                    condor_script_file.write('\t\t --num-nbrs=' + str(args.num_nbrs) + ' \n')
 
-                condor_script_file.write('+Group   = "GRAD"\n')
-                condor_script_file.write('+Project = "AI_ROBOTICS"\n')
-                condor_script_file.write('+ProjectDescription = "VisualGenome - Computing densities - Batch pair"\n')
-                condor_script_file.write('JobBatchName = "VisualGenome - Computing densities - Batch pair"\n')
-                condor_script_file.write('Requirements = InMastodon\n')
+                    condor_script_file.write('+Group   = "GRAD"\n')
+                    condor_script_file.write('+Project = "AI_ROBOTICS"\n')
+                    condor_script_file.write('+ProjectDescription = "VisualGenome - Computing densities - Batch pair"\n')
+                    condor_script_file.write('JobBatchName = "VisualGenome - Computing densities - Batch pair"\n')
+                    condor_script_file.write('Requirements = InMastodon\n')
 
-                if is_train_set:
-                    condor_script_file.write('Log = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                                       'train/log', str(batch_num_i) + '_' +
-                                                                       str(batch_num_j) + '.log']) + '\n')
-                    condor_script_file.write('Error = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                                         'train/err', str(batch_num_i) + '_' +
-                                                                         str(batch_num_j) + '.err']) + '\n')
-                    condor_script_file.write('Output = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                                          'train/out', str(batch_num_i) + '_' +
-                                                                          str(batch_num_j) + '.out']) + '\n')
-                else:
-                    condor_script_file.write('Log = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                                       'test/log', str(batch_num_i) + '_' +
-                                                                       str(batch_num_j) + '.log']) + '\n')
-                    condor_script_file.write('Error = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                                         'test/err', str(batch_num_i) + '_' +
-                                                                         str(batch_num_j) + '.err']) + '\n')
-                    condor_script_file.write('Output = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
-                                                                          'test/out', str(batch_num_i) + '_' +
-                                                                          str(batch_num_j) + '.out']) + '\n')
+                    if is_train_set:
+                        condor_script_file.write('Log = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                                           'train/log', str(batch_num_i) + '_' +
+                                                                           str(batch_num_j) + '_'
+                                                                           + str(sub_batch_num) + '.log']) + '\n')
+                        condor_script_file.write('Error = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                                             'train/err', str(batch_num_i) + '_' +
+                                                                             str(batch_num_j) + '_'
+                                                                           + str(sub_batch_num) + '.err']) + '\n')
+                        condor_script_file.write('Output = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                                              'train/out', str(batch_num_i) + '_' +
+                                                                              str(batch_num_j) + '_'
+                                                                            + str(sub_batch_num) + '.out']) + '\n')
+                    else:
+                        condor_script_file.write('Log = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                                           'test/log', str(batch_num_i) + '_' +
+                                                                           str(batch_num_j) + '_'
+                                                                           + str(sub_batch_num) + '.log']) + '\n')
+                        condor_script_file.write('Error = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                                             'test/err', str(batch_num_i) + '_' +
+                                                                             str(batch_num_j) + '_'
+                                                                           + str(sub_batch_num) + '.err']) + '\n')
+                        condor_script_file.write('Output = ' + os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                                              'test/out', str(batch_num_i) + '_' +
+                                                                              str(batch_num_j) + '_'
+                                                                            + str(sub_batch_num) + '.out']) + '\n')
 
-                condor_script_file.write('Queue 1\n')
-                condor_script_file.close()
+                    condor_script_file.write('Queue 1\n')
+                    condor_script_file.close()
 
-                condor_submit_file.write('condor_submit ' + condor_script_file_name + '\n')
+                    condor_submit_file.write('condor_submit ' + condor_script_file_name + '\n')
 
     condor_submit_file.close()
 
@@ -214,11 +223,11 @@ def compute_densities(args):
 
             condor_script_file.write('Arguments = compute_densities_and_neighbours.py \\\n')
             condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
-            condor_script_file.write('\t\t --aggregate-densities \\\n')
-            condor_script_file.write('\t\t --batch-num-i=' + str(batch_num) + ' \\\n')
             if is_train_set:
                 condor_script_file.write('\t\t --in-train-set \\\n')
-            condor_script_file.write('\t\t --verbose\n')
+            condor_script_file.write('\t\t --aggregate-densities \\\n')
+            condor_script_file.write('\t\t --batch-num-i=' + str(batch_num) + ' \\\n')
+            condor_script_file.write('\t\t --num-nbrs=' + str(args.num_nbrs) + ' \n')
 
             condor_script_file.write('+Group   = "GRAD"\n')
             condor_script_file.write('+Project = "AI_ROBOTICS"\n')
@@ -304,11 +313,11 @@ def compute_nbrs(args):
 
             condor_script_file.write('Arguments = compute_densities_and_neighbours.py \\\n')
             condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
-            condor_script_file.write('\t\t --aggregate-nbrs \\\n')
-            condor_script_file.write('\t\t --batch-num-i=' + str(batch_num) + ' \\\n')
             if is_train_set:
                 condor_script_file.write('\t\t --in-train-set \\\n')
-            condor_script_file.write('\t\t --verbose\n')
+            condor_script_file.write('\t\t --aggregate-nbrs \\\n')
+            condor_script_file.write('\t\t --batch-num-i=' + str(batch_num) + ' \\\n')
+            condor_script_file.write('\t\t --num-nbrs=' + str(args.num_nbrs) + ' \n')
 
             condor_script_file.write('+Group   = "GRAD"\n')
             condor_script_file.write('+Project = "AI_ROBOTICS"\n')
@@ -650,6 +659,8 @@ if __name__ == '__main__':
                             help='Compute neighbours for batch i')
     arg_parser.add_argument('--num-nbrs', type=int, default=50,
                             help='Number of nbrs to compute')
+    arg_parser.add_argument('--sub-batch-size', type=int, default=32768,
+                            help='For processing a pair of batches, number of rows of batch j to take')
 
     args = arg_parser.parse_args()
 

@@ -11,6 +11,17 @@ from sklearn.metrics.pairwise import cosine_similarity
 __author__ = 'aishwarya'
 
 
+def load_batch(filename, sub_batch_size=None, sub_batch_num=None):
+    batch = list()
+    with open(filename) as handle:
+        reader = csv.reader(handle, delimiter=',')
+        for (idx, row) in enumerate(reader):
+            if sub_batch_num is None or sub_batch_size is None or \
+                            idx in range(sub_batch_num*sub_batch_size, (sub_batch_num+1)*sub_batch_size):
+                batch.append([float(x) for x in row])
+        return np.array(batch)
+
+
 # Read batches i and j of regions. Compute an i x j matrix of cosine similarities
 # Store k nearest neighbours of each point and summed similarities
 def process_batch_pair(args):
@@ -52,20 +63,29 @@ def process_batch_pair(args):
         if not os.path.isdir(nbrs_dir):
             os.mkdir(nbrs_dir)
 
-    batch_i = np.load(batch_i_file)
+    batch_i = load_batch(batch_i_file)
     print 'Loaded batch i =', args.batch_num_i, '...'
 
     if args.batch_num_j is None or args.batch_num_i == args.batch_num_j:
         print 'Computing cosine sims ...'
-        cosine_sims = cosine_similarity(batch_i)
+        cosine_sims = cosine_similarity(batch_i,
+                                        batch_i[
+                                            args.sub_batch_num * args.sub_batch_size:
+                                            min(args.sub_batch_num * (args.sub_batch_size + 1),
+                                                batch_i.shape[0]), :])
         print 'Computed cosine sims ...'
 
         batch_j_regions = regions[args.batch_num_i * args.batch_size:
-                                  min(args.batch_num_i * args.batch_size + args.batch_size, len(regions))]
+                                  min((args.batch_num_i + 1) * args.batch_size, len(regions))]
+        if args.sub_batch_num is not None and args.sub_batch_size is not None:
+            batch_j_regions = batch_j_regions[args.sub_batch_num * args.sub_batch_size:
+                                              min((args.sub_batch_num + 1) * args.sub_batch_size, len(batch_j_regions))]
 
         sum_cosine_sims_file = os.path.join(sum_cosine_sims_dir,
-                                            str(args.batch_num_i) + '_' + str(args.batch_num_i) + '.csv')
-        nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_i) + '.csv')
+                                            str(args.batch_num_i) + '_' + str(args.batch_num_i)
+                                            + '_' + str(args.sub_batch_num) + '.csv')
+        nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_i)
+                                 + '_' + str(args.sub_batch_num) + '.csv')
     else:
         print 'Loading batch j =', args.batch_num_j, '...'
         if args.in_train_set:
@@ -74,19 +94,24 @@ def process_batch_pair(args):
         else:
             batch_j_file = os.path.join(args.dataset_dir, 'classifiers/data/features/test/'
                                         + str(args.batch_num_j) + '.csv')
-        batch_j = np.load(batch_j_file)
+        batch_j = load_batch(batch_j_file, sub_batch_num=args.sub_batch_num, sub_batch_size=args.sub_batch_size)
         print 'Loaded batch j =', args.batch_num_j, '...'
 
         batch_j_regions = regions[args.batch_num_j * args.batch_size:
-                                  min(args.batch_num_j * args.batch_size + args.batch_size, len(regions))]
+                                  min((args.batch_num_j+1) * args.batch_size, len(regions))]
+        if args.sub_batch_num is not None and args.sub_batch_size is not None:
+            batch_j_regions = batch_j_regions[args.sub_batch_num * args.sub_batch_size:
+                                              min((args.sub_batch_num + 1) * args.sub_batch_size + 1, len(batch_j_regions))]
 
         print 'Computing cosine sims ...'
         cosine_sims = cosine_similarity(batch_i, batch_j)
         print 'Computed cosine sims ...'
 
         sum_cosine_sims_file = os.path.join(sum_cosine_sims_dir,
-                                            str(args.batch_num_i) + '_' + str(args.batch_num_j) + '.csv')
-        nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_j) + '.csv')
+                                            str(args.batch_num_i) + '_' + str(args.batch_num_j)
+                                            + '_' + str(args.sub_batch_num) + '.csv')
+        nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_j)
+                                 + '_' + str(args.sub_batch_num) + '.csv')
 
     # Compute row sums of cosine sims
     print 'Computing row sums of cosine sims ...'
@@ -100,18 +125,19 @@ def process_batch_pair(args):
 
     # Compute and store nearest neighbours with distances
     print 'Computing nearest neighbours ...'
-    nbr_start_pos = cosine_sims.shape[1] - args.num_neighbours
+    nbr_start_pos = cosine_sims.shape[1] - args.num_nbrs
     argpartition = np.argpartition(cosine_sims, nbr_start_pos, axis=1)
     print 'Computed argpartition ...'
     print 'Computing and writing neighbours ...'
     with open(nbrs_file, 'w') as handle:
         for row_num in range(cosine_sims.shape[0]):
             argpartition_row = argpartition[row_num, :]
-            nbr_indices = argpartition_row[nbr_start_pos, :]
-            nbrs = batch_j_regions[nbr_indices]
+            nbr_indices = argpartition_row[nbr_start_pos:].tolist()
+            print nbr_indices
+            nbrs = [batch_j_regions[x] for x in nbr_indices]
             cosine_sims_row = cosine_sims[row_num, :]
             nbr_cosine_sims = cosine_sims_row[nbr_indices]
-            output_row = str(zip(nbrs.tolist(), nbr_cosine_sims.tolist())) + '\n'
+            output_row = str(zip(nbrs, nbr_cosine_sims.tolist())) + '\n'
             handle.write(output_row)
     print 'Finished writing neighbours ...'
 
@@ -138,7 +164,7 @@ def aggregate_batch_cosine_sims(args):
                                      if f.startswith(str(args.batch_num_i) + '_')]
     sum_cosine_sims = None
     for (idx, filename) in enumerate(partial_sum_cosine_sims_files):
-        partial_sum = np.loadtxt(filename)
+        partial_sum = load_batch(filename)
         if sum_cosine_sims is None:
             sum_cosine_sims = partial_sum
         else:
@@ -219,6 +245,10 @@ if __name__ == '__main__':
                             help='For processing a pair of batches - j; May be skipped if i and j are the same')
     arg_parser.add_argument('--batch-size', type=int, default=65536,
                             help='Regions batch size')
+    arg_parser.add_argument('--sub-batch-size', type=int, default=32768,
+                            help='For processing a pair of batches, number of rows of batch j to take')
+    arg_parser.add_argument('--sub-batch-num', type=int, default=None,
+                            help='For processing a pair of batches, start of sub-batch in batch j')
     arg_parser.add_argument('--num-nbrs', type=int, required=True,
                             help='Number of nearest neighbours to be found per region')
     arg_parser.add_argument('--in-train-set', action="store_true", default=False,

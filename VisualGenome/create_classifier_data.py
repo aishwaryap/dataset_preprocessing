@@ -167,14 +167,21 @@ def organize_labels_and_regions(args):
                     test_set.append(region_id)
                 else:
                     train_set.append(region_id)
-                if num_regions_processed % 100 == 0:
+                if num_regions_processed % 10000 == 0:
                     print 'Building train and test sets :', num_regions_processed, 'regions processed ...'
             except StopIteration:
                 break
 
         test_set_fraction = len(test_set) / float(len(allowed_regions))
+        train_set_fraction = 1.0 - test_set_fraction
         if test_set_fraction >= args.min_test_data_fraction \
                 and test_set_fraction <= args.max_test_data_fraction:
+            good_split_found = True
+        elif train_set_fraction >= args.min_test_data_fraction \
+                and train_set_fraction <= args.max_test_data_fraction:
+            temp = train_set
+            train_set = test_set
+            test_set = temp
             good_split_found = True
 
         print '\t Test set fraction =', test_set_fraction
@@ -415,7 +422,7 @@ if __name__ == '__main__':
                                  'Also creates a train-test split')
     arg_parser.add_argument('--frequency-threshold', type=int, default=1000,
                             help='Consider objects and attributes with frequency greater than this')
-    arg_parser.add_argument('--test-label-fraction', type=float, default=0.8,
+    arg_parser.add_argument('--test-label-fraction', type=float, default=0.5,
                             help='Fraction of labels to be only seen at test time')
     arg_parser.add_argument('--min-test-data-fraction', type=float, default=0.2,
                             help='Min fraction of data points to go into test set')
