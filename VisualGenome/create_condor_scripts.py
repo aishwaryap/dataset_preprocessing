@@ -659,7 +659,7 @@ if __name__ == '__main__':
                             help='Compute neighbours for batch i')
     arg_parser.add_argument('--num-nbrs', type=int, default=50,
                             help='Number of nbrs to compute')
-    arg_parser.add_argument('--sub-batch-size', type=int, default=32768,
+    arg_parser.add_argument('--sub-batch-size', type=int, default=8192,
                             help='For processing a pair of batches, number of rows of batch j to take')
 
     args = arg_parser.parse_args()

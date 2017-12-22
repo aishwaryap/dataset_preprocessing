@@ -71,7 +71,7 @@ def process_batch_pair(args):
         cosine_sims = cosine_similarity(batch_i,
                                         batch_i[
                                             args.sub_batch_num * args.sub_batch_size:
-                                            min(args.sub_batch_num * (args.sub_batch_size + 1),
+                                            min((args.sub_batch_num + 1) * args.sub_batch_size,
                                                 batch_i.shape[0]), :])
         print 'Computed cosine sims ...'
 
@@ -101,7 +101,7 @@ def process_batch_pair(args):
                                   min((args.batch_num_j+1) * args.batch_size, len(regions))]
         if args.sub_batch_num is not None and args.sub_batch_size is not None:
             batch_j_regions = batch_j_regions[args.sub_batch_num * args.sub_batch_size:
-                                              min((args.sub_batch_num + 1) * args.sub_batch_size + 1, len(batch_j_regions))]
+                                              min((args.sub_batch_num + 1) * args.sub_batch_size, len(batch_j_regions))]
 
         print 'Computing cosine sims ...'
         cosine_sims = cosine_similarity(batch_i, batch_j)
@@ -181,9 +181,12 @@ def aggregate_batch_cosine_sims(args):
 
     print 'Computing and writing densities ...'
     densities = sum_cosine_sims / len(regions)
+    #print 'densities.shape =', densities.shape
+    #print len(densities.T.tolist())
+    #print densities.T.tolist()
     with open(densities_file, 'w') as handle:
         writer = csv.writer(handle, delimiter=',')
-        writer.writerow([float(x) for x in densities])
+        writer.writerow([float(x) for [x] in densities.T.tolist()])
     print 'Batch', args.batch_num_i, 'complete'
 
 
@@ -245,7 +248,7 @@ if __name__ == '__main__':
                             help='For processing a pair of batches - j; May be skipped if i and j are the same')
     arg_parser.add_argument('--batch-size', type=int, default=65536,
                             help='Regions batch size')
-    arg_parser.add_argument('--sub-batch-size', type=int, default=32768,
+    arg_parser.add_argument('--sub-batch-size', type=int, default=8192,
                             help='For processing a pair of batches, number of rows of batch j to take')
     arg_parser.add_argument('--sub-batch-num', type=int, default=None,
                             help='For processing a pair of batches, start of sub-batch in batch j')
