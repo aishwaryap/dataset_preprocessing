@@ -15,6 +15,66 @@ from file_utils import *
 __author__ = 'aishwarya'
 
 
+def check_densities_first_step(args):
+    path = os.path.join(args.dataset_dir, 'tmp_sum_cosine_sims/train/')
+    print 'Sum cosine sims train - '
+    for i in range(22):
+        for j in range(22):
+            for k in range(8):
+                fn = path + str(i) + '_' + str(j) + '_' + str(k) + '.csv'
+                if not os.path.isfile(fn):
+                    print str(i) + '_' + str(j) + '_' + str(k) + '\t0'
+                else:
+                    with open(fn) as f:
+                        a = f.read().strip().split(',')
+                        if len(a) != 65536:
+                            print str(i) + '_' + str(j) + '_' + str(k) + '\t' + str(len(a))
+    print
+
+    path = os.path.join(args.dataset_dir, 'tmp_sum_cosine_sims/test/')
+    print 'Sum cosine sims test - '
+    for i in range(8):
+        for j in range(8):
+            for k in range(8):
+                fn = path + str(i) + '_' + str(j) + '_' + str(k) + '.csv'
+                if not os.path.isfile(fn):
+                    print str(i) + '_' + str(j) + '_' + str(k) + '\t0'
+                else:
+                    with open(fn) as f:
+                        a = f.read().strip().split(',')
+                        if len(a) != 65536:
+                            print str(i) + '_' + str(j) + '_' + str(k) + '\t' + str(len(a))
+    print
+
+    path = os.path.join(args.dataset_dir, 'tmp_nbrs/train/')
+    print 'Nbrs train - '
+    for i in range(22):
+        for j in range(22):
+            for k in range(8):
+                fn = path + str(i) + '_' + str(j) + '_' + str(k) + '.csv'
+                if not os.path.isfile(fn):
+                    print str(i) + '_' + str(j) + '_' + str(k) + '\t0'
+                else:
+                    num_lines = count_lines(fn)
+                    if num_lines != 65536:
+                        print str(i) + '_' + str(j) + '_' + str(k) + '\t' + str(num_lines)
+    print
+
+    path = os.path.join(args.dataset_dir, 'tmp_nbrs/test/')
+    print 'Nbrs test - '
+    for i in range(8):
+        for j in range(8):
+            for k in range(8):
+                fn = path + str(i) + '_' + str(j) + '_' + str(k) + '.csv'
+                if not os.path.isfile(fn):
+                    print str(i) + '_' + str(j) + '_' + str(k) + '\t0'
+                else:
+                    num_lines = count_lines(fn)
+                    if num_lines != 65536:
+                        print str(i) + '_' + str(j) + '_' + str(k) + '\t' + str(num_lines)
+    print
+
+
 # Check that all images in regions exist
 def check_images(args):
     region_graphs_filename = os.path.join(args.dataset_dir, 'region_graphs.txt')
@@ -375,6 +435,8 @@ if __name__ == '__main__':
                             help='Check reorganized features fore classifiers')
     arg_parser.add_argument('--check-individual-labels', action="store_true", default=False,
                             help='Check reorganized binary labels for classifiers')
+    arg_parser.add_argument('--check-densities-first-step', action="store_true", default=False,
+                            help='Check first step of computing densities and neighours')
 
     # For checking classifier data
     arg_parser.add_argument('--rerun-script-filename', type=str, default=None,
@@ -398,3 +460,8 @@ if __name__ == '__main__':
         check_features(args)
     if args.check_individual_labels:
         check_individual_labels(args)
+    if args.check_densities_first_step:
+        check_densities_first_step(args)
+
+
+	

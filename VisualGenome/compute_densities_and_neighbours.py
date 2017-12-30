@@ -192,6 +192,7 @@ def aggregate_batch_cosine_sims(args):
 
 # Aggregate nearest neighbours
 def aggregate_nbrs(args):
+    print 'Computing nbrs'
     partial_nbrs_dir = os.path.join(args.dataset_dir, 'tmp_nbrs/')
     nbrs_file = os.path.join(args.dataset_dir, 'nbrs/')
     if not os.path.isdir(nbrs_file):
@@ -205,28 +206,34 @@ def aggregate_nbrs(args):
     if not os.path.isdir(nbrs_file):
         os.mkdir(nbrs_file)
     nbrs_file += str(args.batch_num_i) + '.txt'
+    print 'Created needed directories ...'
 
     # Fetch files relevant to batch i
     partial_nbrs_files = [os.path.join(partial_nbrs_dir, f) for f in os.listdir(partial_nbrs_dir)
                           if f.startswith(str(args.batch_num_i) + '_')]
     handles = [open(filename) for filename in partial_nbrs_files]
+    print 'Fetched', len(handles), 'files ...'
 
     num_regions_done = 0
     with open(nbrs_file, 'w') as output_file:
-        while True:
-            try:
-                partial_nbrs = list()
-                for handle in handles:
+        while len(handles) > 0:
+            partial_nbrs = list()
+            handles_done = list()
+            for (handle_num, handle) in enumerate(handles):
+                try:
                     line = handle.next().strip()
                     partial_nbrs += ast.literal_eval(line)
-                partial_nbrs.sort(key=operator.itemgetter(1), reverse=True)
-                nbrs = partial_nbrs[:args.num_neighbours]
-                output_file.write(str(nbrs) + '\n')
-                num_regions_done += 1
-                if num_regions_done % 1000 == 0:
-                    print num_regions_done, 'regions done'
-            except StopIteration:
-                break
+                except StopIteration:
+                    print 'Handle', handle_num, 'done'
+                    handles_done.append(handle_num)
+            for handle_num in handles_done:
+                handles.remove(handles[handle_num])
+            partial_nbrs.sort(key=operator.itemgetter(1), reverse=True)
+            nbrs = partial_nbrs[:args.num_nbrs]
+            output_file.write(str(nbrs) + '\n')
+            num_regions_done += 1
+            if num_regions_done % 1 == 0:
+                print num_regions_done, 'regions done'
 
 
 if __name__ == '__main__':
