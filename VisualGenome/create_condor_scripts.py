@@ -749,6 +749,9 @@ if __name__ == '__main__':
     arg_parser.add_argument('--sub-batch-size', type=int, default=8192,
                             help='For processing a pair of batches, number of rows of batch j to take')
 
+    arg_parser.add_argument('--split-region-features', action="store_true", default=False,
+                            help='Split region features')
+
     args = arg_parser.parse_args()
 
     if args.extract_regions_vgg_features:
@@ -771,3 +774,6 @@ if __name__ == '__main__':
 
     if args.compute_nbrs:
         compute_nbrs(args)
+
+    if args.split_region_features:
+        split_region_features(args)

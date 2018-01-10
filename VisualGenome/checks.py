@@ -15,6 +15,35 @@ from file_utils import *
 __author__ = 'aishwarya'
 
 
+def check_split_region_features(args):
+    metadata = [
+        {
+            'name': 'train',
+            'region_features_dir': os.path.join(args.dataset_dir, 'indoor/region_features/train/'),
+            'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt')
+        },
+        {
+            'name': 'test',
+            'region_features_dir': os.path.join(args.dataset_dir, 'indoor/region_features/test/'),
+            'regions_filename': os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt')
+        }
+    ]
+
+    for metadata_instance in metadata:
+        incomplete_batches = set()
+
+        with open(metadata_instance['regions_filename']) as regions_file:
+            regions = regions_file.read().split('\n')
+
+        for (idx, region) in enumerate(regions):
+            feature_file = os.path.join(metadata_instance['region_features_dir'], region)
+            if not os.path.isfile(feature_file):
+                batch_num = idx / args.batch_size
+                incomplete_batches.add(batch_num)
+
+        print metadata_instance['name'], ':', list(incomplete_batches)
+
+
 def check_densities_first_step(args):
     path = os.path.join(args.dataset_dir, 'tmp_sum_cosine_sims/train/')
     print 'Sum cosine sims train - '
@@ -437,6 +466,11 @@ if __name__ == '__main__':
                             help='Check reorganized binary labels for classifiers')
     arg_parser.add_argument('--check-densities-first-step', action="store_true", default=False,
                             help='Check first step of computing densities and neighours')
+    arg_parser.add_argument('--check-split-region-features', action="store_true", default=False,
+                            help='Check that all regions are present in split region features')
+
+    arg_parser.add_argument('--batch-size', type=int, default=65536,
+                            help='Batch size')
 
     # For checking classifier data
     arg_parser.add_argument('--rerun-script-filename', type=str, default=None,
@@ -462,6 +496,5 @@ if __name__ == '__main__':
         check_individual_labels(args)
     if args.check_densities_first_step:
         check_densities_first_step(args)
-
-
-	
+    if args.check_split_region_features:
+        check_split_region_features(args)
