@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 import pickle
 import os
 from sklearn.linear_model import SGDClassifier
+from sklearn.utils.class_weight import compute_class_weight
 import sys
 import numpy as np
 sys.path.append('../utils/')
@@ -47,19 +48,33 @@ def train_binary_classifier(args):
 
         # Load features
         features_file = os.path.join(args.dataset_dir, 'classifiers/data/features/train/' + str(batch_num) + '.csv')
-        features = np.loadtxt(features_file)
+        features = np.loadtxt(features_file, delimiter=',')
         if args.verbose:
             print '\tLoaded features ...'
 
         # Load labels
         label_file = os.path.join(args.dataset_dir, 'classifiers/data/binary_labels/train/' + args.label + '/' +
                                    str(batch_num) + '.csv')
-        labels = np.loadtxt(label_file, delimiter=',')
+        print 'label_file = ', str(label_file)
+        labels = np.loadtxt(label_file, delimiter=',', dtype=np.int)
         if args.verbose:
             print '\tLoaded labels ...'
+        print 'Labels : ', str(labels)
+        print 'Labels.shape : ', str(labels.shape)
+
+        # Subsample if needed
+        if args.num_samples_per_batch < args.batch_size:
+            indices = range(len(labels))
+            selected_indices = np.random.choice(indices, size=args.num_samples_per_batch, replace=False)
+            features = features[selected_indices, :]
+            labels = labels[selected_indices]
+        print 'Labels : ', str(labels)
+        print 'Labels.shape : ', str(labels.shape)
 
         # Update classifier
-        classifier = classifier.partial_fit(features, labels, classes=[0, 1])
+        class_weights = compute_class_weight('balanced', classes=[0, 1], y=labels)
+        sample_weights = [class_weights[label] for label in labels.tolist()]
+        classifier = classifier.partial_fit(features, labels, classes=[0, 1], sample_weight=sample_weights)
         if args.verbose:
             print '\tUpdated classifier ...'
 
@@ -87,10 +102,10 @@ if __name__ == '__main__':
                             help='Number of data points per file (features or labels)')
     arg_parser.add_argument('--label', type=str, required=True,
                             help='Label to train classifier for')
-    arg_parser.add_argument('--max-train-batch-num', type=int, default=37,
+    arg_parser.add_argument('--max-train-batch-num', type=int, default=0,
                             help='Give this as an argument to prevent reading train regions file')
-    arg_parser.add_argument('--max-test-batch-num', type=int, default=9,
-                            help='Give this as an argument to prevent reading test regions file')
+    arg_parser.add_argument('--num-samples-per-batch', type=int, default=65536,
+                            help='To constrain the number of training examples')
     arg_parser.add_argument('--restart-log', type=str, required=True,
                             help='A file to log progress to handle restarts')
     args = arg_parser.parse_args()

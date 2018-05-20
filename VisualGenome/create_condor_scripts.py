@@ -3,8 +3,41 @@
 from argparse import ArgumentParser
 import os
 import math
+import csv
+import operator
 
 __author__ = 'aishwarya'
+
+
+def create_dirs(args, train_test=True):
+    # Make scripts dir
+    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
+    if not os.path.isdir(scripts_dir):
+        os.mkdir(scripts_dir)
+    if train_test:
+        scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
+        for scripts_sub_dir in scripts_sub_dirs:
+            if not os.path.isdir(scripts_sub_dir):
+                os.mkdir(scripts_sub_dir)
+
+    # Make log dirs
+    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
+    if not os.path.isdir(log_dir):
+        os.mkdir(log_dir)
+    if train_test:
+        log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
+        for log_sub_dir in log_sub_dirs:
+            if not os.path.isdir(log_sub_dir):
+                os.mkdir(log_sub_dir)
+            log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
+            for log_sub_sub_dir in log_sub_sub_dirs:
+                if not os.path.isdir(log_sub_sub_dir):
+                    os.mkdir(log_sub_sub_dir)
+    else:
+        log_sub_dirs = [os.path.join(log_dir, d) for d in ['log', 'err', 'out', 'restart']]
+        for log_sub_dir in log_sub_dirs:
+            if not os.path.isdir(log_sub_dir):
+                os.mkdir(log_sub_dir)
 
 
 def extract_regions_vgg_features(args):
@@ -65,27 +98,7 @@ def split_region_features(args):
         (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
-    # Make scripts dir
-    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
-    if not os.path.isdir(scripts_dir):
-        os.mkdir(scripts_dir)
-    scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
-    for scripts_sub_dir in scripts_sub_dirs:
-        if not os.path.isdir(scripts_sub_dir):
-            os.mkdir(scripts_sub_dir)
-
-    # Make log dirs
-    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
-    for log_sub_dir in log_sub_dirs:
-        if not os.path.isdir(log_sub_dir):
-            os.mkdir(log_sub_dir)
-        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
-        for log_sub_sub_dir in log_sub_sub_dirs:
-            if not os.path.isdir(log_sub_sub_dir):
-                os.mkdir(log_sub_sub_dir)
+    create_dirs(args)
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
@@ -153,27 +166,7 @@ def density_process_batch_pair(args):
         (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
-    # Make scripts dir
-    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
-    if not os.path.isdir(scripts_dir):
-        os.mkdir(scripts_dir)
-    scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
-    for scripts_sub_dir in scripts_sub_dirs:
-        if not os.path.isdir(scripts_sub_dir):
-            os.mkdir(scripts_sub_dir)
-
-    # Make log dirs
-    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
-    for log_sub_dir in log_sub_dirs:
-        if not os.path.isdir(log_sub_dir):
-            os.mkdir(log_sub_dir)
-        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
-        for log_sub_sub_dir in log_sub_sub_dirs:
-            if not os.path.isdir(log_sub_sub_dir):
-                os.mkdir(log_sub_sub_dir)
+    create_dirs(args)
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
@@ -263,27 +256,7 @@ def compute_densities(args):
         (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
-    # Make scripts dir
-    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
-    if not os.path.isdir(scripts_dir):
-        os.mkdir(scripts_dir)
-    scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
-    for scripts_sub_dir in scripts_sub_dirs:
-        if not os.path.isdir(scripts_sub_dir):
-            os.mkdir(scripts_sub_dir)
-
-    # Make log dirs
-    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
-    for log_sub_dir in log_sub_dirs:
-        if not os.path.isdir(log_sub_dir):
-            os.mkdir(log_sub_dir)
-        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
-        for log_sub_sub_dir in log_sub_sub_dirs:
-            if not os.path.isdir(log_sub_sub_dir):
-                os.mkdir(log_sub_sub_dir)
+    create_dirs(args)
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
@@ -353,27 +326,7 @@ def compute_nbrs(args):
         (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
-    # Make scripts dir
-    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
-    if not os.path.isdir(scripts_dir):
-        os.mkdir(scripts_dir)
-    scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
-    for scripts_sub_dir in scripts_sub_dirs:
-        if not os.path.isdir(scripts_sub_dir):
-            os.mkdir(scripts_sub_dir)
-
-    # Make log dirs
-    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
-    for log_sub_dir in log_sub_dirs:
-        if not os.path.isdir(log_sub_dir):
-            os.mkdir(log_sub_dir)
-        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
-        for log_sub_sub_dir in log_sub_sub_dirs:
-            if not os.path.isdir(log_sub_sub_dir):
-                os.mkdir(log_sub_sub_dir)
+    create_dirs(args)
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
@@ -443,27 +396,7 @@ def write_features(args):
         (os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt'), False)
     ]
 
-    # Make scripts dir
-    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
-    if not os.path.isdir(scripts_dir):
-        os.mkdir(scripts_dir)
-    scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
-    for scripts_sub_dir in scripts_sub_dirs:
-        if not os.path.isdir(scripts_sub_dir):
-            os.mkdir(scripts_sub_dir)
-
-    # Make log dirs
-    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
-    for log_sub_dir in log_sub_dirs:
-        if not os.path.isdir(log_sub_dir):
-            os.mkdir(log_sub_dir)
-        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
-        for log_sub_sub_dir in log_sub_sub_dirs:
-            if not os.path.isdir(log_sub_sub_dir):
-                os.mkdir(log_sub_sub_dir)
+    create_dirs(args)
 
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
@@ -536,27 +469,7 @@ def write_multilabels(args):
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
 
-    # Make scripts dir
-    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
-    if not os.path.isdir(scripts_dir):
-        os.mkdir(scripts_dir)
-    scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
-    for scripts_sub_dir in scripts_sub_dirs:
-        if not os.path.isdir(scripts_sub_dir):
-            os.mkdir(scripts_sub_dir)
-
-    # Make log dirs
-    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
-    for log_sub_dir in log_sub_dirs:
-        if not os.path.isdir(log_sub_dir):
-            os.mkdir(log_sub_dir)
-        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
-        for log_sub_sub_dir in log_sub_sub_dirs:
-            if not os.path.isdir(log_sub_sub_dir):
-                os.mkdir(log_sub_sub_dir)
+    create_dirs(args)
 
     for (regions_filename, is_train_set) in metadata:
         with open(regions_filename) as regions_file:
@@ -629,27 +542,7 @@ def write_individual_labels(args):
     condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
     condor_submit_file = open(condor_submit_file_name, 'w')
 
-    # Make scripts dir
-    scripts_dir = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir])
-    if not os.path.isdir(scripts_dir):
-        os.mkdir(scripts_dir)
-    scripts_sub_dirs = [os.path.join(scripts_dir, d) for d in ['train', 'test']]
-    for scripts_sub_dir in scripts_sub_dirs:
-        if not os.path.isdir(scripts_sub_dir):
-            os.mkdir(scripts_sub_dir)
-
-    # Make log dirs
-    log_dir = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir])
-    if not os.path.isdir(log_dir):
-        os.mkdir(log_dir)
-    log_sub_dirs = [os.path.join(log_dir, d) for d in ['train', 'test']]
-    for log_sub_dir in log_sub_dirs:
-        if not os.path.isdir(log_sub_dir):
-            os.mkdir(log_sub_dir)
-        log_sub_sub_dirs = [os.path.join(log_sub_dir, d) for d in ['log', 'err', 'out']]
-        for log_sub_sub_dir in log_sub_sub_dirs:
-            if not os.path.isdir(log_sub_sub_dir):
-                os.mkdir(log_sub_sub_dir)
+    create_dirs(args)
 
     num_iterations_finished = 0
     for (regions_filename, is_train_set) in metadata:
@@ -719,6 +612,76 @@ def write_individual_labels(args):
     condor_submit_file.close()
 
 
+# Trains binary classifiers for num-labels most frequent objects and attributes, each with num-examples examples from
+# batches 0 - max-train-batch-num
+def train_binary_classifiers(args):
+    create_dirs(args, train_test=False)
+
+    condor_submit_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, 'submit.sh'])
+    condor_submit_file = open(condor_submit_file_name, 'w')
+
+    labels = list()
+    object_stats_file = os.path.join(args.dataset_dir, 'indoor/region_objects_stats.csv')
+    with open(object_stats_file) as handle:
+        reader = csv.reader(handle, delimiter=',')
+        for (row_idx, row) in enumerate(reader):
+            if row_idx >= args.num_labels:
+                break
+            labels.append((row[0], int(row[1])))
+    attributes_stats_file = os.path.join(args.dataset_dir, 'indoor/region_attributes_stats.csv')
+    with open(attributes_stats_file) as handle:
+        reader = csv.reader(handle, delimiter=',')
+        for (row_idx, row) in enumerate(reader):
+            if row_idx >= args.num_labels:
+                break
+            labels.append((row[0], int(row[1])))
+
+    labels.sort(key=operator.itemgetter(1), reverse=True)
+    labels = labels[:args.num_labels]
+
+    for (label, count) in labels:
+        print 'Processing label', label
+        condor_script_file_name = os.path.join(*[args.dataset_dir, 'condor_scripts', args.condor_dir, label + '.sh'])
+
+        condor_script_file = open(condor_script_file_name, 'w')
+        condor_script_file.write('universe = vanilla\n')
+        condor_script_file.write('Initialdir = ' +
+                                 '/u/aish/Documents/Research/Code/dataset_preprocessing/VisualGenome/\n')
+
+        condor_script_file.write('Executable = /lusr/bin/python\n')
+
+        condor_script_file.write('Arguments = train_binary_classifier.py \\\n')
+        condor_script_file.write('\t\t --dataset-dir=/scratch/cluster/aish/VisualGenome \\\n')
+        condor_script_file.write('\t\t --label=' + label + ' \\\n')
+        condor_script_file.write('\t\t --num-samples-per-batch=' + str(args.num_examples) + ' \\\n')
+        restart_log_file = os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir, 'restart', label + '.txt'])
+        condor_script_file.write('\t\t --restart-log=' + restart_log_file + ' \\\n')
+        condor_script_file.write('\t\t --verbose\n')
+
+        condor_script_file.write('+Group   = "GRAD"\n')
+        condor_script_file.write('+Project = "AI_ROBOTICS"\n')
+        condor_script_file.write('+ProjectDescription = "VisualGenome - Training classifiers"\n')
+        condor_script_file.write('JobBatchName = "VisualGenome - Training classifiers"\n')
+        condor_script_file.write('Requirements = InMastodon\n')
+
+        condor_script_file.write('Log = ' +
+                                 os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                'log', label + '.log']) + '\n')
+        condor_script_file.write('Error = ' +
+                                 os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                'err', label + '.err']) + '\n')
+        condor_script_file.write('Output = ' +
+                                 os.path.join(*[args.dataset_dir, 'condor_log', args.condor_dir,
+                                                'out', label + '.out']) + '\n')
+
+        condor_script_file.write('Queue 1\n')
+        condor_script_file.close()
+
+        condor_submit_file.write('condor_submit ' + condor_script_file_name + '\n')
+
+    condor_submit_file.close()
+
+
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--dataset-dir', type=str, required=True,
@@ -752,6 +715,13 @@ if __name__ == '__main__':
     arg_parser.add_argument('--split-region-features', action="store_true", default=False,
                             help='Split region features')
 
+    arg_parser.add_argument('--train-binary-classifiers', action="store_true", default=False,
+                            help='Train binary classifiers for frequent objects and attributes')
+    arg_parser.add_argument('--num-labels', type=int, default=50,
+                            help='Number of labels to learn classifiers for')
+    arg_parser.add_argument('--num-examples', type=int, default=100,
+                            help='Number of examples per batch to train classifiers for')
+
     args = arg_parser.parse_args()
 
     if args.extract_regions_vgg_features:
@@ -777,3 +747,6 @@ if __name__ == '__main__':
 
     if args.split_region_features:
         split_region_features(args)
+
+    if args.train_binary_classifiers:
+        train_binary_classifiers(args)
