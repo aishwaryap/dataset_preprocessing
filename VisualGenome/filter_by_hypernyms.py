@@ -9,7 +9,7 @@ from threading import Thread
 __author__ = 'aishwarya'
 
 
-def get_selected_synsets(args):
+def get_selected_synsets(args, target_dir):
     synsets_file = os.path.join(args.dataset_dir, 'synsets_list_unique.txt')
     hypernyms_file = os.path.join('indoor_objects_hypernyms.txt')
     with open(synsets_file) as handle:
@@ -33,6 +33,23 @@ def get_selected_synsets(args):
     non_hyponyms_file = os.path.join(args.dataset_dir, 'non_selected_synsets.txt')
     with open(non_hyponyms_file, 'w') as handle:
         handle.write('\n'.join(non_hyponyms))
+
+
+def get_allowed_regions(args, target_dir):
+    region_synsets_file = os.path.join(args.dataset_dir, 'region_synsets.csv')
+    selected_synsets_file = os.path.join(args.dataset_dir, 'selected_synsets.txt')
+    with open(selected_synsets_file) as handle:
+        selected_synsets = set([line.strip() for line in handle.readlines()])
+    allowed_regions_file = os.path.join(*[args.dataset_dir, target_dir, 'allowed_regions.txt'])
+    allowed_regions = list()
+    reader = csv.reader(region_synsets_file, delimiter=',')
+    for row in reader:
+        region = row[0]
+        synsets = row[1:]
+        if len(selected_synsets.intersection(synsets)) > 0:
+            allowed_regions.append(region)
+    with open(allowed_regions_file, 'w') as handle:
+        handle.write('\n'.join(allowed_regions))
 
 
 def filter_region_contents(args, target_dir):
@@ -75,7 +92,8 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
 
     if args.get_selected_synsets:
-        get_selected_synsets(args)
+        get_selected_synsets(args, 'indoor')
+        get_allowed_regions(args, 'indoor')
 
     if args.filter_region_contents:
         filter_region_contents(args, 'indoor')

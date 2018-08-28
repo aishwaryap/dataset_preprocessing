@@ -124,29 +124,29 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
 
     if args.num_regions_per_content:
-        input_file = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
-        output_file = os.path.join(args.dataset_dir, 'region_objects_stats.csv')
+        input_file = os.path.join(args.dataset_dir, 'indoor/region_objects_unique.csv')
+        output_file = os.path.join(args.dataset_dir, 'indoor/region_objects_stats.csv')
         num_regions_per_content(input_file, output_file)
 
-        input_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
-        output_file = os.path.join(args.dataset_dir, 'region_attributes_stats.csv')
+        input_file = os.path.join(args.dataset_dir, 'indoor/region_attributes_unique.csv')
+        output_file = os.path.join(args.dataset_dir, 'indoor/region_attributes_stats.csv')
         num_regions_per_content(input_file, output_file)
 
-        input_file = os.path.join(args.dataset_dir, 'region_synsets_unique.csv')
-        output_file = os.path.join(args.dataset_dir, 'region_synsets_stats.csv')
+        input_file = os.path.join(args.dataset_dir, 'indoor/region_synsets_unique.csv')
+        output_file = os.path.join(args.dataset_dir, 'indoor/region_synsets_stats.csv')
         num_regions_per_content(input_file, output_file)
 
     if args.above_threshold:
-        input_file = os.path.join(args.dataset_dir, 'region_objects_stats.csv')
+        input_file = os.path.join(args.dataset_dir, 'indoor/region_objects_stats.csv')
         above_threshold(input_file)
-        input_file = os.path.join(args.dataset_dir, 'region_attributes_stats.csv')
+        input_file = os.path.join(args.dataset_dir, 'indoor/region_attributes_stats.csv')
         above_threshold(input_file)
 
     if args.regions_with_common_content:
-        region_content_filename = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
-        content_list_filename = os.path.join(args.dataset_dir, 'region_objects_stats.csv')
+        region_content_filename = os.path.join(args.dataset_dir, 'indoor/region_objects_unique.csv')
+        content_list_filename = os.path.join(args.dataset_dir, 'indoor/region_objects_stats.csv')
         regions_with_common_content(region_content_filename, content_list_filename)
 
-        region_content_filename = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
-        content_list_filename = os.path.join(args.dataset_dir, 'region_attributes_stats.csv')
+        region_content_filename = os.path.join(args.dataset_dir, 'indoor/region_attributes_unique.csv')
+        content_list_filename = os.path.join(args.dataset_dir, 'indoor/region_attributes_stats.csv')
         regions_with_common_content(region_content_filename, content_list_filename)

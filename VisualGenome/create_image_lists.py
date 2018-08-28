@@ -29,7 +29,7 @@ def create_image_lists(args):
         image_list_writer.writerow(row)
 
         num_regions_processed += 1
-        if num_regions_processed % 65536 == 0:
+        if num_regions_processed % args.batch_size == 0:
             print num_regions_processed, 'regions processed ...'
 
             image_list_file_handle.close()
@@ -45,5 +45,7 @@ if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--dataset-dir', type=str, required=True,
                             help='Path to dataset')
+    arg_parser.add_argument('--batch-size', type=int, default=65536,
+                            help='Number of images per list')
     args = arg_parser.parse_args()
     create_image_lists(args)
