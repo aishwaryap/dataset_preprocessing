@@ -104,11 +104,15 @@ class FeatureExtractor():
             batch_list = image_list[batch_start_index:(batch_start_index + batch_size)]
 
             for batch_index, row in enumerate(batch_list):
-                image_path = row[1]
-                if len(row) > 2:
-                    crop = row[2:]
-                else:
+                if len(row) == 1:
+                    image_path = row[0]
                     crop = None
+                elif len(row) == 2:
+                    image_path = row[1]
+                    crop = None
+                else:
+                    image_path = row[1]
+                    crop = row[2:]
                 batch[batch_index:(batch_index + 1)] = self.preprocess_image(image_path, verbose=verbose, crop=crop)
 
             current_batch_size = min(batch_size, len(image_list) - batch_start_index)
@@ -124,7 +128,7 @@ class FeatureExtractor():
 def write_features_to_file(image_list, features, output_file):
     with open(output_file, 'a') as opfd:
         for i, row in enumerate(image_list):
-            image_name = 'region_' + str(row[0])
+            image_name = row[0]
             image_feature = features[i].tolist()
             feature_str = ','.join(map(str, image_feature))
             opfd.write('%s,%s\n' % (image_name, feature_str))
