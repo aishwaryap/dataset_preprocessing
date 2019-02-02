@@ -18,7 +18,7 @@ def create_edgebox_image_list(args):
     image_list_writer = csv.writer(image_list_handle, delimiter=',')
 
     for filename in os.listdir(edgebox_proposals_dir):
-        print 'Processing file', filename
+        # print 'Processing file', filename
         image_id = re.sub('.txt', '', filename)
         image_file = os.path.join(images_dir, image_id + '.jpg')
         bboxes = np.loadtxt(os.path.join(edgebox_proposals_dir, filename)).astype(np.uint8)
@@ -54,7 +54,7 @@ def main(args):
     images_dir = os.path.join(args.dataset_dir, 'resized_imcrop')
     split_dir = 'split'
     for filename in os.listdir(split_dir):
-        print 'Processing file', filename
+        # print 'Processing file', filename
         input_file = os.path.join(split_dir, filename)
         output_file = os.path.join(image_list_dir, filename)
         process(input_file, output_file, images_dir)

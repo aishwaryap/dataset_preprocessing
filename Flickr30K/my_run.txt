@@ -1,0 +1,14 @@
+Download flickr30k_images.tar.gz from http://web.engr.illinois.edu/~bplumme2/Flickr30kEntities/
+tar -xvzf flickr30k_images.tar.gz
+rm flickr30k_images.tar.gz
+
+Downloaded flickr30k.zip from - https://cs.stanford.edu/people/karpathy/deepimagesent/flickr30k.zip
+unzip flickr30k.zip
+rm flickr30k.zip
+
+Downloaded Flickr30kEntities.tar.gz by filling the form at http://web.engr.illinois.edu/~bplumme2/Flickr30kEntities/
+tar -xvzf Flickr30kEntities.tar.gz
+rm Flickr30kEntities.tar.gz
+
+python reformat.py --dataset-dir=/scratch/cluster/aish/Flickr30K
+python checks.py --dataset-dir=/scratch/cluster/aish/Flickr30K

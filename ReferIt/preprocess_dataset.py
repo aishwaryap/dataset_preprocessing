@@ -61,7 +61,7 @@ def load_referit_annotation(imcroplist, annotation_file):
     return query_dict
 
 
-def load_and_resize_imcrop(mask_dir, image_dir, resized_imcrop_dir):
+def load_and_resize_imcrop(mask_dir, image_dir, resized_imcrop_dir, final_image_height=224, final_image_width=224):
     print('loading image crop bounding boxes...')
     imcrop_bbox_dict = {}
     masklist = os.listdir(mask_dir)
@@ -89,7 +89,7 @@ def load_and_resize_imcrop(mask_dir, image_dir, resized_imcrop_dir):
         # RGBA to RGB
         im = im[:, :, :3]
         resized_im = skimage.transform.resize(im[y_min:y_max+1,
-                                                 x_min:x_max+1, :], [224, 224])
+                                                 x_min:x_max+1, :], [final_image_height, final_image_width])
         save_path = os.path.join(resized_imcrop_dir, imcrop_name + '.png')
         skimage.io.imsave(save_path, resized_im)
     return imcrop_bbox_dict
@@ -109,7 +109,9 @@ def main(args):
     imcroplist, imcrop_dict = load_imcrop(imlist, mask_dir)
     query_dict = load_referit_annotation(imcroplist, annotation_file)
     imcrop_bbox_dict = load_and_resize_imcrop(mask_dir, image_dir,
-                                              resized_imcrop_dir)
+                                              resized_imcrop_dir,
+                                              args.final_image_height,
+                                              args.final_image_width)
 
     if not os.path.isdir(metadata_dir):
         os.mkdir(metadata_dir)
@@ -122,6 +124,10 @@ def main(args):
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--dataset-dir', type=str, required=True,
-                            help='Path to Kitchen dataset')
+                            help='Path to ReferIt dataset')
+    arg_parser.add_argument('--final-image-height', type=int, default=224,
+                            help='Height to to resize crops')
+    arg_parser.add_argument('--final-image-width', type=int, default=224,
+                            help='Width to to resize crops')
     args = arg_parser.parse_args()
     main(args)

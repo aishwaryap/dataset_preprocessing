@@ -39,3 +39,11 @@ def count_lines(filename):
     num_lines = len(file_handle.read().split('\n'))
     file_handle.close()
     return num_lines
+
+
+def create_dir(path):
+    sub_path = os.path.dirname(path)
+    if not os.path.exists(sub_path):
+        create_dir(sub_path)
+    if not os.path.exists(path):
+        os.mkdir(path)
