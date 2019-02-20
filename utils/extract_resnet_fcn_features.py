@@ -52,7 +52,7 @@ def main(args):
     output_file_handle = h5py.File(output_file, 'w')
     hpy5_dataset = output_file_handle.create_dataset(re.sub('.txt', '', args.image_list_file),
                                                  shape=(len(image_files), 32, 32, 2048),
-                                                 dtype='f')
+                                                 dtype='f', compression="gzip")
 
     images_placeholder = tf.placeholder(tf.float32, shape=(None, 512, 512, 3))
     preprocessed_batch = tf.map_fn(lambda img: tf.image.random_flip_left_right(img), images_placeholder)
@@ -64,7 +64,11 @@ def main(args):
                                                   output_stride=16)
     init_fn = get_init_fn(args.ckpt_path)
 
-    with tf.Session() as sess:
+    # This is to prevent a CuDNN error - https://github.com/tensorflow/tensorflow/issues/24828
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+
+    with tf.Session(config=config) as sess:
         sess.run(tf.global_variables_initializer())
         init_fn(sess)
 
