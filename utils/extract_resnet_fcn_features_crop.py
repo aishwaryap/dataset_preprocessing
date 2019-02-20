@@ -52,7 +52,7 @@ def main(args):
             crops = [row[2:] for row in rows]
         else:
             crops = [None] * len(image_files)
-    print('len(image_files) =', image_files)
+    print('len(image_files) =', len(image_files))
 
     output_file = os.path.join(*[args.dataset_dir, "resnet_fcn_features", args.output_file])
     output_file_handle = h5py.File(output_file, 'w')
@@ -61,7 +61,14 @@ def main(args):
                                                  dtype='f')
 
     images_placeholder = tf.placeholder(tf.float32, shape=(None, 512, 512, 3))
-    preprocessed_batch = tf.map_fn(lambda img: tf.image.random_flip_left_right(img), images_placeholder)
+    preprocessed_batch = tf.map_fn(lambda img: preprocess_image(img,
+                                                                output_height=512,
+                                                                output_width=512,
+                                                                is_training=False,
+                                                                resize_side_min=512,
+                                                                resize_side_max=512
+                                                                ),
+                                   images_placeholder)
     with slim.arg_scope(resnet_v2.resnet_arg_scope()):
         net, all_layers = resnet_v2.resnet_v2_101(preprocessed_batch,
                                                   21,
