@@ -1,0 +1,1956 @@
+image_list_file = /scratch/cluster/aish/ReferIt/image_lists/referit_train_imlist.txt
+len(image_files) = 44823
+max_images_to_process = 44824
+batch_start_idx = 0
+batch_end_idx = 8
+features.shape = (8, 32, 32, 2048)
+Completed batch 0
+num_images_processed = 8
+batch_start_idx = 8
+batch_end_idx = 16
+features.shape = (8, 32, 32, 2048)
+Completed batch 1
+num_images_processed = 16
+batch_start_idx = 16
+batch_end_idx = 24
+features.shape = (8, 32, 32, 2048)
+Completed batch 2
+num_images_processed = 24
+batch_start_idx = 24
+batch_end_idx = 32
+features.shape = (8, 32, 32, 2048)
+Completed batch 3
+num_images_processed = 32
+batch_start_idx = 32
+batch_end_idx = 40
+features.shape = (8, 32, 32, 2048)
+Completed batch 4
+num_images_processed = 40
+batch_start_idx = 40
+batch_end_idx = 48
+features.shape = (8, 32, 32, 2048)
+Completed batch 5
+num_images_processed = 48
+batch_start_idx = 48
+batch_end_idx = 56
+features.shape = (8, 32, 32, 2048)
+Completed batch 6
+num_images_processed = 56
+batch_start_idx = 56
+batch_end_idx = 64
+features.shape = (8, 32, 32, 2048)
+Completed batch 7
+num_images_processed = 64
+batch_start_idx = 64
+batch_end_idx = 72
+features.shape = (8, 32, 32, 2048)
+Completed batch 8
+num_images_processed = 72
+batch_start_idx = 72
+batch_end_idx = 80
+features.shape = (8, 32, 32, 2048)
+Completed batch 9
+num_images_processed = 80
+batch_start_idx = 80
+batch_end_idx = 88
+features.shape = (8, 32, 32, 2048)
+Completed batch 10
+num_images_processed = 88
+batch_start_idx = 88
+batch_end_idx = 96
+features.shape = (8, 32, 32, 2048)
+Completed batch 11
+num_images_processed = 96
+batch_start_idx = 96
+batch_end_idx = 104
+features.shape = (8, 32, 32, 2048)
+Completed batch 12
+num_images_processed = 104
+batch_start_idx = 104
+batch_end_idx = 112
+features.shape = (8, 32, 32, 2048)
+Completed batch 13
+num_images_processed = 112
+batch_start_idx = 112
+batch_end_idx = 120
+features.shape = (8, 32, 32, 2048)
+Completed batch 14
+num_images_processed = 120
+batch_start_idx = 120
+batch_end_idx = 128
+features.shape = (8, 32, 32, 2048)
+Completed batch 15
+num_images_processed = 128
+batch_start_idx = 128
+batch_end_idx = 136
+features.shape = (8, 32, 32, 2048)
+Completed batch 16
+num_images_processed = 136
+batch_start_idx = 136
+batch_end_idx = 144
+features.shape = (8, 32, 32, 2048)
+Completed batch 17
+num_images_processed = 144
+batch_start_idx = 144
+batch_end_idx = 152
+features.shape = (8, 32, 32, 2048)
+Completed batch 18
+num_images_processed = 152
+batch_start_idx = 152
+batch_end_idx = 160
+features.shape = (8, 32, 32, 2048)
+Completed batch 19
+num_images_processed = 160
+batch_start_idx = 160
+batch_end_idx = 168
+features.shape = (8, 32, 32, 2048)
+Completed batch 20
+num_images_processed = 168
+batch_start_idx = 168
+batch_end_idx = 176
+features.shape = (8, 32, 32, 2048)
+Completed batch 21
+num_images_processed = 176
+batch_start_idx = 176
+batch_end_idx = 184
+features.shape = (8, 32, 32, 2048)
+Completed batch 22
+num_images_processed = 184
+batch_start_idx = 184
+batch_end_idx = 192
+features.shape = (8, 32, 32, 2048)
+Completed batch 23
+num_images_processed = 192
+batch_start_idx = 192
+batch_end_idx = 200
+features.shape = (8, 32, 32, 2048)
+Completed batch 24
+num_images_processed = 200
+batch_start_idx = 200
+batch_end_idx = 208
+features.shape = (8, 32, 32, 2048)
+Completed batch 25
+num_images_processed = 208
+batch_start_idx = 208
+batch_end_idx = 216
+features.shape = (8, 32, 32, 2048)
+Completed batch 26
+num_images_processed = 216
+batch_start_idx = 216
+batch_end_idx = 224
+features.shape = (8, 32, 32, 2048)
+Completed batch 27
+num_images_processed = 224
+batch_start_idx = 224
+batch_end_idx = 232
+features.shape = (8, 32, 32, 2048)
+Completed batch 28
+num_images_processed = 232
+batch_start_idx = 232
+batch_end_idx = 240
+features.shape = (8, 32, 32, 2048)
+Completed batch 29
+num_images_processed = 240
+batch_start_idx = 240
+batch_end_idx = 248
+features.shape = (8, 32, 32, 2048)
+Completed batch 30
+num_images_processed = 248
+batch_start_idx = 248
+batch_end_idx = 256
+features.shape = (8, 32, 32, 2048)
+Completed batch 31
+num_images_processed = 256
+batch_start_idx = 256
+batch_end_idx = 264
+features.shape = (8, 32, 32, 2048)
+Completed batch 32
+num_images_processed = 264
+batch_start_idx = 264
+batch_end_idx = 272
+features.shape = (8, 32, 32, 2048)
+Completed batch 33
+num_images_processed = 272
+batch_start_idx = 272
+batch_end_idx = 280
+features.shape = (8, 32, 32, 2048)
+Completed batch 34
+num_images_processed = 280
+batch_start_idx = 280
+batch_end_idx = 288
+features.shape = (8, 32, 32, 2048)
+Completed batch 35
+num_images_processed = 288
+batch_start_idx = 288
+batch_end_idx = 296
+features.shape = (8, 32, 32, 2048)
+Completed batch 36
+num_images_processed = 296
+batch_start_idx = 296
+batch_end_idx = 304
+features.shape = (8, 32, 32, 2048)
+Completed batch 37
+num_images_processed = 304
+batch_start_idx = 304
+batch_end_idx = 312
+features.shape = (8, 32, 32, 2048)
+Completed batch 38
+num_images_processed = 312
+batch_start_idx = 312
+batch_end_idx = 320
+features.shape = (8, 32, 32, 2048)
+Completed batch 39
+num_images_processed = 320
+batch_start_idx = 320
+batch_end_idx = 328
+features.shape = (8, 32, 32, 2048)
+Completed batch 40
+num_images_processed = 328
+batch_start_idx = 328
+batch_end_idx = 336
+features.shape = (8, 32, 32, 2048)
+Completed batch 41
+num_images_processed = 336
+batch_start_idx = 336
+batch_end_idx = 344
+features.shape = (8, 32, 32, 2048)
+Completed batch 42
+num_images_processed = 344
+batch_start_idx = 344
+batch_end_idx = 352
+features.shape = (8, 32, 32, 2048)
+Completed batch 43
+num_images_processed = 352
+batch_start_idx = 352
+batch_end_idx = 360
+features.shape = (8, 32, 32, 2048)
+Completed batch 44
+num_images_processed = 360
+batch_start_idx = 360
+batch_end_idx = 368
+features.shape = (8, 32, 32, 2048)
+Completed batch 45
+num_images_processed = 368
+batch_start_idx = 368
+batch_end_idx = 376
+features.shape = (8, 32, 32, 2048)
+Completed batch 46
+num_images_processed = 376
+batch_start_idx = 376
+batch_end_idx = 384
+features.shape = (8, 32, 32, 2048)
+Completed batch 47
+num_images_processed = 384
+batch_start_idx = 384
+batch_end_idx = 392
+features.shape = (8, 32, 32, 2048)
+Completed batch 48
+num_images_processed = 392
+batch_start_idx = 392
+batch_end_idx = 400
+features.shape = (8, 32, 32, 2048)
+Completed batch 49
+num_images_processed = 400
+batch_start_idx = 400
+batch_end_idx = 408
+features.shape = (8, 32, 32, 2048)
+Completed batch 50
+num_images_processed = 408
+batch_start_idx = 408
+batch_end_idx = 416
+features.shape = (8, 32, 32, 2048)
+Completed batch 51
+num_images_processed = 416
+batch_start_idx = 416
+batch_end_idx = 424
+features.shape = (8, 32, 32, 2048)
+Completed batch 52
+num_images_processed = 424
+batch_start_idx = 424
+batch_end_idx = 432
+features.shape = (8, 32, 32, 2048)
+Completed batch 53
+num_images_processed = 432
+batch_start_idx = 432
+batch_end_idx = 440
+features.shape = (8, 32, 32, 2048)
+Completed batch 54
+num_images_processed = 440
+batch_start_idx = 440
+batch_end_idx = 448
+features.shape = (8, 32, 32, 2048)
+Completed batch 55
+num_images_processed = 448
+batch_start_idx = 448
+batch_end_idx = 456
+features.shape = (8, 32, 32, 2048)
+Completed batch 56
+num_images_processed = 456
+batch_start_idx = 456
+batch_end_idx = 464
+features.shape = (8, 32, 32, 2048)
+Completed batch 57
+num_images_processed = 464
+batch_start_idx = 464
+batch_end_idx = 472
+features.shape = (8, 32, 32, 2048)
+Completed batch 58
+num_images_processed = 472
+batch_start_idx = 472
+batch_end_idx = 480
+features.shape = (8, 32, 32, 2048)
+Completed batch 59
+num_images_processed = 480
+batch_start_idx = 480
+batch_end_idx = 488
+features.shape = (8, 32, 32, 2048)
+Completed batch 60
+num_images_processed = 488
+batch_start_idx = 488
+batch_end_idx = 496
+features.shape = (8, 32, 32, 2048)
+Completed batch 61
+num_images_processed = 496
+batch_start_idx = 496
+batch_end_idx = 504
+features.shape = (8, 32, 32, 2048)
+Completed batch 62
+num_images_processed = 504
+batch_start_idx = 504
+batch_end_idx = 512
+features.shape = (8, 32, 32, 2048)
+Completed batch 63
+num_images_processed = 512
+batch_start_idx = 512
+batch_end_idx = 520
+features.shape = (8, 32, 32, 2048)
+Completed batch 64
+num_images_processed = 520
+batch_start_idx = 520
+batch_end_idx = 528
+features.shape = (8, 32, 32, 2048)
+Completed batch 65
+num_images_processed = 528
+batch_start_idx = 528
+batch_end_idx = 536
+features.shape = (8, 32, 32, 2048)
+Completed batch 66
+num_images_processed = 536
+batch_start_idx = 536
+batch_end_idx = 544
+features.shape = (8, 32, 32, 2048)
+Completed batch 67
+num_images_processed = 544
+batch_start_idx = 544
+batch_end_idx = 552
+features.shape = (8, 32, 32, 2048)
+Completed batch 68
+num_images_processed = 552
+batch_start_idx = 552
+batch_end_idx = 560
+features.shape = (8, 32, 32, 2048)
+Completed batch 69
+num_images_processed = 560
+batch_start_idx = 560
+batch_end_idx = 568
+features.shape = (8, 32, 32, 2048)
+Completed batch 70
+num_images_processed = 568
+batch_start_idx = 568
+batch_end_idx = 576
+features.shape = (8, 32, 32, 2048)
+Completed batch 71
+num_images_processed = 576
+batch_start_idx = 576
+batch_end_idx = 584
+features.shape = (8, 32, 32, 2048)
+Completed batch 72
+num_images_processed = 584
+batch_start_idx = 584
+batch_end_idx = 592
+features.shape = (8, 32, 32, 2048)
+Completed batch 73
+num_images_processed = 592
+batch_start_idx = 592
+batch_end_idx = 600
+features.shape = (8, 32, 32, 2048)
+Completed batch 74
+num_images_processed = 600
+batch_start_idx = 600
+batch_end_idx = 608
+features.shape = (8, 32, 32, 2048)
+Completed batch 75
+num_images_processed = 608
+batch_start_idx = 608
+batch_end_idx = 616
+features.shape = (8, 32, 32, 2048)
+Completed batch 76
+num_images_processed = 616
+batch_start_idx = 616
+batch_end_idx = 624
+features.shape = (8, 32, 32, 2048)
+Completed batch 77
+num_images_processed = 624
+batch_start_idx = 624
+batch_end_idx = 632
+features.shape = (8, 32, 32, 2048)
+Completed batch 78
+num_images_processed = 632
+batch_start_idx = 632
+batch_end_idx = 640
+features.shape = (8, 32, 32, 2048)
+Completed batch 79
+num_images_processed = 640
+batch_start_idx = 640
+batch_end_idx = 648
+features.shape = (8, 32, 32, 2048)
+Completed batch 80
+num_images_processed = 648
+batch_start_idx = 648
+batch_end_idx = 656
+features.shape = (8, 32, 32, 2048)
+Completed batch 81
+num_images_processed = 656
+batch_start_idx = 656
+batch_end_idx = 664
+features.shape = (8, 32, 32, 2048)
+Completed batch 82
+num_images_processed = 664
+batch_start_idx = 664
+batch_end_idx = 672
+features.shape = (8, 32, 32, 2048)
+Completed batch 83
+num_images_processed = 672
+batch_start_idx = 672
+batch_end_idx = 680
+features.shape = (8, 32, 32, 2048)
+Completed batch 84
+num_images_processed = 680
+batch_start_idx = 680
+batch_end_idx = 688
+features.shape = (8, 32, 32, 2048)
+Completed batch 85
+num_images_processed = 688
+batch_start_idx = 688
+batch_end_idx = 696
+features.shape = (8, 32, 32, 2048)
+Completed batch 86
+num_images_processed = 696
+batch_start_idx = 696
+batch_end_idx = 704
+features.shape = (8, 32, 32, 2048)
+Completed batch 87
+num_images_processed = 704
+batch_start_idx = 704
+batch_end_idx = 712
+features.shape = (8, 32, 32, 2048)
+Completed batch 88
+num_images_processed = 712
+batch_start_idx = 712
+batch_end_idx = 720
+features.shape = (8, 32, 32, 2048)
+Completed batch 89
+num_images_processed = 720
+batch_start_idx = 720
+batch_end_idx = 728
+features.shape = (8, 32, 32, 2048)
+Completed batch 90
+num_images_processed = 728
+batch_start_idx = 728
+batch_end_idx = 736
+features.shape = (8, 32, 32, 2048)
+Completed batch 91
+num_images_processed = 736
+batch_start_idx = 736
+batch_end_idx = 744
+features.shape = (8, 32, 32, 2048)
+Completed batch 92
+num_images_processed = 744
+batch_start_idx = 744
+batch_end_idx = 752
+features.shape = (8, 32, 32, 2048)
+Completed batch 93
+num_images_processed = 752
+batch_start_idx = 752
+batch_end_idx = 760
+features.shape = (8, 32, 32, 2048)
+Completed batch 94
+num_images_processed = 760
+batch_start_idx = 760
+batch_end_idx = 768
+features.shape = (8, 32, 32, 2048)
+Completed batch 95
+num_images_processed = 768
+batch_start_idx = 768
+batch_end_idx = 776
+features.shape = (8, 32, 32, 2048)
+Completed batch 96
+num_images_processed = 776
+batch_start_idx = 776
+batch_end_idx = 784
+features.shape = (8, 32, 32, 2048)
+Completed batch 97
+num_images_processed = 784
+batch_start_idx = 784
+batch_end_idx = 792
+features.shape = (8, 32, 32, 2048)
+Completed batch 98
+num_images_processed = 792
+batch_start_idx = 792
+batch_end_idx = 800
+features.shape = (8, 32, 32, 2048)
+Completed batch 99
+num_images_processed = 800
+batch_start_idx = 800
+batch_end_idx = 808
+features.shape = (8, 32, 32, 2048)
+Completed batch 100
+num_images_processed = 808
+batch_start_idx = 808
+batch_end_idx = 816
+features.shape = (8, 32, 32, 2048)
+Completed batch 101
+num_images_processed = 816
+batch_start_idx = 816
+batch_end_idx = 824
+features.shape = (8, 32, 32, 2048)
+Completed batch 102
+num_images_processed = 824
+batch_start_idx = 824
+batch_end_idx = 832
+features.shape = (8, 32, 32, 2048)
+Completed batch 103
+num_images_processed = 832
+batch_start_idx = 832
+batch_end_idx = 840
+features.shape = (8, 32, 32, 2048)
+Completed batch 104
+num_images_processed = 840
+batch_start_idx = 840
+batch_end_idx = 848
+features.shape = (8, 32, 32, 2048)
+Completed batch 105
+num_images_processed = 848
+batch_start_idx = 848
+batch_end_idx = 856
+features.shape = (8, 32, 32, 2048)
+Completed batch 106
+num_images_processed = 856
+batch_start_idx = 856
+batch_end_idx = 864
+features.shape = (8, 32, 32, 2048)
+Completed batch 107
+num_images_processed = 864
+batch_start_idx = 864
+batch_end_idx = 872
+features.shape = (8, 32, 32, 2048)
+Completed batch 108
+num_images_processed = 872
+batch_start_idx = 872
+batch_end_idx = 880
+features.shape = (8, 32, 32, 2048)
+Completed batch 109
+num_images_processed = 880
+batch_start_idx = 880
+batch_end_idx = 888
+features.shape = (8, 32, 32, 2048)
+Completed batch 110
+num_images_processed = 888
+batch_start_idx = 888
+batch_end_idx = 896
+features.shape = (8, 32, 32, 2048)
+Completed batch 111
+num_images_processed = 896
+batch_start_idx = 896
+batch_end_idx = 904
+features.shape = (8, 32, 32, 2048)
+Completed batch 112
+num_images_processed = 904
+batch_start_idx = 904
+batch_end_idx = 912
+features.shape = (8, 32, 32, 2048)
+Completed batch 113
+num_images_processed = 912
+batch_start_idx = 912
+batch_end_idx = 920
+features.shape = (8, 32, 32, 2048)
+Completed batch 114
+num_images_processed = 920
+batch_start_idx = 920
+batch_end_idx = 928
+features.shape = (8, 32, 32, 2048)
+Completed batch 115
+num_images_processed = 928
+batch_start_idx = 928
+batch_end_idx = 936
+features.shape = (8, 32, 32, 2048)
+Completed batch 116
+num_images_processed = 936
+batch_start_idx = 936
+batch_end_idx = 944
+features.shape = (8, 32, 32, 2048)
+Completed batch 117
+num_images_processed = 944
+batch_start_idx = 944
+batch_end_idx = 952
+features.shape = (8, 32, 32, 2048)
+Completed batch 118
+num_images_processed = 952
+batch_start_idx = 952
+batch_end_idx = 960
+features.shape = (8, 32, 32, 2048)
+Completed batch 119
+num_images_processed = 960
+batch_start_idx = 960
+batch_end_idx = 968
+features.shape = (8, 32, 32, 2048)
+Completed batch 120
+num_images_processed = 968
+batch_start_idx = 968
+batch_end_idx = 976
+features.shape = (8, 32, 32, 2048)
+Completed batch 121
+num_images_processed = 976
+batch_start_idx = 976
+batch_end_idx = 984
+features.shape = (8, 32, 32, 2048)
+Completed batch 122
+num_images_processed = 984
+batch_start_idx = 984
+batch_end_idx = 992
+features.shape = (8, 32, 32, 2048)
+Completed batch 123
+num_images_processed = 992
+batch_start_idx = 992
+batch_end_idx = 1000
+features.shape = (8, 32, 32, 2048)
+Completed batch 124
+num_images_processed = 1000
+batch_start_idx = 1000
+batch_end_idx = 1008
+features.shape = (8, 32, 32, 2048)
+Completed batch 125
+num_images_processed = 1008
+batch_start_idx = 1008
+batch_end_idx = 1016
+features.shape = (8, 32, 32, 2048)
+Completed batch 126
+num_images_processed = 1016
+batch_start_idx = 1016
+batch_end_idx = 1024
+features.shape = (8, 32, 32, 2048)
+Completed batch 127
+num_images_processed = 1024
+batch_start_idx = 1024
+batch_end_idx = 1032
+features.shape = (8, 32, 32, 2048)
+Completed batch 128
+num_images_processed = 1032
+batch_start_idx = 1032
+batch_end_idx = 1040
+features.shape = (8, 32, 32, 2048)
+Completed batch 129
+num_images_processed = 1040
+batch_start_idx = 1040
+batch_end_idx = 1048
+features.shape = (8, 32, 32, 2048)
+Completed batch 130
+num_images_processed = 1048
+batch_start_idx = 1048
+batch_end_idx = 1056
+features.shape = (8, 32, 32, 2048)
+Completed batch 131
+num_images_processed = 1056
+batch_start_idx = 1056
+batch_end_idx = 1064
+features.shape = (8, 32, 32, 2048)
+Completed batch 132
+num_images_processed = 1064
+batch_start_idx = 1064
+batch_end_idx = 1072
+features.shape = (8, 32, 32, 2048)
+Completed batch 133
+num_images_processed = 1072
+batch_start_idx = 1072
+batch_end_idx = 1080
+features.shape = (8, 32, 32, 2048)
+Completed batch 134
+num_images_processed = 1080
+batch_start_idx = 1080
+batch_end_idx = 1088
+features.shape = (8, 32, 32, 2048)
+Completed batch 135
+num_images_processed = 1088
+batch_start_idx = 1088
+batch_end_idx = 1096
+features.shape = (8, 32, 32, 2048)
+Completed batch 136
+num_images_processed = 1096
+batch_start_idx = 1096
+batch_end_idx = 1104
+features.shape = (8, 32, 32, 2048)
+Completed batch 137
+num_images_processed = 1104
+batch_start_idx = 1104
+batch_end_idx = 1112
+features.shape = (8, 32, 32, 2048)
+Completed batch 138
+num_images_processed = 1112
+batch_start_idx = 1112
+batch_end_idx = 1120
+features.shape = (8, 32, 32, 2048)
+Completed batch 139
+num_images_processed = 1120
+batch_start_idx = 1120
+batch_end_idx = 1128
+features.shape = (8, 32, 32, 2048)
+Completed batch 140
+num_images_processed = 1128
+batch_start_idx = 1128
+batch_end_idx = 1136
+features.shape = (8, 32, 32, 2048)
+Completed batch 141
+num_images_processed = 1136
+batch_start_idx = 1136
+batch_end_idx = 1144
+features.shape = (8, 32, 32, 2048)
+Completed batch 142
+num_images_processed = 1144
+batch_start_idx = 1144
+batch_end_idx = 1152
+features.shape = (8, 32, 32, 2048)
+Completed batch 143
+num_images_processed = 1152
+batch_start_idx = 1152
+batch_end_idx = 1160
+features.shape = (8, 32, 32, 2048)
+Completed batch 144
+num_images_processed = 1160
+batch_start_idx = 1160
+batch_end_idx = 1168
+features.shape = (8, 32, 32, 2048)
+Completed batch 145
+num_images_processed = 1168
+batch_start_idx = 1168
+batch_end_idx = 1176
+features.shape = (8, 32, 32, 2048)
+Completed batch 146
+num_images_processed = 1176
+batch_start_idx = 1176
+batch_end_idx = 1184
+features.shape = (8, 32, 32, 2048)
+Completed batch 147
+num_images_processed = 1184
+batch_start_idx = 1184
+batch_end_idx = 1192
+features.shape = (8, 32, 32, 2048)
+Completed batch 148
+num_images_processed = 1192
+batch_start_idx = 1192
+batch_end_idx = 1200
+features.shape = (8, 32, 32, 2048)
+Completed batch 149
+num_images_processed = 1200
+batch_start_idx = 1200
+batch_end_idx = 1208
+features.shape = (8, 32, 32, 2048)
+Completed batch 150
+num_images_processed = 1208
+batch_start_idx = 1208
+batch_end_idx = 1216
+features.shape = (8, 32, 32, 2048)
+Completed batch 151
+num_images_processed = 1216
+batch_start_idx = 1216
+batch_end_idx = 1224
+features.shape = (8, 32, 32, 2048)
+Completed batch 152
+num_images_processed = 1224
+batch_start_idx = 1224
+batch_end_idx = 1232
+features.shape = (8, 32, 32, 2048)
+Completed batch 153
+num_images_processed = 1232
+batch_start_idx = 1232
+batch_end_idx = 1240
+features.shape = (8, 32, 32, 2048)
+Completed batch 154
+num_images_processed = 1240
+batch_start_idx = 1240
+batch_end_idx = 1248
+features.shape = (8, 32, 32, 2048)
+Completed batch 155
+num_images_processed = 1248
+batch_start_idx = 1248
+batch_end_idx = 1256
+features.shape = (8, 32, 32, 2048)
+Completed batch 156
+num_images_processed = 1256
+batch_start_idx = 1256
+batch_end_idx = 1264
+features.shape = (8, 32, 32, 2048)
+Completed batch 157
+num_images_processed = 1264
+batch_start_idx = 1264
+batch_end_idx = 1272
+features.shape = (8, 32, 32, 2048)
+Completed batch 158
+num_images_processed = 1272
+batch_start_idx = 1272
+batch_end_idx = 1280
+features.shape = (8, 32, 32, 2048)
+Completed batch 159
+num_images_processed = 1280
+batch_start_idx = 1280
+batch_end_idx = 1288
+features.shape = (8, 32, 32, 2048)
+Completed batch 160
+num_images_processed = 1288
+batch_start_idx = 1288
+batch_end_idx = 1296
+features.shape = (8, 32, 32, 2048)
+Completed batch 161
+num_images_processed = 1296
+batch_start_idx = 1296
+batch_end_idx = 1304
+features.shape = (8, 32, 32, 2048)
+Completed batch 162
+num_images_processed = 1304
+batch_start_idx = 1304
+batch_end_idx = 1312
+features.shape = (8, 32, 32, 2048)
+Completed batch 163
+num_images_processed = 1312
+batch_start_idx = 1312
+batch_end_idx = 1320
+features.shape = (8, 32, 32, 2048)
+Completed batch 164
+num_images_processed = 1320
+batch_start_idx = 1320
+batch_end_idx = 1328
+features.shape = (8, 32, 32, 2048)
+Completed batch 165
+num_images_processed = 1328
+batch_start_idx = 1328
+batch_end_idx = 1336
+features.shape = (8, 32, 32, 2048)
+Completed batch 166
+num_images_processed = 1336
+batch_start_idx = 1336
+batch_end_idx = 1344
+features.shape = (8, 32, 32, 2048)
+Completed batch 167
+num_images_processed = 1344
+batch_start_idx = 1344
+batch_end_idx = 1352
+features.shape = (8, 32, 32, 2048)
+Completed batch 168
+num_images_processed = 1352
+batch_start_idx = 1352
+batch_end_idx = 1360
+features.shape = (8, 32, 32, 2048)
+Completed batch 169
+num_images_processed = 1360
+batch_start_idx = 1360
+batch_end_idx = 1368
+features.shape = (8, 32, 32, 2048)
+Completed batch 170
+num_images_processed = 1368
+batch_start_idx = 1368
+batch_end_idx = 1376
+features.shape = (8, 32, 32, 2048)
+Completed batch 171
+num_images_processed = 1376
+batch_start_idx = 1376
+batch_end_idx = 1384
+features.shape = (8, 32, 32, 2048)
+Completed batch 172
+num_images_processed = 1384
+batch_start_idx = 1384
+batch_end_idx = 1392
+features.shape = (8, 32, 32, 2048)
+Completed batch 173
+num_images_processed = 1392
+batch_start_idx = 1392
+batch_end_idx = 1400
+features.shape = (8, 32, 32, 2048)
+Completed batch 174
+num_images_processed = 1400
+batch_start_idx = 1400
+batch_end_idx = 1408
+features.shape = (8, 32, 32, 2048)
+Completed batch 175
+num_images_processed = 1408
+batch_start_idx = 1408
+batch_end_idx = 1416
+features.shape = (8, 32, 32, 2048)
+Completed batch 176
+num_images_processed = 1416
+batch_start_idx = 1416
+batch_end_idx = 1424
+features.shape = (8, 32, 32, 2048)
+Completed batch 177
+num_images_processed = 1424
+batch_start_idx = 1424
+batch_end_idx = 1432
+features.shape = (8, 32, 32, 2048)
+Completed batch 178
+num_images_processed = 1432
+batch_start_idx = 1432
+batch_end_idx = 1440
+features.shape = (8, 32, 32, 2048)
+Completed batch 179
+num_images_processed = 1440
+batch_start_idx = 1440
+batch_end_idx = 1448
+features.shape = (8, 32, 32, 2048)
+Completed batch 180
+num_images_processed = 1448
+batch_start_idx = 1448
+batch_end_idx = 1456
+features.shape = (8, 32, 32, 2048)
+Completed batch 181
+num_images_processed = 1456
+batch_start_idx = 1456
+batch_end_idx = 1464
+features.shape = (8, 32, 32, 2048)
+Completed batch 182
+num_images_processed = 1464
+batch_start_idx = 1464
+batch_end_idx = 1472
+features.shape = (8, 32, 32, 2048)
+Completed batch 183
+num_images_processed = 1472
+batch_start_idx = 1472
+batch_end_idx = 1480
+features.shape = (8, 32, 32, 2048)
+Completed batch 184
+num_images_processed = 1480
+batch_start_idx = 1480
+batch_end_idx = 1488
+features.shape = (8, 32, 32, 2048)
+Completed batch 185
+num_images_processed = 1488
+batch_start_idx = 1488
+batch_end_idx = 1496
+features.shape = (8, 32, 32, 2048)
+Completed batch 186
+num_images_processed = 1496
+batch_start_idx = 1496
+batch_end_idx = 1504
+features.shape = (8, 32, 32, 2048)
+Completed batch 187
+num_images_processed = 1504
+batch_start_idx = 1504
+batch_end_idx = 1512
+features.shape = (8, 32, 32, 2048)
+Completed batch 188
+num_images_processed = 1512
+batch_start_idx = 1512
+batch_end_idx = 1520
+features.shape = (8, 32, 32, 2048)
+Completed batch 189
+num_images_processed = 1520
+batch_start_idx = 1520
+batch_end_idx = 1528
+features.shape = (8, 32, 32, 2048)
+Completed batch 190
+num_images_processed = 1528
+batch_start_idx = 1528
+batch_end_idx = 1536
+features.shape = (8, 32, 32, 2048)
+Completed batch 191
+num_images_processed = 1536
+batch_start_idx = 1536
+batch_end_idx = 1544
+features.shape = (8, 32, 32, 2048)
+Completed batch 192
+num_images_processed = 1544
+batch_start_idx = 1544
+batch_end_idx = 1552
+features.shape = (8, 32, 32, 2048)
+Completed batch 193
+num_images_processed = 1552
+batch_start_idx = 1552
+batch_end_idx = 1560
+features.shape = (8, 32, 32, 2048)
+Completed batch 194
+num_images_processed = 1560
+batch_start_idx = 1560
+batch_end_idx = 1568
+features.shape = (8, 32, 32, 2048)
+Completed batch 195
+num_images_processed = 1568
+batch_start_idx = 1568
+batch_end_idx = 1576
+features.shape = (8, 32, 32, 2048)
+Completed batch 196
+num_images_processed = 1576
+batch_start_idx = 1576
+batch_end_idx = 1584
+features.shape = (8, 32, 32, 2048)
+Completed batch 197
+num_images_processed = 1584
+batch_start_idx = 1584
+batch_end_idx = 1592
+features.shape = (8, 32, 32, 2048)
+Completed batch 198
+num_images_processed = 1592
+batch_start_idx = 1592
+batch_end_idx = 1600
+features.shape = (8, 32, 32, 2048)
+Completed batch 199
+num_images_processed = 1600
+batch_start_idx = 1600
+batch_end_idx = 1608
+features.shape = (8, 32, 32, 2048)
+Completed batch 200
+num_images_processed = 1608
+batch_start_idx = 1608
+batch_end_idx = 1616
+features.shape = (8, 32, 32, 2048)
+Completed batch 201
+num_images_processed = 1616
+batch_start_idx = 1616
+batch_end_idx = 1624
+features.shape = (8, 32, 32, 2048)
+Completed batch 202
+num_images_processed = 1624
+batch_start_idx = 1624
+batch_end_idx = 1632
+features.shape = (8, 32, 32, 2048)
+Completed batch 203
+num_images_processed = 1632
+batch_start_idx = 1632
+batch_end_idx = 1640
+features.shape = (8, 32, 32, 2048)
+Completed batch 204
+num_images_processed = 1640
+batch_start_idx = 1640
+batch_end_idx = 1648
+features.shape = (8, 32, 32, 2048)
+Completed batch 205
+num_images_processed = 1648
+batch_start_idx = 1648
+batch_end_idx = 1656
+features.shape = (8, 32, 32, 2048)
+Completed batch 206
+num_images_processed = 1656
+batch_start_idx = 1656
+batch_end_idx = 1664
+features.shape = (8, 32, 32, 2048)
+Completed batch 207
+num_images_processed = 1664
+batch_start_idx = 1664
+batch_end_idx = 1672
+features.shape = (8, 32, 32, 2048)
+Completed batch 208
+num_images_processed = 1672
+batch_start_idx = 1672
+batch_end_idx = 1680
+features.shape = (8, 32, 32, 2048)
+Completed batch 209
+num_images_processed = 1680
+batch_start_idx = 1680
+batch_end_idx = 1688
+features.shape = (8, 32, 32, 2048)
+Completed batch 210
+num_images_processed = 1688
+batch_start_idx = 1688
+batch_end_idx = 1696
+features.shape = (8, 32, 32, 2048)
+Completed batch 211
+num_images_processed = 1696
+batch_start_idx = 1696
+batch_end_idx = 1704
+features.shape = (8, 32, 32, 2048)
+Completed batch 212
+num_images_processed = 1704
+batch_start_idx = 1704
+batch_end_idx = 1712
+features.shape = (8, 32, 32, 2048)
+Completed batch 213
+num_images_processed = 1712
+batch_start_idx = 1712
+batch_end_idx = 1720
+features.shape = (8, 32, 32, 2048)
+Completed batch 214
+num_images_processed = 1720
+batch_start_idx = 1720
+batch_end_idx = 1728
+features.shape = (8, 32, 32, 2048)
+Completed batch 215
+num_images_processed = 1728
+batch_start_idx = 1728
+batch_end_idx = 1736
+features.shape = (8, 32, 32, 2048)
+Completed batch 216
+num_images_processed = 1736
+batch_start_idx = 1736
+batch_end_idx = 1744
+features.shape = (8, 32, 32, 2048)
+Completed batch 217
+num_images_processed = 1744
+batch_start_idx = 1744
+batch_end_idx = 1752
+features.shape = (8, 32, 32, 2048)
+Completed batch 218
+num_images_processed = 1752
+batch_start_idx = 1752
+batch_end_idx = 1760
+features.shape = (8, 32, 32, 2048)
+Completed batch 219
+num_images_processed = 1760
+batch_start_idx = 1760
+batch_end_idx = 1768
+features.shape = (8, 32, 32, 2048)
+Completed batch 220
+num_images_processed = 1768
+batch_start_idx = 1768
+batch_end_idx = 1776
+features.shape = (8, 32, 32, 2048)
+Completed batch 221
+num_images_processed = 1776
+batch_start_idx = 1776
+batch_end_idx = 1784
+features.shape = (8, 32, 32, 2048)
+Completed batch 222
+num_images_processed = 1784
+batch_start_idx = 1784
+batch_end_idx = 1792
+features.shape = (8, 32, 32, 2048)
+Completed batch 223
+num_images_processed = 1792
+batch_start_idx = 1792
+batch_end_idx = 1800
+features.shape = (8, 32, 32, 2048)
+Completed batch 224
+num_images_processed = 1800
+batch_start_idx = 1800
+batch_end_idx = 1808
+features.shape = (8, 32, 32, 2048)
+Completed batch 225
+num_images_processed = 1808
+batch_start_idx = 1808
+batch_end_idx = 1816
+features.shape = (8, 32, 32, 2048)
+Completed batch 226
+num_images_processed = 1816
+batch_start_idx = 1816
+batch_end_idx = 1824
+features.shape = (8, 32, 32, 2048)
+Completed batch 227
+num_images_processed = 1824
+batch_start_idx = 1824
+batch_end_idx = 1832
+features.shape = (8, 32, 32, 2048)
+Completed batch 228
+num_images_processed = 1832
+batch_start_idx = 1832
+batch_end_idx = 1840
+features.shape = (8, 32, 32, 2048)
+Completed batch 229
+num_images_processed = 1840
+batch_start_idx = 1840
+batch_end_idx = 1848
+features.shape = (8, 32, 32, 2048)
+Completed batch 230
+num_images_processed = 1848
+batch_start_idx = 1848
+batch_end_idx = 1856
+features.shape = (8, 32, 32, 2048)
+Completed batch 231
+num_images_processed = 1856
+batch_start_idx = 1856
+batch_end_idx = 1864
+features.shape = (8, 32, 32, 2048)
+Completed batch 232
+num_images_processed = 1864
+batch_start_idx = 1864
+batch_end_idx = 1872
+features.shape = (8, 32, 32, 2048)
+Completed batch 233
+num_images_processed = 1872
+batch_start_idx = 1872
+batch_end_idx = 1880
+features.shape = (8, 32, 32, 2048)
+Completed batch 234
+num_images_processed = 1880
+batch_start_idx = 1880
+batch_end_idx = 1888
+features.shape = (8, 32, 32, 2048)
+Completed batch 235
+num_images_processed = 1888
+batch_start_idx = 1888
+batch_end_idx = 1896
+features.shape = (8, 32, 32, 2048)
+Completed batch 236
+num_images_processed = 1896
+batch_start_idx = 1896
+batch_end_idx = 1904
+features.shape = (8, 32, 32, 2048)
+Completed batch 237
+num_images_processed = 1904
+batch_start_idx = 1904
+batch_end_idx = 1912
+features.shape = (8, 32, 32, 2048)
+Completed batch 238
+num_images_processed = 1912
+batch_start_idx = 1912
+batch_end_idx = 1920
+features.shape = (8, 32, 32, 2048)
+Completed batch 239
+num_images_processed = 1920
+batch_start_idx = 1920
+batch_end_idx = 1928
+features.shape = (8, 32, 32, 2048)
+Completed batch 240
+num_images_processed = 1928
+batch_start_idx = 1928
+batch_end_idx = 1936
+features.shape = (8, 32, 32, 2048)
+Completed batch 241
+num_images_processed = 1936
+batch_start_idx = 1936
+batch_end_idx = 1944
+features.shape = (8, 32, 32, 2048)
+Completed batch 242
+num_images_processed = 1944
+batch_start_idx = 1944
+batch_end_idx = 1952
+features.shape = (8, 32, 32, 2048)
+Completed batch 243
+num_images_processed = 1952
+batch_start_idx = 1952
+batch_end_idx = 1960
+features.shape = (8, 32, 32, 2048)
+Completed batch 244
+num_images_processed = 1960
+batch_start_idx = 1960
+batch_end_idx = 1968
+features.shape = (8, 32, 32, 2048)
+Completed batch 245
+num_images_processed = 1968
+batch_start_idx = 1968
+batch_end_idx = 1976
+features.shape = (8, 32, 32, 2048)
+Completed batch 246
+num_images_processed = 1976
+batch_start_idx = 1976
+batch_end_idx = 1984
+features.shape = (8, 32, 32, 2048)
+Completed batch 247
+num_images_processed = 1984
+batch_start_idx = 1984
+batch_end_idx = 1992
+features.shape = (8, 32, 32, 2048)
+Completed batch 248
+num_images_processed = 1992
+batch_start_idx = 1992
+batch_end_idx = 2000
+features.shape = (8, 32, 32, 2048)
+Completed batch 249
+num_images_processed = 2000
+batch_start_idx = 2000
+batch_end_idx = 2008
+features.shape = (8, 32, 32, 2048)
+Completed batch 250
+num_images_processed = 2008
+batch_start_idx = 2008
+batch_end_idx = 2016
+features.shape = (8, 32, 32, 2048)
+Completed batch 251
+num_images_processed = 2016
+batch_start_idx = 2016
+batch_end_idx = 2024
+features.shape = (8, 32, 32, 2048)
+Completed batch 252
+num_images_processed = 2024
+batch_start_idx = 2024
+batch_end_idx = 2032
+features.shape = (8, 32, 32, 2048)
+Completed batch 253
+num_images_processed = 2032
+batch_start_idx = 2032
+batch_end_idx = 2040
+features.shape = (8, 32, 32, 2048)
+Completed batch 254
+num_images_processed = 2040
+batch_start_idx = 2040
+batch_end_idx = 2048
+features.shape = (8, 32, 32, 2048)
+Completed batch 255
+num_images_processed = 2048
+batch_start_idx = 2048
+batch_end_idx = 2056
+features.shape = (8, 32, 32, 2048)
+Completed batch 256
+num_images_processed = 2056
+batch_start_idx = 2056
+batch_end_idx = 2064
+features.shape = (8, 32, 32, 2048)
+Completed batch 257
+num_images_processed = 2064
+batch_start_idx = 2064
+batch_end_idx = 2072
+features.shape = (8, 32, 32, 2048)
+Completed batch 258
+num_images_processed = 2072
+batch_start_idx = 2072
+batch_end_idx = 2080
+features.shape = (8, 32, 32, 2048)
+Completed batch 259
+num_images_processed = 2080
+batch_start_idx = 2080
+batch_end_idx = 2088
+features.shape = (8, 32, 32, 2048)
+Completed batch 260
+num_images_processed = 2088
+batch_start_idx = 2088
+batch_end_idx = 2096
+features.shape = (8, 32, 32, 2048)
+Completed batch 261
+num_images_processed = 2096
+batch_start_idx = 2096
+batch_end_idx = 2104
+features.shape = (8, 32, 32, 2048)
+Completed batch 262
+num_images_processed = 2104
+batch_start_idx = 2104
+batch_end_idx = 2112
+features.shape = (8, 32, 32, 2048)
+Completed batch 263
+num_images_processed = 2112
+batch_start_idx = 2112
+batch_end_idx = 2120
+features.shape = (8, 32, 32, 2048)
+Completed batch 264
+num_images_processed = 2120
+batch_start_idx = 2120
+batch_end_idx = 2128
+features.shape = (8, 32, 32, 2048)
+Completed batch 265
+num_images_processed = 2128
+batch_start_idx = 2128
+batch_end_idx = 2136
+features.shape = (8, 32, 32, 2048)
+Completed batch 266
+num_images_processed = 2136
+batch_start_idx = 2136
+batch_end_idx = 2144
+features.shape = (8, 32, 32, 2048)
+Completed batch 267
+num_images_processed = 2144
+batch_start_idx = 2144
+batch_end_idx = 2152
+features.shape = (8, 32, 32, 2048)
+Completed batch 268
+num_images_processed = 2152
+batch_start_idx = 2152
+batch_end_idx = 2160
+features.shape = (8, 32, 32, 2048)
+Completed batch 269
+num_images_processed = 2160
+batch_start_idx = 2160
+batch_end_idx = 2168
+features.shape = (8, 32, 32, 2048)
+Completed batch 270
+num_images_processed = 2168
+batch_start_idx = 2168
+batch_end_idx = 2176
+features.shape = (8, 32, 32, 2048)
+Completed batch 271
+num_images_processed = 2176
+batch_start_idx = 2176
+batch_end_idx = 2184
+features.shape = (8, 32, 32, 2048)
+Completed batch 272
+num_images_processed = 2184
+batch_start_idx = 2184
+batch_end_idx = 2192
+features.shape = (8, 32, 32, 2048)
+Completed batch 273
+num_images_processed = 2192
+batch_start_idx = 2192
+batch_end_idx = 2200
+features.shape = (8, 32, 32, 2048)
+Completed batch 274
+num_images_processed = 2200
+batch_start_idx = 2200
+batch_end_idx = 2208
+features.shape = (8, 32, 32, 2048)
+Completed batch 275
+num_images_processed = 2208
+batch_start_idx = 2208
+batch_end_idx = 2216
+features.shape = (8, 32, 32, 2048)
+Completed batch 276
+num_images_processed = 2216
+batch_start_idx = 2216
+batch_end_idx = 2224
+features.shape = (8, 32, 32, 2048)
+Completed batch 277
+num_images_processed = 2224
+batch_start_idx = 2224
+batch_end_idx = 2232
+features.shape = (8, 32, 32, 2048)
+Completed batch 278
+num_images_processed = 2232
+batch_start_idx = 2232
+batch_end_idx = 2240
+features.shape = (8, 32, 32, 2048)
+Completed batch 279
+num_images_processed = 2240
+batch_start_idx = 2240
+batch_end_idx = 2248
+features.shape = (8, 32, 32, 2048)
+Completed batch 280
+num_images_processed = 2248
+batch_start_idx = 2248
+batch_end_idx = 2256
+features.shape = (8, 32, 32, 2048)
+Completed batch 281
+num_images_processed = 2256
+batch_start_idx = 2256
+batch_end_idx = 2264
+features.shape = (8, 32, 32, 2048)
+Completed batch 282
+num_images_processed = 2264
+batch_start_idx = 2264
+batch_end_idx = 2272
+features.shape = (8, 32, 32, 2048)
+Completed batch 283
+num_images_processed = 2272
+batch_start_idx = 2272
+batch_end_idx = 2280
+features.shape = (8, 32, 32, 2048)
+Completed batch 284
+num_images_processed = 2280
+batch_start_idx = 2280
+batch_end_idx = 2288
+features.shape = (8, 32, 32, 2048)
+Completed batch 285
+num_images_processed = 2288
+batch_start_idx = 2288
+batch_end_idx = 2296
+features.shape = (8, 32, 32, 2048)
+Completed batch 286
+num_images_processed = 2296
+batch_start_idx = 2296
+batch_end_idx = 2304
+features.shape = (8, 32, 32, 2048)
+Completed batch 287
+num_images_processed = 2304
+batch_start_idx = 2304
+batch_end_idx = 2312
+features.shape = (8, 32, 32, 2048)
+Completed batch 288
+num_images_processed = 2312
+batch_start_idx = 2312
+batch_end_idx = 2320
+features.shape = (8, 32, 32, 2048)
+Completed batch 289
+num_images_processed = 2320
+batch_start_idx = 2320
+batch_end_idx = 2328
+features.shape = (8, 32, 32, 2048)
+Completed batch 290
+num_images_processed = 2328
+batch_start_idx = 2328
+batch_end_idx = 2336
+features.shape = (8, 32, 32, 2048)
+Completed batch 291
+num_images_processed = 2336
+batch_start_idx = 2336
+batch_end_idx = 2344
+features.shape = (8, 32, 32, 2048)
+Completed batch 292
+num_images_processed = 2344
+batch_start_idx = 2344
+batch_end_idx = 2352
+features.shape = (8, 32, 32, 2048)
+Completed batch 293
+num_images_processed = 2352
+batch_start_idx = 2352
+batch_end_idx = 2360
+features.shape = (8, 32, 32, 2048)
+Completed batch 294
+num_images_processed = 2360
+batch_start_idx = 2360
+batch_end_idx = 2368
+features.shape = (8, 32, 32, 2048)
+Completed batch 295
+num_images_processed = 2368
+batch_start_idx = 2368
+batch_end_idx = 2376
+features.shape = (8, 32, 32, 2048)
+Completed batch 296
+num_images_processed = 2376
+batch_start_idx = 2376
+batch_end_idx = 2384
+features.shape = (8, 32, 32, 2048)
+Completed batch 297
+num_images_processed = 2384
+batch_start_idx = 2384
+batch_end_idx = 2392
+features.shape = (8, 32, 32, 2048)
+Completed batch 298
+num_images_processed = 2392
+batch_start_idx = 2392
+batch_end_idx = 2400
+features.shape = (8, 32, 32, 2048)
+Completed batch 299
+num_images_processed = 2400
+batch_start_idx = 2400
+batch_end_idx = 2408
+features.shape = (8, 32, 32, 2048)
+Completed batch 300
+num_images_processed = 2408
+batch_start_idx = 2408
+batch_end_idx = 2416
+features.shape = (8, 32, 32, 2048)
+Completed batch 301
+num_images_processed = 2416
+batch_start_idx = 2416
+batch_end_idx = 2424
+features.shape = (8, 32, 32, 2048)
+Completed batch 302
+num_images_processed = 2424
+batch_start_idx = 2424
+batch_end_idx = 2432
+features.shape = (8, 32, 32, 2048)
+Completed batch 303
+num_images_processed = 2432
+batch_start_idx = 2432
+batch_end_idx = 2440
+features.shape = (8, 32, 32, 2048)
+Completed batch 304
+num_images_processed = 2440
+batch_start_idx = 2440
+batch_end_idx = 2448
+features.shape = (8, 32, 32, 2048)
+Completed batch 305
+num_images_processed = 2448
+batch_start_idx = 2448
+batch_end_idx = 2456
+features.shape = (8, 32, 32, 2048)
+Completed batch 306
+num_images_processed = 2456
+batch_start_idx = 2456
+batch_end_idx = 2464
+features.shape = (8, 32, 32, 2048)
+Completed batch 307
+num_images_processed = 2464
+batch_start_idx = 2464
+batch_end_idx = 2472
+features.shape = (8, 32, 32, 2048)
+Completed batch 308
+num_images_processed = 2472
+batch_start_idx = 2472
+batch_end_idx = 2480
+features.shape = (8, 32, 32, 2048)
+Completed batch 309
+num_images_processed = 2480
+batch_start_idx = 2480
+batch_end_idx = 2488
+features.shape = (8, 32, 32, 2048)
+Completed batch 310
+num_images_processed = 2488
+batch_start_idx = 2488
+batch_end_idx = 2496
+features.shape = (8, 32, 32, 2048)
+Completed batch 311
+num_images_processed = 2496
+batch_start_idx = 2496
+batch_end_idx = 2504
+features.shape = (8, 32, 32, 2048)
+Completed batch 312
+num_images_processed = 2504
+batch_start_idx = 2504
+batch_end_idx = 2512
+features.shape = (8, 32, 32, 2048)
+Completed batch 313
+num_images_processed = 2512
+batch_start_idx = 2512
+batch_end_idx = 2520
+features.shape = (8, 32, 32, 2048)
+Completed batch 314
+num_images_processed = 2520
+batch_start_idx = 2520
+batch_end_idx = 2528
+features.shape = (8, 32, 32, 2048)
+Completed batch 315
+num_images_processed = 2528
+batch_start_idx = 2528
+batch_end_idx = 2536
+features.shape = (8, 32, 32, 2048)
+Completed batch 316
+num_images_processed = 2536
+batch_start_idx = 2536
+batch_end_idx = 2544
+features.shape = (8, 32, 32, 2048)
+Completed batch 317
+num_images_processed = 2544
+batch_start_idx = 2544
+batch_end_idx = 2552
+features.shape = (8, 32, 32, 2048)
+Completed batch 318
+num_images_processed = 2552
+batch_start_idx = 2552
+batch_end_idx = 2560
+features.shape = (8, 32, 32, 2048)
+Completed batch 319
+num_images_processed = 2560
+batch_start_idx = 2560
+batch_end_idx = 2568
+features.shape = (8, 32, 32, 2048)
+Completed batch 320
+num_images_processed = 2568
+batch_start_idx = 2568
+batch_end_idx = 2576
+features.shape = (8, 32, 32, 2048)
+Completed batch 321
+num_images_processed = 2576
+batch_start_idx = 2576
+batch_end_idx = 2584
+features.shape = (8, 32, 32, 2048)
+Completed batch 322
+num_images_processed = 2584
+batch_start_idx = 2584
+batch_end_idx = 2592
+features.shape = (8, 32, 32, 2048)
+Completed batch 323
+num_images_processed = 2592
+batch_start_idx = 2592
+batch_end_idx = 2600
+features.shape = (8, 32, 32, 2048)
+Completed batch 324
+num_images_processed = 2600
+batch_start_idx = 2600
+batch_end_idx = 2608
+features.shape = (8, 32, 32, 2048)
+Completed batch 325
+num_images_processed = 2608
+batch_start_idx = 2608
+batch_end_idx = 2616
+features.shape = (8, 32, 32, 2048)
+Completed batch 326
+num_images_processed = 2616
+batch_start_idx = 2616
+batch_end_idx = 2624
+features.shape = (8, 32, 32, 2048)
+Completed batch 327
+num_images_processed = 2624
+batch_start_idx = 2624
+batch_end_idx = 2632
+features.shape = (8, 32, 32, 2048)
+Completed batch 328
+num_images_processed = 2632
+batch_start_idx = 2632
+batch_end_idx = 2640
+features.shape = (8, 32, 32, 2048)
+Completed batch 329
+num_images_processed = 2640
+batch_start_idx = 2640
+batch_end_idx = 2648
+features.shape = (8, 32, 32, 2048)
+Completed batch 330
+num_images_processed = 2648
+batch_start_idx = 2648
+batch_end_idx = 2656
+features.shape = (8, 32, 32, 2048)
+Completed batch 331
+num_images_processed = 2656
+batch_start_idx = 2656
+batch_end_idx = 2664
+features.shape = (8, 32, 32, 2048)
+Completed batch 332
+num_images_processed = 2664
+batch_start_idx = 2664
+batch_end_idx = 2672
+features.shape = (8, 32, 32, 2048)
+Completed batch 333
+num_images_processed = 2672
+batch_start_idx = 2672
+batch_end_idx = 2680
+features.shape = (8, 32, 32, 2048)
+Completed batch 334
+num_images_processed = 2680
+batch_start_idx = 2680
+batch_end_idx = 2688
+features.shape = (8, 32, 32, 2048)
+Completed batch 335
+num_images_processed = 2688
+batch_start_idx = 2688
+batch_end_idx = 2696
+features.shape = (8, 32, 32, 2048)
+Completed batch 336
+num_images_processed = 2696
+batch_start_idx = 2696
+batch_end_idx = 2704
+features.shape = (8, 32, 32, 2048)
+Completed batch 337
+num_images_processed = 2704
+batch_start_idx = 2704
+batch_end_idx = 2712
+features.shape = (8, 32, 32, 2048)
+Completed batch 338
+num_images_processed = 2712
+batch_start_idx = 2712
+batch_end_idx = 2720
+features.shape = (8, 32, 32, 2048)
+Completed batch 339
+num_images_processed = 2720
+batch_start_idx = 2720
+batch_end_idx = 2728
+features.shape = (8, 32, 32, 2048)
+Completed batch 340
+num_images_processed = 2728
+batch_start_idx = 2728
+batch_end_idx = 2736
+features.shape = (8, 32, 32, 2048)
+Completed batch 341
+num_images_processed = 2736
+batch_start_idx = 2736
+batch_end_idx = 2744
+features.shape = (8, 32, 32, 2048)
+Completed batch 342
+num_images_processed = 2744
+batch_start_idx = 2744
+batch_end_idx = 2752
+features.shape = (8, 32, 32, 2048)
+Completed batch 343
+num_images_processed = 2752
+batch_start_idx = 2752
+batch_end_idx = 2760
+features.shape = (8, 32, 32, 2048)
+Completed batch 344
+num_images_processed = 2760
+batch_start_idx = 2760
+batch_end_idx = 2768
+features.shape = (8, 32, 32, 2048)
+Completed batch 345
+num_images_processed = 2768
+batch_start_idx = 2768
+batch_end_idx = 2776
+features.shape = (8, 32, 32, 2048)
+Completed batch 346
+num_images_processed = 2776
+batch_start_idx = 2776
+batch_end_idx = 2784
+features.shape = (8, 32, 32, 2048)
+Completed batch 347
+num_images_processed = 2784
+batch_start_idx = 2784
+batch_end_idx = 2792
+features.shape = (8, 32, 32, 2048)
+Completed batch 348
+num_images_processed = 2792
+batch_start_idx = 2792
+batch_end_idx = 2800
+features.shape = (8, 32, 32, 2048)
+Completed batch 349
+num_images_processed = 2800
+batch_start_idx = 2800
+batch_end_idx = 2808
+features.shape = (8, 32, 32, 2048)
+Completed batch 350
+num_images_processed = 2808
+batch_start_idx = 2808
+batch_end_idx = 2816
+features.shape = (8, 32, 32, 2048)
+Completed batch 351
+num_images_processed = 2816
+batch_start_idx = 2816
+batch_end_idx = 2824
+features.shape = (8, 32, 32, 2048)
+Completed batch 352
+num_images_processed = 2824
+batch_start_idx = 2824
+batch_end_idx = 2832
+features.shape = (8, 32, 32, 2048)
+Completed batch 353
+num_images_processed = 2832
+batch_start_idx = 2832
+batch_end_idx = 2840
+features.shape = (8, 32, 32, 2048)
+Completed batch 354
+num_images_processed = 2840
+batch_start_idx = 2840
+batch_end_idx = 2848
+features.shape = (8, 32, 32, 2048)
+Completed batch 355
+num_images_processed = 2848
+batch_start_idx = 2848
+batch_end_idx = 2856
+features.shape = (8, 32, 32, 2048)
+Completed batch 356
+num_images_processed = 2856
+batch_start_idx = 2856
+batch_end_idx = 2864
+features.shape = (8, 32, 32, 2048)
+Completed batch 357
+num_images_processed = 2864
+batch_start_idx = 2864
+batch_end_idx = 2872
+features.shape = (8, 32, 32, 2048)
+Completed batch 358
+num_images_processed = 2872
+batch_start_idx = 2872
+batch_end_idx = 2880
+features.shape = (8, 32, 32, 2048)
+Completed batch 359
+num_images_processed = 2880
+batch_start_idx = 2880
+batch_end_idx = 2888
+features.shape = (8, 32, 32, 2048)
+Completed batch 360
+num_images_processed = 2888
+batch_start_idx = 2888
+batch_end_idx = 2896
+features.shape = (8, 32, 32, 2048)
+Completed batch 361
+num_images_processed = 2896
+batch_start_idx = 2896
+batch_end_idx = 2904
+features.shape = (8, 32, 32, 2048)
+Completed batch 362
+num_images_processed = 2904
+batch_start_idx = 2904
+batch_end_idx = 2912
+features.shape = (8, 32, 32, 2048)
+Completed batch 363
+num_images_processed = 2912
+batch_start_idx = 2912
+batch_end_idx = 2920
+features.shape = (8, 32, 32, 2048)
+Completed batch 364
+num_images_processed = 2920
+batch_start_idx = 2920
+batch_end_idx = 2928
+features.shape = (8, 32, 32, 2048)
+Completed batch 365
+num_images_processed = 2928
+batch_start_idx = 2928
+batch_end_idx = 2936
+features.shape = (8, 32, 32, 2048)
+Completed batch 366
+num_images_processed = 2936
+batch_start_idx = 2936
+batch_end_idx = 2944
+features.shape = (8, 32, 32, 2048)
+Completed batch 367
+num_images_processed = 2944
+batch_start_idx = 2944
+batch_end_idx = 2952
+features.shape = (8, 32, 32, 2048)
+Completed batch 368
+num_images_processed = 2952
+batch_start_idx = 2952
+batch_end_idx = 2960
+features.shape = (8, 32, 32, 2048)
+Completed batch 369
+num_images_processed = 2960
+batch_start_idx = 2960
+batch_end_idx = 2968
+features.shape = (8, 32, 32, 2048)
+Completed batch 370
+num_images_processed = 2968
+batch_start_idx = 2968
+batch_end_idx = 2976
+features.shape = (8, 32, 32, 2048)
+Completed batch 371
+num_images_processed = 2976
+batch_start_idx = 2976
+batch_end_idx = 2984
+features.shape = (8, 32, 32, 2048)
+Completed batch 372
+num_images_processed = 2984
+batch_start_idx = 2984
+batch_end_idx = 2992
+features.shape = (8, 32, 32, 2048)
+Completed batch 373
+num_images_processed = 2992
+batch_start_idx = 2992
+batch_end_idx = 3000
+features.shape = (8, 32, 32, 2048)
+Completed batch 374
+num_images_processed = 3000
+batch_start_idx = 3000
+batch_end_idx = 3008
+features.shape = (8, 32, 32, 2048)
+Completed batch 375
+num_images_processed = 3008
+batch_start_idx = 3008
+batch_end_idx = 3016
+features.shape = (8, 32, 32, 2048)
+Completed batch 376
+num_images_processed = 3016
+batch_start_idx = 3016
+batch_end_idx = 3024
+features.shape = (8, 32, 32, 2048)
+Completed batch 377
+num_images_processed = 3024
+batch_start_idx = 3024
+batch_end_idx = 3032
+features.shape = (8, 32, 32, 2048)
+Completed batch 378
+num_images_processed = 3032
+batch_start_idx = 3032
+batch_end_idx = 3040
+features.shape = (8, 32, 32, 2048)
+Completed batch 379
+num_images_processed = 3040
+batch_start_idx = 3040
+batch_end_idx = 3048
+features.shape = (8, 32, 32, 2048)
+Completed batch 380
+num_images_processed = 3048
+batch_start_idx = 3048
+batch_end_idx = 3056
+features.shape = (8, 32, 32, 2048)
+Completed batch 381
+num_images_processed = 3056
+batch_start_idx = 3056
+batch_end_idx = 3064
+features.shape = (8, 32, 32, 2048)
+Completed batch 382
+num_images_processed = 3064
+batch_start_idx = 3064
+batch_end_idx = 3072
+features.shape = (8, 32, 32, 2048)
+Completed batch 383
+num_images_processed = 3072
+batch_start_idx = 3072
+batch_end_idx = 3080
+features.shape = (8, 32, 32, 2048)
+Completed batch 384
+num_images_processed = 3080
+batch_start_idx = 3080
+batch_end_idx = 3088
+features.shape = (8, 32, 32, 2048)
+Completed batch 385
+num_images_processed = 3088
+batch_start_idx = 3088
+batch_end_idx = 3096
+features.shape = (8, 32, 32, 2048)
+Completed batch 386
+num_images_processed = 3096
+batch_start_idx = 3096
+batch_end_idx = 3104
+features.shape = (8, 32, 32, 2048)
+Completed batch 387
+num_images_processed = 3104
+batch_start_idx = 3104
+batch_end_idx = 3112
+features.shape = (8, 32, 32, 2048)
+Completed batch 388
+num_images_processed = 3112
+batch_start_idx = 3112
+batch_end_idx = 3120
+features.shape = (8, 32, 32, 2048)
+Completed batch 389
+num_images_processed = 3120
+batch_start_idx = 3120
+batch_end_idx = 3128
+features.shape =

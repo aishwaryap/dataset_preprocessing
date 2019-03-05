@@ -8,7 +8,5 @@ python3 extract_resnet_fcn_features.py \
     --dataset-dir=/scratch/cluster/aish/ReferIt \
     --ckpt-path=/scratch/cluster/aish/tf_slim_models/resnet_v2_101.ckpt \
     --image-list-file=referit_train_imlist.txt \
-    --output-file=referit_train_imlist.hdf5 \
-    > /scratch/cluster/aish/ReferIt/bash_log/resnet_fcn_features/train.out \
-    2> /scratch/cluster/aish/ReferIt/bash_log/resnet_fcn_features/train.err
+    --output-file=referit_train_imlist_piped.hdf5 
 deactivate

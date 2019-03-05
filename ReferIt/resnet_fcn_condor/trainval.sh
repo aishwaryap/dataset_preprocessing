@@ -1,7 +1,7 @@
 universe = vanilla
 Initialdir = /u/aish/Documents/Research/Code/dataset_preprocessing/ReferIt/resnet_fcn_bash
 Executable = /lusr/bin/bash
-Arguments = trainval.sh
+Arguments = trainval_cpu.sh
 +Group   = "GRAD"
 +Project = "AI_ROBOTICS"
 +ProjectDescription = "Extract ResNet FCN Features for ReferIt"

@@ -1,0 +1,52 @@
+2019-02-22 13:01:29.063976: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-02-22 13:01:31.794152: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:04:00.0
+totalMemory: 11.75GiB freeMemory: 9.08GiB
+2019-02-22 13:01:32.323826: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 1 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:05:00.0
+totalMemory: 11.75GiB freeMemory: 2.30GiB
+2019-02-22 13:01:32.830433: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 2 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:08:00.0
+totalMemory: 11.75GiB freeMemory: 11.34GiB
+2019-02-22 13:01:33.450416: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 3 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:09:00.0
+totalMemory: 11.75GiB freeMemory: 11.34GiB
+2019-02-22 13:01:34.152787: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 4 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:84:00.0
+totalMemory: 11.75GiB freeMemory: 2.20GiB
+2019-02-22 13:01:35.045770: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 5 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:85:00.0
+totalMemory: 11.75GiB freeMemory: 2.28GiB
+2019-02-22 13:01:35.774202: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 6 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:88:00.0
+totalMemory: 11.75GiB freeMemory: 2.28GiB
+2019-02-22 13:01:36.604459: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 7 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:89:00.0
+totalMemory: 11.75GiB freeMemory: 2.28GiB
+2019-02-22 13:01:36.634387: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0, 1, 2, 3, 4, 5, 6, 7
+2019-02-22 13:01:42.514939: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-02-22 13:01:42.514998: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 1 2 3 4 5 6 7 
+2019-02-22 13:01:42.515007: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N Y Y Y N N N N 
+2019-02-22 13:01:42.515012: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 1:   Y N Y Y N N N N 
+2019-02-22 13:01:42.515017: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 2:   Y Y N Y N N N N 
+2019-02-22 13:01:42.515022: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 3:   Y Y Y N N N N N 
+2019-02-22 13:01:42.515027: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 4:   N N N N N Y Y Y 
+2019-02-22 13:01:42.515032: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 5:   N N N N Y N Y Y 
+2019-02-22 13:01:42.515037: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 6:   N N N N Y Y N Y 
+2019-02-22 13:01:42.515042: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 7:   N N N N Y Y Y N 
+2019-02-22 13:01:42.517451: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 8757 MB memory) -> physical GPU (device: 0, name: TITAN V, pci bus id: 0000:04:00.0, compute capability: 7.0)
+2019-02-22 13:01:42.519848: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 1971 MB memory) -> physical GPU (device: 1, name: TITAN V, pci bus id: 0000:05:00.0, compute capability: 7.0)
+2019-02-22 13:01:42.520379: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:2 with 10957 MB memory) -> physical GPU (device: 2, name: TITAN V, pci bus id: 0000:08:00.0, compute capability: 7.0)
+2019-02-22 13:01:42.520938: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:3 with 10957 MB memory) -> physical GPU (device: 3, name: TITAN V, pci bus id: 0000:09:00.0, compute capability: 7.0)
+2019-02-22 13:01:42.521486: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:4 with 1866 MB memory) -> physical GPU (device: 4, name: TITAN V, pci bus id: 0000:84:00.0, compute capability: 7.0)
+2019-02-22 13:01:42.522049: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:5 with 1950 MB memory) -> physical GPU (device: 5, name: TITAN V, pci bus id: 0000:85:00.0, compute capability: 7.0)
+2019-02-22 13:01:42.522537: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:6 with 1950 MB memory) -> physical GPU (device: 6, name: TITAN V, pci bus id: 0000:88:00.0, compute capability: 7.0)
+2019-02-22 13:01:42.523011: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:7 with 1950 MB memory) -> physical GPU (device: 7, name: TITAN V, pci bus id: 0000:89:00.0, compute capability: 7.0)
