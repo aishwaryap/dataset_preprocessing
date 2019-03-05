@@ -4,3 +4,4 @@ KitchenDataset/my_run.txt
 KitchenDataset/*.pyc
 ReferIt/my_run.txt
 ReferIt/*.pyc
+utils/__pycache__/

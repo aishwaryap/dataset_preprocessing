@@ -32,7 +32,7 @@ def script_per_file(image_list_file, orig_output_dir, args):
     orig_output_file = os.path.join(orig_output_dir, re.sub('.txt', '.hdf5', image_list_file))
     final_output_file = os.path.join(args.final_output_dir, re.sub('.txt', '.hdf5', image_list_file))
     script_str = train_cmd(image_list_file, orig_output_file, args)
-    script_str += 'scp ' + orig_output_file + 'aish@hati:' + final_output_file + ' \n'
+    script_str += 'scp ' + orig_output_file + ' aish@hati:' + final_output_file + ' \n'
     return script_str
 
 
@@ -42,7 +42,7 @@ def bash_cmd(bash_script, out_file, err_file):
 
 def ssh_cmd(ssh_machine, scripts_dir, run_script):
     cmd_str = 'ssh aish@' + ssh_machine + \
-              '\'cd ' + scripts_dir + '; ' + \
+              ' \'cd ' + scripts_dir + '; ' + \
               'screen -dmS resnet_edgeboxes bash -c ' + run_script + '\'\n'
     return cmd_str
 
@@ -50,7 +50,6 @@ def ssh_cmd(ssh_machine, scripts_dir, run_script):
 def create_scripts(args):
     orig_output_dir = os.path.join(args.dataset_dir, args.orig_output_dir)
     create_dir(orig_output_dir)
-    create_dir(args.final_output_dir)
     scripts_dir = os.path.join(*[args.dataset_dir, 'bash_scripts', args.scripts_dir])
     create_dir(scripts_dir)
     log_dir = os.path.join(*[args.dataset_dir, 'bash_log', args.scripts_dir])
@@ -68,7 +67,8 @@ def create_scripts(args):
     submit_file_handle = open(submit_file, 'w')
 
     for machine_idx in range(num_machines):
-        main_script_file = os.path.join(scripts_dir, 'script_' + str(machine_idx) + '.sh')
+        script_name = 'script_' + str(machine_idx) + '.sh'
+        main_script_file = os.path.join(scripts_dir, script_name)
         with open(main_script_file, 'w') as handle:
             code_dir = '/u/aish/Documents/Research/Code/dataset_preprocessing'
             handle.write(script_start_str(args.venv_name, code_dir))
@@ -84,7 +84,7 @@ def create_scripts(args):
         err_file = os.path.join(log_dir, str(machine_idx) + '.err')
         run_file = os.path.join(scripts_dir, 'run_' + str(machine_idx) + '.sh')
         with open(run_file, 'w') as handle:
-            handle.write(bash_cmd(main_script_file, out_file, err_file))
+            handle.write(bash_cmd(script_name, out_file, err_file))
         os.chmod(run_file, 0o777)
 
         machine_name = 'titan-' + str(machine_idx + 1)
