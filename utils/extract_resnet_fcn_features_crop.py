@@ -14,6 +14,10 @@ import h5py
 
 from argparse import ArgumentParser
 
+import sys
+sys.path.append('/u/aish/Documents/Research/Code/models/research/slim/preprocessing')
+from vgg_preprocessing import preprocess_image
+
 slim = tf.contrib.slim
 
 
