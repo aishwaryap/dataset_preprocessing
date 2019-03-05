@@ -56,7 +56,7 @@ def create_scripts(args):
     log_dir = os.path.join(*[args.dataset_dir, 'bash_log', args.scripts_dir])
     create_dir(log_dir)
 
-    image_list_dir = os.path.join(args.dataset_dir, args.image_list_dir)
+    image_list_dir = os.path.join(args.dataset_dir, 'image_lists/referit_edgeboxes')
     image_lists = os.listdir(image_list_dir)
     num_machines = 15
     if len(image_lists) % num_machines == 0:
@@ -99,8 +99,6 @@ if __name__ == '__main__':
                             help='Path to ReferIt dataset')
     arg_parser.add_argument('--resnet-ckpt-path', type=str, required=True,
                             help='Resnet Checkpoint path')
-    arg_parser.add_argument('--image-list-file', type=str, required=True,
-                            help='Image list file')
     arg_parser.add_argument('--orig-output-dir', type=str, required=True,
                             help='Subdirectory under dataset-dir to originally store output')
     arg_parser.add_argument('--scripts-dir', type=str, required=True,
