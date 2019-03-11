@@ -60,9 +60,10 @@ def main(args):
 
     output_file = os.path.join(*[args.dataset_dir, "resnet_fcn_features", args.output_file])
     output_file_handle = h5py.File(output_file, 'w')
-    hpy5_dataset = output_file_handle.create_dataset(re.sub('.txt', '', args.image_list_file),
-                                                 shape=(len(image_files), 32, 32, 2048),
-                                                 dtype='f')
+    dataset_name = re.sub('.txt', '', args.image_list_file.split('/')[-1])
+    hpy5_dataset = output_file_handle.create_dataset(dataset_name,
+                                                     shape=(len(image_files), 32, 32, 2048),
+                                                     dtype='f')
 
     images_placeholder = tf.placeholder(tf.float32, shape=(None, 512, 512, 3))
     preprocessed_batch = tf.map_fn(lambda img: preprocess_image(img,
