@@ -6,6 +6,8 @@ __author__ = 'aishwarya'
 
 import os
 import re
+import h5py
+import traceback
 
 
 def move():
@@ -27,5 +29,43 @@ def rename():
         os.rename(orig_file, new_file)
 
 
+def fix_edgebox_hdf5():
+    features_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
+    dataset_name_prefix = 'scratch/cluster/aish/ReferIt/image_lists/referit_edgeboxes/'
+    bad_files_file = '/u/aish/Documents/temp/problematic_edgebox_files.txt'
+    bad_files_handle = open(bad_files_file, 'w')
+    files_to_clean = [f for f in os.listdir(features_dir)]
+
+    for filename in files_to_clean:
+        print('Processing file', filename)
+
+        orig_file = os.path.join(features_dir, filename)
+        try:
+            orig_handle = h5py.File(orig_file, 'r')
+        except KeyboardInterrupt:
+            raise
+        except SystemExit:
+            raise
+        except:
+            print(traceback.format_exc())
+            bad_files_handle.write(filename + '\n')
+            continue    # Problem opening file
+
+        new_dataset_name = re.sub('.hdf5', '', filename)
+        if new_dataset_name in orig_handle.keys():
+            orig_handle.close()
+            continue    # File is already fixed
+
+        temp_file = os.path.join(features_dir, 'temp.hdf5')
+        temp_handle = h5py.File(temp_file, 'w')
+        orig_dataset_name = os.path.join(dataset_name_prefix, new_dataset_name)
+        temp_handle.copy(source=orig_handle[orig_dataset_name], dest=new_dataset_name)
+        temp_handle.close()
+        os.remove(orig_file)
+        os.rename(temp_file, orig_file)
+
+    bad_files_handle.close()
+
+
 if __name__ == '__main__':
-    rename()
+    fix_edgebox_hdf5()
