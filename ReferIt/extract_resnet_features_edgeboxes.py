@@ -32,7 +32,7 @@ def script_per_file(image_list_file, orig_output_dir, args):
     orig_output_file = os.path.join(orig_output_dir, re.sub('.txt', '.hdf5', image_list_file))
     final_output_file = os.path.join(args.final_output_dir, re.sub('.txt', '.hdf5', image_list_file))
     script_str = train_cmd(image_list_file, re.sub('.txt', '.hdf5', image_list_file), args)
-    script_str += 'scp ' + orig_output_file + ' aish@hati:' + final_output_file + ' \n'
+    # script_str += 'scp ' + orig_output_file + ' aish@hati:' + final_output_file + ' \n'
     return script_str
 
 
