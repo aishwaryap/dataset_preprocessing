@@ -31,10 +31,17 @@ def rename():
 
 def fix_edgebox_hdf5():
     features_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
-    dataset_name_prefix = 'scratch/cluster/aish/ReferIt/image_lists/referit_edgeboxes/'
-    bad_files_file = '/u/aish/Documents/temp/problematic_edgebox_files.txt'
+    dataset_name_prefix = 'referit_edgeboxes/'
+    bad_files_file = '/u/aish/Documents/temp/bad_edgeboxes_toshiba.txt'
     bad_files_handle = open(bad_files_file, 'w')
-    files_to_clean = [f for f in os.listdir(features_dir)]
+    checked_files_file = '/u/aish/Documents/temp/checked_edgeboxes_toshiba.txt'
+    problem_files = ['1088.hdf5', '6763.hdf5', '40297.hdf5', '8461.hdf5', '7686.hdf5', '7692.hdf5']
+    with open(checked_files_file, 'r') as handle:
+        files_to_skip = problem_files + handle.read().splitlines()
+    checked_files_handle = open(checked_files_file, 'a')
+
+    #files_to_clean = [f for f in os.listdir(features_dir) if f not in files_to_skip]
+    files_to_clean = problem_files
 
     for filename in files_to_clean:
         print('Processing file', filename)
@@ -54,6 +61,8 @@ def fix_edgebox_hdf5():
         new_dataset_name = re.sub('.hdf5', '', filename)
         if new_dataset_name in orig_handle.keys():
             orig_handle.close()
+            checked_files_handle.write(filename + '\n')
+            checked_files_handle.flush()
             continue    # File is already fixed
 
         temp_file = os.path.join(features_dir, 'temp.hdf5')
@@ -63,8 +72,12 @@ def fix_edgebox_hdf5():
         temp_handle.close()
         os.remove(orig_file)
         os.rename(temp_file, orig_file)
+        checked_files_handle.write(filename + '\n')
+        checked_files_handle.flush()
+
 
     bad_files_handle.close()
+    checked_files_handle.close()
 
 
 if __name__ == '__main__':
