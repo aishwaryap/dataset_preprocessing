@@ -21,6 +21,16 @@ def move():
             os.rename(orig_file, new_file)
 
 
+def move_edgeboxes(image_list_file, orig_dir, target_dir):
+    with open(image_list_file) as handle:
+        image_list = handle.read().splitlines()
+    for filename in os.listdir(orig_dir):
+        if re.sub('.hdf5', '', filename) in image_list:
+            orig_file = os.path.join(orig_dir, filename)
+            new_file = os.path.join(target_dir, filename)
+            os.rename(orig_file, new_file)
+
+
 def rename():
     target_dir = '/scratch/cluster/aish/ReferIt/resized_imcrop'
     for filename in os.listdir(target_dir):
@@ -82,3 +92,16 @@ def fix_edgebox_hdf5():
 
 if __name__ == '__main__':
     fix_edgebox_hdf5()
+
+    # image_list_file = '/u/aish/Documents/ReferIt_link_T5/split/referit_test_imlist.txt'
+    # orig_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
+    # target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
+    # move_edgeboxes(image_list_file, orig_dir, target_dir)
+    # image_list_file = '/u/aish/Documents/ReferIt_link_T5/split/referit_train_imlist.txt'
+    # orig_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
+    # target_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
+    # move_edgeboxes(image_list_file, orig_dir, target_dir)
+    # image_list_file = '/u/aish/Documents/ReferIt_link_T5/split/referit_val_imlist.txt'
+    # orig_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
+    # target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
+    # move_edgeboxes(image_list_file, orig_dir, target_dir)
