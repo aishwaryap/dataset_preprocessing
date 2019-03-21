@@ -54,7 +54,6 @@ def move_edgeboxes_remote(image_list_file, orig_dir, remote_target_dir, ssh_host
                 local_path = os.path.join(orig_dir, filename)
                 remote_path = os.path.join(remote_target_dir, filename)
                 client.put(local_path, remote_path)
-                os.remove(local_path)
     except Exception:
         if ssh:
             ssh.close()
