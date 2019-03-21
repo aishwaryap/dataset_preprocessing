@@ -76,18 +76,16 @@ def rename():
 
 
 def fix_edgebox_hdf5():
-    features_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
+    features_dir = '/scratch/cluster/aish/ReferIt/resnet_fcn_features/edgeboxes/'
     dataset_name_prefix = 'referit_edgeboxes/'
-    bad_files_file = '/u/aish/Documents/temp/bad_edgeboxes_toshiba.txt'
+    bad_files_file = '/u/aish/Documents/temp/bad_edgeboxes_scratch.txt'
     bad_files_handle = open(bad_files_file, 'w')
-    checked_files_file = '/u/aish/Documents/temp/checked_edgeboxes_toshiba.txt'
-    problem_files = ['1088.hdf5', '6763.hdf5', '40297.hdf5', '8461.hdf5', '7686.hdf5', '7692.hdf5']
+    checked_files_file = '/u/aish/Documents/temp/checked_edgeboxes_scratch.txt'
+    problem_files = []
     with open(checked_files_file, 'r') as handle:
         files_to_skip = problem_files + handle.read().splitlines()
     checked_files_handle = open(checked_files_file, 'a')
-
-    #files_to_clean = [f for f in os.listdir(features_dir) if f not in files_to_skip]
-    files_to_clean = problem_files
+    files_to_clean = [f for f in os.listdir(features_dir) if f not in files_to_skip]
 
     for filename in files_to_clean:
         print('Processing file', filename)
@@ -126,14 +124,16 @@ def fix_edgebox_hdf5():
 
 
 if __name__ == '__main__':
-    orig_dir = '/scratch/cluster/aish/ReferIt/resnet_fcn_features/edgeboxes/'
+    fix_edgebox_hdf5()
 
-    image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_test_imlist.txt'
-    target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
-    move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
-    image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_train_imlist.txt'
-    target_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
-    move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
-    image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_val_imlist.txt'
-    target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
-    move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
+    # orig_dir = '/scratch/cluster/aish/ReferIt/resnet_fcn_features/edgeboxes/'
+    #
+    # image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_test_imlist.txt'
+    # target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
+    # move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
+    # image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_train_imlist.txt'
+    # target_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
+    # move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
+    # image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_val_imlist.txt'
+    # target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
+    # move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
