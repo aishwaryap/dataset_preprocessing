@@ -124,16 +124,16 @@ def fix_edgebox_hdf5():
 
 
 if __name__ == '__main__':
-    fix_edgebox_hdf5()
+    # fix_edgebox_hdf5()
 
-    # orig_dir = '/scratch/cluster/aish/ReferIt/resnet_fcn_features/edgeboxes/'
-    #
-    # image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_test_imlist.txt'
-    # target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
-    # move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
-    # image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_train_imlist.txt'
-    # target_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
-    # move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
-    # image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_val_imlist.txt'
-    # target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
-    # move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
+    orig_dir = '/scratch/cluster/aish/ReferIt/resnet_fcn_features/edgeboxes/'
+   
+    image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_test_imlist.txt'
+    target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
+    move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
+    image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_train_imlist.txt'
+    target_dir = '/u/aish/Documents/ReferIt_link/resnet_fcn_features/edgeboxes/'
+    move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')
+    image_list_file = '/scratch/cluster/aish/ReferIt/split/referit_val_imlist.txt'
+    target_dir = '/u/aish/Documents/ReferIt_link_T5/resnet_fcn_features/edgeboxes/'
+    move_edgeboxes_remote(image_list_file, orig_dir, target_dir, 'hati', 'aish')

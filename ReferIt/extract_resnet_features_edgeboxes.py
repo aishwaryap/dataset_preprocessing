@@ -55,16 +55,20 @@ def create_scripts(args):
     log_dir = os.path.join(*[args.dataset_dir, 'bash_log', args.scripts_dir])
     create_dir(log_dir)
 
-    image_list_dir = os.path.join(args.dataset_dir, 'image_lists/referit_edgeboxes')
-    image_lists = os.listdir(image_list_dir)
+    if args.required_files_file is not None:
+        with open(args.required_files_file) as handle:
+            image_lists = [re.sub('.hdf5', '.txt', f) for f in handle.read().splitlines()]
+    else:
+        image_list_dir = os.path.join(args.dataset_dir, 'image_lists/referit_edgeboxes')
+        image_lists = os.listdir(image_list_dir)
 
     if args.files_to_skip_file is not None:
         with open(args.files_to_skip_file) as handle:
             files_to_skip = set([re.sub('.hdf5', '.txt', x) for x in handle.read().splitlines()])
             image_lists = [image_list for image_list in image_lists if image_list not in files_to_skip]
 
-    num_machines = 2
-    num_run_files_per_machine = 8
+    num_machines = 1
+    num_run_files_per_machine = 1
     num_run_files = num_machines * num_run_files_per_machine
     if len(image_lists) % num_run_files == 0:
         num_lists_per_run_file = (len(image_lists) // num_run_files)
@@ -113,6 +117,8 @@ if __name__ == '__main__':
     arg_parser.add_argument('--files-to-skip-file', type=str, default=None,
                             help='A file which has (typically completed) edgebox files '
                                  'which do not need to be created')
+    arg_parser.add_argument('--required-files-file', type=str, default=None,
+                            help='A file which has a list of edgebox files that need to be re-executed')
     arg_parser.add_argument('--orig-output-dir', type=str, required=True,
                             help='Subdirectory under dataset-dir to originally store output')
     arg_parser.add_argument('--scripts-dir', type=str, required=True,
