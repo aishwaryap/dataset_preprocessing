@@ -84,7 +84,7 @@ def main(args):
 
     # This is to prevent a CuDNN error - https://github.com/tensorflow/tensorflow/issues/24828
     config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
+    # config.gpu_options.allow_growth = True
 
     with tf.Session(config=config) as sess:
         sess.run(tf.global_variables_initializer())
