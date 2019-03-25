@@ -8,6 +8,7 @@ import numpy.matlib as mb
 from argparse import ArgumentParser
 
 from json_wrapper import *
+import csv
 
 
 def main(args):
@@ -16,8 +17,9 @@ def main(args):
     sentences_placeholder = tf.placeholder(tf.string)
     elmo = elmo(sentences_placeholder, signature="default", as_dict=True)["elmo"]
 
-    # TODO: Replace with real ELMo padding vector
-    pad_vector = None
+    with open(args.pad_vector_file) as handle:
+        reader = csv.reader(handle)
+        pad_vector = [float(x) for x in reader.__next__()]
 
     annotations = load_json(args.annotations_file)
     output_file_handle = h5py.File(args.output_file, 'w')
@@ -44,15 +46,21 @@ def main(args):
                 batch = image_annotations[batch_start_idx:batch_end_idx]
                 batch_embeddings = sess.run(elmo,
                                             feed_dict={sentences_placeholder: batch})
+                # print('Orig shape =', batch_embeddings.shape)
+                # print('batch_embeddings.dtype =', batch_embeddings.dtype)
+                # print('batch_embeddings =', batch_embeddings)
 
-                if len(batch_embeddings.shape) == 0:
+                if len(batch_embeddings.shape) == 2:
                     batch_embeddings = np.expand_dims(batch_embeddings, axis=0)
-                if batch_embeddings.shape[2] < args.max_seq_len:
-                    batch_embeddings = batch_embeddings[:, args.max_seq_len, :]
-                elif batch_embeddings.shape[2] > args.max_seq_len:
-                    num_reps = args.max_seq_len - batch_embeddings.shape[2]
-                    padding = mb.repmat(pad_vector, batch_embeddings.shape[0], num_reps)
-                    batch_embeddings = np.concatenate(batch_embeddings, padding, axis=1)
+                if batch_embeddings.shape[1] > args.max_seq_len:
+                    batch_embeddings = batch_embeddings[:, :args.max_seq_len, :]
+                elif batch_embeddings.shape[1] < args.max_seq_len:
+                    num_reps = args.max_seq_len - batch_embeddings.shape[1]
+                    padding = np.tile(pad_vector, (batch_embeddings.shape[0], num_reps, 1))
+                    # print('Padding =', padding.shape)
+                    batch_embeddings = np.concatenate((batch_embeddings, padding), axis=1)
+                # print('New shape =', batch_embeddings.shape)
+                # print('batch_embeddings =', batch_embeddings)
 
                 image_dataset[batch_start_idx:batch_end_idx, :] = batch_embeddings
 
@@ -67,6 +75,8 @@ if __name__ == '__main__':
                             help='JSON file with annotations')
     arg_parser.add_argument('--output-file', type=str, required=True,
                             help='HDF5 file to store output')
+    arg_parser.add_argument('--pad-vector-file', type=str, required=True,
+                            help='CAV file with padding vector')
     arg_parser.add_argument('--max-batch-size', type=int, default=1024,
                             help='Max batch size')
     arg_parser.add_argument('--max-seq-len', type=int, default=40,
