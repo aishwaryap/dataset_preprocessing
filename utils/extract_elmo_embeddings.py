@@ -8,6 +8,7 @@ import numpy.matlib as mb
 from argparse import ArgumentParser
 
 from json_wrapper import *
+import csv
 
 
 def main(args):
@@ -16,8 +17,9 @@ def main(args):
     sentences_placeholder = tf.placeholder(tf.string)
     elmo = elmo(sentences_placeholder, signature="default", as_dict=True)["elmo"]
 
-    # TODO: Replace with real ELMo padding vector
-    pad_vector = None
+    with open(args.pad_vector_file) as handle:
+        reader = csv.reader(handle)
+        pad_vector = reader.__next__()
 
     annotations = load_json(args.annotations_file)
     output_file_handle = h5py.File(args.output_file, 'w')
@@ -66,7 +68,9 @@ if __name__ == '__main__':
     arg_parser.add_argument('--annotations-file', type=str, required=True,
                             help='JSON file with annotations')
     arg_parser.add_argument('--output-file', type=str, required=True,
-                            help='HDF5 file to store output')')
+                            help='HDF5 file to store output')
+    arg_parser.add_argument('--pad-vector-file', type=str, required=True,
+                            help='CAV file with padding vector')
     arg_parser.add_argument('--max-batch-size', type=int, default=1024,
                             help='Max batch size')
     arg_parser.add_argument('--max-seq-len', type=int, default=40,
