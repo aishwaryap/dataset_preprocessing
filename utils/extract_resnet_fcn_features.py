@@ -23,7 +23,7 @@ slim = tf.contrib.slim
 
 def get_numpy_array(image):
     image_data = np.array(image.getdata())
-    return image_data.reshape(image.size[0], image.size[1], image_data.shape[1])
+    return image_data.reshape(image.size[1], image.size[0], image_data.shape[1])
 
 
 def get_init_fn(checkpoint_path):
