@@ -65,7 +65,7 @@ if __name__ == '__main__':
     arg_parser.add_argument('--annotations-file', type=str, required=True,
                             help='JSON file with annotations')
     arg_parser.add_argument('--output-file', type=str, required=True,
-                            help='HDF5 file to store output')')
+                            help='HDF5 file to store output')
     arg_parser.add_argument('--max-batch-size', type=int, default=1024,
                             help='Max batch size')
     arg_parser.add_argument('--max-seq-len', type=int, default=40,
