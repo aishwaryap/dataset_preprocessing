@@ -4,6 +4,7 @@ import tensorflow as tf
 import tensorflow_hub as hub
 import h5py
 import numpy as np
+import numpy.matlib as mb
 from argparse import ArgumentParser
 
 from json_wrapper import *
@@ -50,7 +51,7 @@ def main(args):
                     batch_embeddings = batch_embeddings[:, args.max_seq_len, :]
                 elif batch_embeddings.shape[2] > args.max_seq_len:
                     num_reps = args.max_seq_len - batch_embeddings.shape[2]
-                    padding = np.repmat(pad_vector, batch_embeddings.shape[0], num_reps)
+                    padding = mb.repmat(pad_vector, batch_embeddings.shape[0], num_reps)
                     batch_embeddings = np.concatenate(batch_embeddings, padding, axis=1)
 
                 image_dataset[batch_start_idx:batch_end_idx, :] = batch_embeddings
