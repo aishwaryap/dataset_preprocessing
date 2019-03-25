@@ -7,6 +7,7 @@ from tensorflow.contrib.slim.nets import resnet_v2
 
 import os
 import re
+import csv
 from PIL import Image
 import numpy as np
 import h5py
@@ -16,7 +17,6 @@ from argparse import ArgumentParser
 import sys
 sys.path.append('/u/aish/Documents/Research/Code/models/research/slim/preprocessing')
 from vgg_preprocessing import preprocess_image
-
 
 slim = tf.contrib.slim
 
@@ -50,14 +50,20 @@ def main(args):
     print('image_list_file =', image_list_file)
     with open(image_list_file) as handle:
         rows = handle.read().splitlines()
-        image_files = [row.split(',')[1] for row in rows]
+        rows = [row.split(',') for row in rows]
+        image_files = [row[1] for row in rows]
+        if len(rows[0]) > 2:
+            crops = [row[2:] for row in rows]
+        else:
+            crops = [None] * len(image_files)
     print('len(image_files) =', len(image_files))
 
     output_file = os.path.join(*[args.dataset_dir, "resnet_fcn_features", args.output_file])
     output_file_handle = h5py.File(output_file, 'w')
-    hpy5_dataset = output_file_handle.create_dataset(re.sub('.txt', '', args.image_list_file),
-                                                 shape=(len(image_files), 32, 32, 2048),
-                                                 dtype='f', compression="gzip")
+    dataset_name = re.sub('.txt', '', args.image_list_file.split('/')[-1])
+    hpy5_dataset = output_file_handle.create_dataset(dataset_name,
+                                                     shape=(len(image_files), 32, 32, 2048),
+                                                     dtype='f')
 
     images_placeholder = tf.placeholder(tf.float32, shape=(None, 512, 512, 3))
     preprocessed_batch = tf.map_fn(lambda img: preprocess_image(img,
@@ -96,8 +102,11 @@ def main(args):
             max_images_to_process = len(image_files) + 1
         print('max_images_to_process =', max_images_to_process)
 
-        for image_file in image_files:
+        inputs = zip(image_files, crops)
+        for image_file, crop in inputs:
             pillow_image = Image.open(image_file)
+            if crop is not None:
+                pillow_image = pillow_image.crop(crop)
             pillow_image = pillow_image.resize((512, 512))
             np_image = get_numpy_array(pillow_image)
             np_image = np.expand_dims(np_image, 0)
@@ -135,7 +144,7 @@ def main(args):
             output, activations = sess.run([net, all_layers], feed_dict=feed_dict)
             features = activations['resnet_v2_101/block4']
             batch_start_idx = num_batches_done * args.batch_size
-            batch_end_idx = batch_start_idx + features.shape[0]
+            batch_end_idx = batch_start_idx + features.shape[0] - 1
             hpy5_dataset[batch_start_idx:batch_end_idx, :] = features
             num_batches_done += 1
 
@@ -152,7 +161,7 @@ if __name__ == '__main__':
                             help='Image list file')
     arg_parser.add_argument('--output-file', type=str, required=True,
                             help='Output file')
-    arg_parser.add_argument('--batch-size', type=int, default=8,
+    arg_parser.add_argument('--batch-size', type=int, default=16,
                             help='Batch size for feature extraction')
     arg_parser.add_argument('--max-images-to-process', type=int, default=None,
                             help='Stop processing after this many images - set to None if full list is needed')
