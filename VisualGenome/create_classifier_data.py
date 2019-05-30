@@ -66,6 +66,41 @@ def identify_relevant_labels(args):
     print('Saved attribute names ...')
 
 
+def create_random_matching_split(args):
+    # Get a list of regions which contain selected synsets
+    allowed_regions_file = os.path.join(args.dataset_dir, 'indoor/allowed_regions.txt')
+    with open(allowed_regions_file) as handle:
+        allowed_regions = handle.read().split('\n')
+    print('Read allowed regions')
+
+    shuffled_regions = random.shuffle(allowed_regions)
+
+    ref_train_set_file = os.path.join(args.dataset_dir, 'split/predicate_novelty/train_regions.txt')
+    with open(ref_train_set_file) as handle:
+        ref_train_set_size = len(handle.read().split('\n'))
+    train_set = shuffled_regions[:ref_train_set_size]
+
+    ref_val_set_file = os.path.join(args.dataset_dir, 'split/predicate_novelty/val_regions.txt')
+    with open(ref_val_set_file) as handle:
+        ref_val_set_size = len(handle.read().split('\n'))
+    val_set = shuffled_regions[ref_train_set_size:ref_train_set_size + ref_val_set_size]
+
+    test_set = shuffled_regions[ref_train_set_size + ref_val_set_size:]
+
+    output_filename = os.path.join(args.dataset_dir, 'split/random/train_regions.txt')
+    output_file = open(output_filename, 'w')
+    output_file.write('\n'.join(train_set))
+    output_file.close()
+    output_filename = os.path.join(args.dataset_dir, 'split/random/val_regions.txt')
+    output_file = open(output_filename, 'w')
+    output_file.write('\n'.join(val_set))
+    output_file.close()
+    output_filename = os.path.join(args.dataset_dir, 'split/random/test_regions.txt')
+    output_file = open(output_filename, 'w')
+    output_file.write('\n'.join(test_set))
+    output_file.close()
+
+
 # An intermediate step where we write the list of labels (objects and attributes), and regions relevant for
 # training classifiers, given a threshold of label frequency
 def organize_labels_and_regions(args):
@@ -175,15 +210,15 @@ def organize_labels_and_regions(args):
     random.shuffle(test_set)
 
     print('Saving split ...')
-    output_filename = os.path.join(args.dataset_dir, 'split/train_regions.txt')
+    output_filename = os.path.join(args.dataset_dir, 'split/predicate_novelty/train_regions.txt')
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(train_set))
     output_file.close()
-    output_filename = os.path.join(args.dataset_dir, 'split/val_regions.txt')
+    output_filename = os.path.join(args.dataset_dir, 'split/predicate_novelty/val_regions.txt')
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(val_set))
     output_file.close()
-    output_filename = os.path.join(args.dataset_dir, 'split/test_regions.txt')
+    output_filename = os.path.join(args.dataset_dir, 'split/predicate_novelty/test_regions.txt')
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(test_set))
     output_file.close()
@@ -419,6 +454,10 @@ if __name__ == '__main__':
     arg_parser.add_argument('--max-test-data-fraction', type=float, default=0.4,
                             help='Max fraction of data points to go into test set')
 
+    arg_parser.add_argument('--create-random-matching-split', action="store_true", default=False,
+                            help='Create a random split of the data of the same size as the split with '
+                                 'novel predicates')
+
     # Select things to write
     arg_parser.add_argument('--write-multilabels', action="store_true", default=False,
                             help='Write multilabel vectors for a batch')
@@ -445,6 +484,9 @@ if __name__ == '__main__':
 
     if args.identify_relevant_labels:
         identify_relevant_labels(args)
+
+    if args.create_random_matching_split:
+        create_random_matching_split(args)
 
     if args.organize_labels_and_regions:
         organize_labels_and_regions(args)
