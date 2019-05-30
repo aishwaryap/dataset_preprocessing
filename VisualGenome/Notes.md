@@ -46,7 +46,3 @@ Number of unique synsets = 8065
 > 1000  regions : 2661058
 > 500  regions : 2707194
 > 100  regions : 2782417
-
-# Incomplete - features
-Test - 1
-Train - 18, 24, 25, 26, 30, 31, 36

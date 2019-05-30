@@ -11,9 +11,7 @@ from utils import *
 __author__ = 'aishwarya'
 
 
-# An intermediate step where we write the list of labels (objects and attributes), and regions relevant for
-# training classifiers, given a threshold of label frequency
-def organize_labels_and_regions(args):
+def identify_relevant_labels(args):
     # Read counts of objects and attributes
     region_counts = dict()
 
@@ -21,69 +19,27 @@ def organize_labels_and_regions(args):
     objects = list()
     input_file = open(object_counts_filename)
     reader = csv.reader(input_file, delimiter=',')
-    print 'Indexing object counts ...'
+    print('Indexing object counts ...')
     for row in reader:
         region_counts[row[0]] = int(row[1])
         objects.append(row[0])
     input_file.close()
-    print 'Indexed object counts'
+    print('Indexed object counts')
 
     attribute_counts_filename = os.path.join(args.dataset_dir, 'indoor/region_attributes_stats.csv')
     attributes = list()
     input_file = open(attribute_counts_filename)
     reader = csv.reader(input_file, delimiter=',')
-    print 'Indexing attribute counts ...'
+    print('Indexing attribute counts ...')
     for row in reader:
         region_counts[row[0]] = int(row[1])
         attributes.append(row[0])
     input_file.close()
-    print 'Indexed attribute counts'
-
-    # Get a list of regions which contain selected synsets
-    allowed_regions_file = os.path.join(args.dataset_dir, 'indoor/allowed_regions.txt')
-    with open(allowed_regions_file) as handle:
-        allowed_regions = handle.read().split('\n')
-    print 'Read allowed regions'
-
-    # print 'Indexing region objects ...'
-    # region_content_filename = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
-    # input_file = open(region_content_filename)
-    # regions_per_content_item = dict()
-    # reader = csv.reader(input_file, delimiter=',')
-    # num_regions_processed = 0
-    # for row in reader:
-    #     region_id = row[0]
-    #     if region_id in allowed_regions:
-    #         for content_item in row[1:]:
-    #             if content_item in region_counts and region_counts[content_item] >= args.frequency_threshold:
-    #                 if content_item not in regions_per_content_item:
-    #                     regions_per_content_item[content_item] = list()
-    #                 regions_per_content_item[content_item].append(region_id)
-    #     num_regions_processed += 1
-    #     if num_regions_processed % 100 == 0:
-    #         print 'Indexing objects :', num_regions_processed, 'regions processed ...'
-    #
-    # print 'Indexing region attributes ...'
-    # region_content_filename = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
-    # input_file = open(region_content_filename)
-    # reader = csv.reader(input_file, delimiter=',')
-    # num_regions_processed = 0
-    # for row in reader:
-    #     region_id = row[0]
-    #     if region_id in allowed_regions:
-    #         for content_item in row[1:]:
-    #             if content_item in region_counts and region_counts[content_item] >= args.frequency_threshold:
-    #                 if content_item not in regions_per_content_item:
-    #                     regions_per_content_item[content_item] = list()
-    #                 regions_per_content_item[content_item].append(region_id)
-    #     num_regions_processed += 1
-    #     if num_regions_processed % 100 == 0:
-    #         print 'Indexing attributes :', num_regions_processed, 'regions processed ...'
-    # print 'Indexed regions ...'
+    print('Indexed attribute counts')
 
     relevant_labels = [label for (label, count) in region_counts.items() if count > args.frequency_threshold]
     relevant_labels.sort()
-    print 'Identified relevant labels ...'
+    print('Identified relevant labels ...')
 
     relevant_labels = ['_'.join(label.split()) for label in relevant_labels]
     objects = ['_'.join(label.split()) for label in objects]
@@ -93,55 +49,75 @@ def organize_labels_and_regions(args):
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(relevant_labels))
     output_file.close()
-    print 'Saved label names ...'
+    print('Saved label names ...')
 
     relevant_objects = [label for label in relevant_labels if label in objects]
     output_filename = os.path.join(args.dataset_dir, 'classifiers/data/object_names.txt')
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(relevant_objects))
     output_file.close()
-    print 'Saved object names ...'
+    print('Saved object names ...')
 
     relevant_attributes = [label for label in relevant_labels if label in attributes]
     output_filename = os.path.join(args.dataset_dir, 'classifiers/data/attribute_names.txt')
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(relevant_attributes))
     output_file.close()
-    print 'Saved attribute names ...'
+    print('Saved attribute names ...')
 
-    # relevant_regions = set()
-    # for content_item in relevant_labels:
-    #     relevant_regions = relevant_regions.union(regions_per_content_item[content_item])
-    # output_filename = os.path.join(args.dataset_dir, 'classifiers/data/relevant_regions.txt')
-    # output_file = open(output_filename, 'w')
-    # output_file.write('\n'.join(relevant_regions))
-    # output_file.close()
-    # print 'Saved relevant regions ...'
 
-    print 'Finding a good train-test split ...'
-    # relevant_regions = list(relevant_regions)
-    objects_split_point = int((1.0 - args.test_label_fraction) * len(relevant_objects))
-    attributes_split_point = int((1.0 - args.test_label_fraction) * len(relevant_attributes))
+# An intermediate step where we write the list of labels (objects and attributes), and regions relevant for
+# training classifiers, given a threshold of label frequency
+def organize_labels_and_regions(args):
+    # Get a list of regions which contain selected synsets
+    allowed_regions_file = os.path.join(args.dataset_dir, 'indoor/allowed_regions.txt')
+    with open(allowed_regions_file) as handle:
+        allowed_regions = handle.read().split('\n')
+    print('Read allowed regions')
+
+    relevant_objects_file = os.path.join(args.dataset_dir, 'classifiers/data/object_names.txt')
+    with open(relevant_objects_file) as handle:
+        relevant_objects = handle.read().split('\n')
+    print('Read relevant objects')
+
+    relevant_attributes_file = os.path.join(args.dataset_dir, 'classifiers/data/attributes_names.txt')
+    with open(relevant_attributes_file) as handle:
+        relevant_attributes = handle.read().split('\n')
+    print('Read relevant attributes')
+
+    print('Finding a good train-test split ...')
+    train_label_fraction = 1.0 - args.val_label_fraction - args.test_label_fraction
+    trainval_label_fraction = train_label_fraction + args.val_label_fraction
+    objects_val_split_point = int(train_label_fraction * len(relevant_objects))
+    attributes_val_split_point = int(train_label_fraction * len(relevant_attributes))
+    objects_test_split_point = int(trainval_label_fraction * len(relevant_objects))
+    attributes_test_split_point = int(trainval_label_fraction * len(relevant_attributes))
     good_split_found = False
     num_trials = 0
-    test_set = list()
     train_set = list()
+    val_set = list()
+    test_set = list()
 
-    print 'Starting search ...'
+    print('Starting search ...')
     # Keep shuffling the list till you find a train-test-split that works : 1 is often enough
     while not good_split_found:
-        print 'Still looking...'
+        print('Still looking...')
         random.shuffle(relevant_objects)
         random.shuffle(relevant_attributes)
-        print '\t Shuffled...'
+        print('\t Shuffled...')
 
-        test_set_objects = relevant_objects[objects_split_point:]
-        test_set_attributes = relevant_attributes[attributes_split_point:]
-        test_set_labels = test_set_attributes + test_set_objects
+        val_set_objects = relevant_objects[objects_val_split_point:objects_test_split_point]
+        val_set_attributes = relevant_attributes[attributes_val_split_point:attributes_test_split_point]
+        val_set_labels = set(val_set_attributes + val_set_objects)
 
-        print '\t Building test set '
-        test_set = list()
+        test_set_objects = relevant_objects[objects_test_split_point:]
+        test_set_attributes = relevant_attributes[attributes_test_split_point:]
+        test_set_labels = set(test_set_attributes + test_set_objects)
+
+        print('\t Building train, val and test sets ')
         train_set = list()
+        val_set = list()
+        test_set = list()
 
         filenames = [
             os.path.join(args.dataset_dir, 'indoor/region_objects_unique.csv'),
@@ -163,49 +139,55 @@ def organize_labels_and_regions(args):
                     raise RuntimeError('Region contents files not synced. Mismatch at line '
                                        + str(num_regions_processed))
                 region_id = list(region_ids)[0]
-                if len(contents.intersection(test_set_labels)) > 0:
+                if len(contents.intersection(val_set_labels)) > 0:
+                    val_set.append(region_id)
+                elif len(contents.intersection(test_set_labels)) > 0:
                     test_set.append(region_id)
                 else:
                     train_set.append(region_id)
                 if num_regions_processed % 10000 == 0:
-                    print 'Building train and test sets :', num_regions_processed, 'regions processed ...'
+                    print('Building train, val and test sets :', num_regions_processed, 'regions processed ...')
             except StopIteration:
                 break
 
         test_set_fraction = len(test_set) / float(len(allowed_regions))
-        train_set_fraction = 1.0 - test_set_fraction
-        if test_set_fraction >= args.min_test_data_fraction \
+        val_set_fraction = len(val_set) / float(len(allowed_regions))
+        train_set_fraction = 1.0 - val_set_fraction - test_set_fraction
+
+        if val_set_fraction >= args.min_val_data_fraction \
+                and val_set_fraction <= args.max_val_data_fraction \
+                and test_set_fraction >= args.min_test_data_fraction \
                 and test_set_fraction <= args.max_test_data_fraction:
             good_split_found = True
-        elif train_set_fraction >= args.min_test_data_fraction \
-                and train_set_fraction <= args.max_test_data_fraction:
-            temp = train_set
-            train_set = test_set
-            test_set = temp
-            good_split_found = True
 
-        print '\t Test set fraction =', test_set_fraction
+        print('\t Val set fraction =', val_set_fraction)
+        print('\t Test set fraction =', test_set_fraction)
 
         num_trials += 1
-        print num_trials, 'trials made'
+        print(num_trials, 'trials made')
 
-    print 'Found a good split'
+    print('Found a good split')
 
     # Broke out of the while loop so current order is good
-    print 'Shuffling split ...'
+    print('Shuffling split ...')
     random.shuffle(train_set)
+    random.shuffle(val_set)
     random.shuffle(test_set)
 
-    print 'Saving split ...'
-    output_filename = os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt')
+    print('Saving split ...')
+    output_filename = os.path.join(args.dataset_dir, 'split/train_regions.txt')
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(train_set))
     output_file.close()
-    output_filename = os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt')
+    output_filename = os.path.join(args.dataset_dir, 'split/val_regions.txt')
+    output_file = open(output_filename, 'w')
+    output_file.write('\n'.join(train_set))
+    output_file.close()
+    output_filename = os.path.join(args.dataset_dir, 'split/test_regions.txt')
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(test_set))
     output_file.close()
-    print 'Regions and labels identified ...'
+    print('Regions and labels identified ...')
 
 
 # Saves features for the regions in batch_regions. This is a separate function to allow parallelism
@@ -416,14 +398,22 @@ if __name__ == '__main__':
     arg_parser.add_argument('--verbose', action="store_true", default=False,
                             help='Print debug output')
 
-    # Args to indicate that you need to organize labels and regions, and what is needed for this
-    arg_parser.add_argument('--organize-labels-and-regions', action="store_true", default=False,
-                            help='Some preprocessing to make actual writing of data faster. ' +
-                                 'Also creates a train-test split')
+    arg_parser.add_argument('--identify-relevant-labels', action="store_true", default=False,
+                            help='Some preprocessing to make actual writing of data faster. ')
     arg_parser.add_argument('--frequency-threshold', type=int, default=1000,
                             help='Consider objects and attributes with frequency greater than this')
-    arg_parser.add_argument('--test-label-fraction', type=float, default=0.5,
-                            help='Fraction of labels to be only seen at test time')
+
+    # Args to indicate that you need to organize labels and regions, and what is needed for this
+    arg_parser.add_argument('--organize-labels-and-regions', action="store_true", default=False,
+                            help='Create train, val, test splits')
+    arg_parser.add_argument('--val-label-fraction', type=float, default=0.2,
+                            help='Fraction of labels to be newly seen at validation time')
+    arg_parser.add_argument('--test-label-fraction', type=float, default=0.3,
+                            help='Fraction of labels to be newly seen at test time')
+    arg_parser.add_argument('--min-val-data-fraction', type=float, default=0.0,
+                            help='Min fraction of data points to go into val set')
+    arg_parser.add_argument('--max-val-data-fraction', type=float, default=0.2,
+                            help='Max fraction of data points to go into val set')
     arg_parser.add_argument('--min-test-data-fraction', type=float, default=0.2,
                             help='Min fraction of data points to go into test set')
     arg_parser.add_argument('--max-test-data-fraction', type=float, default=0.4,
@@ -452,6 +442,9 @@ if __name__ == '__main__':
                             help='Dimensionality of feature vectors')
 
     args = arg_parser.parse_args()
+
+    if args.identify_relevant_labels:
+        identify_relevant_labels(args)
 
     if args.organize_labels_and_regions:
         organize_labels_and_regions(args)
