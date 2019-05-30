@@ -80,7 +80,7 @@ def organize_labels_and_regions(args):
         relevant_objects = handle.read().split('\n')
     print('Read relevant objects')
 
-    relevant_attributes_file = os.path.join(args.dataset_dir, 'classifiers/data/attributes_names.txt')
+    relevant_attributes_file = os.path.join(args.dataset_dir, 'classifiers/data/attribute_names.txt')
     with open(relevant_attributes_file) as handle:
         relevant_attributes = handle.read().split('\n')
     print('Read relevant attributes')
@@ -139,10 +139,10 @@ def organize_labels_and_regions(args):
                     raise RuntimeError('Region contents files not synced. Mismatch at line '
                                        + str(num_regions_processed))
                 region_id = list(region_ids)[0]
-                if len(contents.intersection(val_set_labels)) > 0:
-                    val_set.append(region_id)
-                elif len(contents.intersection(test_set_labels)) > 0:
+                if len(contents.intersection(test_set_labels)) > 0:
                     test_set.append(region_id)
+                elif len(contents.intersection(val_set_labels)) > 0:
+                    val_set.append(region_id)
                 else:
                     train_set.append(region_id)
                 if num_regions_processed % 10000 == 0:
@@ -181,7 +181,7 @@ def organize_labels_and_regions(args):
     output_file.close()
     output_filename = os.path.join(args.dataset_dir, 'split/val_regions.txt')
     output_file = open(output_filename, 'w')
-    output_file.write('\n'.join(train_set))
+    output_file.write('\n'.join(val_set))
     output_file.close()
     output_filename = os.path.join(args.dataset_dir, 'split/test_regions.txt')
     output_file = open(output_filename, 'w')
@@ -406,9 +406,9 @@ if __name__ == '__main__':
     # Args to indicate that you need to organize labels and regions, and what is needed for this
     arg_parser.add_argument('--organize-labels-and-regions', action="store_true", default=False,
                             help='Create train, val, test splits')
-    arg_parser.add_argument('--val-label-fraction', type=float, default=0.2,
+    arg_parser.add_argument('--val-label-fraction', type=float, default=0.15,
                             help='Fraction of labels to be newly seen at validation time')
-    arg_parser.add_argument('--test-label-fraction', type=float, default=0.3,
+    arg_parser.add_argument('--test-label-fraction', type=float, default=0.15,
                             help='Fraction of labels to be newly seen at test time')
     arg_parser.add_argument('--min-val-data-fraction', type=float, default=0.0,
                             help='Min fraction of data points to go into val set')
