@@ -12,6 +12,7 @@ def get_numpy_array(image):
 
 def visualize(image_file, mask_file, output_file):
     mask = loadmat(mask_file)['segimg_t']
+    print('mask.shape =', mask.shape)
     reversed_mask = (mask == 0).astype(np.uint8)
     print('reversed_mask.shape =', reversed_mask.shape)
     np_image = imread(image_file)

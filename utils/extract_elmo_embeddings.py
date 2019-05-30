@@ -22,6 +22,8 @@ def main(args):
         pad_vector = [float(x) for x in reader.__next__()]
 
     annotations = load_json(args.annotations_file)
+    num_images = len(annotations.keys())
+
     output_file_handle = h5py.File(args.output_file, 'w')
 
     with tf.Session() as sess:
@@ -30,25 +32,26 @@ def main(args):
         sess.run(init_ops)
 
         num_images_done = 0
-        num_images = len(annotations.keys())
+
         for image_id in annotations:
-            image_dataset = output_file_handle.create_dataset(image_id,
-                                                              shape=(len(annotations), args.max_seq_len, 1024),
-                                                              dtype='f')
             image_annotations = annotations[image_id]
-            num_batches = (len(image_annotations) // args.max_batch_size) + 1
+            num_annotations = len(image_annotations)
+
+            image_dataset = output_file_handle.create_dataset(image_id,
+                                                              shape=(num_annotations, args.max_seq_len, 1024),
+                                                              dtype='f')
+            if num_annotations % args.max_batch_size == 0:
+                num_batches = (num_annotations // args.max_batch_size)
+            else:
+                num_batches = (num_annotations // args.max_batch_size) + 1
 
             for batch_num in range(num_batches):
                 batch_start_idx = batch_num * args.max_batch_size
-                batch_end_idx = min((batch_num + 1) * args.max_batch_size,
-                                    len(image_annotations))
+                batch_end_idx = min((batch_num + 1) * args.max_batch_size, num_annotations)
 
                 batch = image_annotations[batch_start_idx:batch_end_idx]
                 batch_embeddings = sess.run(elmo,
                                             feed_dict={sentences_placeholder: batch})
-                # print('Orig shape =', batch_embeddings.shape)
-                # print('batch_embeddings.dtype =', batch_embeddings.dtype)
-                # print('batch_embeddings =', batch_embeddings)
 
                 if len(batch_embeddings.shape) == 2:
                     batch_embeddings = np.expand_dims(batch_embeddings, axis=0)
@@ -57,16 +60,17 @@ def main(args):
                 elif batch_embeddings.shape[1] < args.max_seq_len:
                     num_reps = args.max_seq_len - batch_embeddings.shape[1]
                     padding = np.tile(pad_vector, (batch_embeddings.shape[0], num_reps, 1))
-                    # print('Padding =', padding.shape)
                     batch_embeddings = np.concatenate((batch_embeddings, padding), axis=1)
-                # print('New shape =', batch_embeddings.shape)
-                # print('batch_embeddings =', batch_embeddings)
 
                 image_dataset[batch_start_idx:batch_end_idx, :] = batch_embeddings
 
                 print('Finished image', str(num_images_done), '/', str(num_images), ': batch', str(batch_num))
 
             num_images_done += 1
+            if args.max_images is not None and num_images_done >= args.max_images:
+                break
+
+    output_file_handle.close()
 
 
 if __name__ == '__main__':
@@ -81,5 +85,7 @@ if __name__ == '__main__':
                             help='Max batch size')
     arg_parser.add_argument('--max-seq-len', type=int, default=40,
                             help='Max sequence length')
+    arg_parser.add_argument('--max-images', type=int, default=None,
+                            help='Max images to process')
     args = arg_parser.parse_args()
     main(args)
