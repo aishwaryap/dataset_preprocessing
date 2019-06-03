@@ -1,5 +1,6 @@
 utils/*.pyc
 VisualGenome/*.pyc
+VisualGenome/my_run.txt
 KitchenDataset/my_run.txt
 KitchenDataset/*.pyc
 ReferIt/my_run.txt

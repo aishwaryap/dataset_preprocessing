@@ -73,19 +73,19 @@ def create_random_matching_split(args):
         allowed_regions = handle.read().split('\n')
     print('Read allowed regions')
 
-    shuffled_regions = random.shuffle(allowed_regions)
+    random.shuffle(allowed_regions)
 
     ref_train_set_file = os.path.join(args.dataset_dir, 'split/predicate_novelty/train_regions.txt')
     with open(ref_train_set_file) as handle:
         ref_train_set_size = len(handle.read().split('\n'))
-    train_set = shuffled_regions[:ref_train_set_size]
+    train_set = allowed_regions[:ref_train_set_size]
 
     ref_val_set_file = os.path.join(args.dataset_dir, 'split/predicate_novelty/val_regions.txt')
     with open(ref_val_set_file) as handle:
         ref_val_set_size = len(handle.read().split('\n'))
-    val_set = shuffled_regions[ref_train_set_size:ref_train_set_size + ref_val_set_size]
+    val_set = allowed_regions[ref_train_set_size:ref_train_set_size + ref_val_set_size]
 
-    test_set = shuffled_regions[ref_train_set_size + ref_val_set_size:]
+    test_set = allowed_regions[ref_train_set_size + ref_val_set_size:]
 
     output_filename = os.path.join(args.dataset_dir, 'split/random/train_regions.txt')
     output_file = open(output_filename, 'w')
