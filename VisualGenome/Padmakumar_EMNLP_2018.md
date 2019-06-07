@@ -39,7 +39,8 @@ python extract_vgg_features.py \
 python organize_region_graphs.py \
     --dataset-dir=$DATASET_DIR
 python preprocess_descriptions.py \
-    --dataset-dir=$DATASET_DIR
+    --dataset-dir=$DATASET_DIR \
+    --preprocess-descriptions
 python organize_attributes.py \
     --dataset-dir=$DATASET_DIR
     --create-contents-list \
