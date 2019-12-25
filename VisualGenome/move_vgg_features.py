@@ -10,12 +10,11 @@ import csv
 import h5py
 
 
-def add_features(orig_region_list, orig_features_dir, target_region_lists, target_hdf5_files):
-    features_files = os.listdir(orig_features_dir)
+def add_features(orig_region_list, num_features_files, orig_features_dir, target_region_lists, target_hdf5_files):
     region_idx = 0
-    for features_file in features_files:
-        full_file_name = os.path.join(orig_features_dir, features_file)
-        file_handle = open(full_file_name, 'r')
+    for features_file_idx in range(num_features_files):
+        features_file = os.path.join(orig_features_dir, str(features_file_idx) + '.csv')
+        file_handle = open(features_file, 'r')
         reader = csv.reader(file_handle, delimiter=',')
 
         for row in reader:
@@ -34,6 +33,11 @@ def add_features(orig_region_list, orig_features_dir, target_region_lists, targe
 
             if region_idx % 1000 == 0:
                 print 'Processed region', region_idx
+
+            if region_idx >= len(orig_region_list):
+                # This will happen because the last CSV file ends with a bunch of extra rows of zeros
+                # because of the way it was created
+                break
 
 
 def main(args):
@@ -65,7 +69,7 @@ def main(args):
 
     orig_features_dir = os.path.join(args.dataset_dir, 'classifiers/data/features/train/')
 
-    add_features(orig_region_list, orig_features_dir, target_region_lists, target_hdf5_files)
+    add_features(orig_region_list, 22, orig_features_dir, target_region_lists, target_hdf5_files)
 
     orig_region_list_file = os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt')
     with open(orig_region_list_file) as handle:
@@ -73,7 +77,7 @@ def main(args):
 
     orig_features_dir = os.path.join(args.dataset_dir, 'classifiers/data/features/test/')
 
-    add_features(orig_region_list, orig_features_dir, target_region_lists, target_hdf5_files)
+    add_features(orig_region_list, 8, orig_features_dir, target_region_lists, target_hdf5_files)
     
     for key, file_handle in target_hdf5_files.items():
         file_handle.close()

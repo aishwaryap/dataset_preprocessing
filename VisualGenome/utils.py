@@ -3,6 +3,7 @@
 import os
 import re
 import nltk
+import time
 from nltk.corpus import wordnet as wn
 
 __author__ = 'aishwarya'
@@ -22,14 +23,35 @@ def get_image_path(dataset_dir, image_id, verify=False):
         return path2
 
 
-def normalize_string(string):
-    stemmer = nltk.stem.snowball.SnowballStemmer("english")
+def in_vocab(token, word_vectors):
+    try:
+        _ = word_vectors.get_vector(token)
+    except KeyError:
+        return False
+    return True
+
+
+def normalize_string(string, word_vectors=None):
     string = string.lower().strip()
     string = re.sub('[^a-z]', ' ', string)      # Replace anything other than letters with space
     string = re.sub('\s+', ' ', string)         # Replace a sequence of spaces with a single space
     tokens = string.split()
-    stemmed_tokens = [str(stemmer.stem(token)) for token in tokens]
+
+    stemmer = nltk.stem.snowball.SnowballStemmer("english")
     stopwords = set(nltk.corpus.stopwords.words('english'))
+
+    if word_vectors is None:
+        stemmed_tokens = [str(stemmer.stem(token)) for token in tokens]
+    else:
+        stemmed_tokens = list()
+        for token in tokens:
+            if in_vocab(token, word_vectors):
+                stemmed_tokens.append(token)
+            else:
+                stemmed_token = str(stemmer.stem(token))
+                if in_vocab(stemmed_token, word_vectors):
+                    stemmed_tokens.append(stemmed_token)
+
     useful_tokens = [token for token in stemmed_tokens if token not in stopwords]
     string = '_'.join(useful_tokens)
     return string.strip()
@@ -45,3 +67,28 @@ def get_synset(synset_name):
         raise
     except:
         return None
+
+
+def create_dir(path):
+    sub_path = os.path.dirname(path)
+    if not os.path.exists(sub_path):
+        create_dir(sub_path)
+
+    delay = 0.1
+    num_delays = 0
+    while True:
+        try:
+            if not os.path.exists(path):
+                os.mkdir(path)
+            break
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            # Time delay with exponential backoff
+            time.sleep(delay)
+            delay *= 2
+            num_delays += 1
+            if num_delays > 10:
+                raise RuntimeError('Directory creation failed with race conditions 10 times')
+
+

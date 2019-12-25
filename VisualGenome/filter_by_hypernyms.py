@@ -71,7 +71,7 @@ def filter_region_contents(args, target_dir):
             writer.writerow(row)
         num_regions_processed += 1
         if num_regions_processed % 1000 == 0:
-            print args.contents_file, ':', num_regions_processed, 'regions processed ...'
+            print(args.contents_file, ':', num_regions_processed, 'regions processed ...')
     input_handle.close()
     output_handle.close()
 

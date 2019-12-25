@@ -7,6 +7,7 @@ import ast
 import operator
 from argparse import ArgumentParser
 from sklearn.metrics.pairwise import cosine_similarity
+from utils import create_dir
 
 __author__ = 'aishwarya'
 
@@ -22,49 +23,53 @@ def load_batch(filename, sub_batch_size=None, sub_batch_num=None):
         return np.array(batch)
 
 
+def get_regions_file(args):
+    if args.split_group == 'orig':
+        regions_filename = os.path.join(args.dataset_dir, 'classifiers/data/', args.region_set + '_regions.txt')
+    else:
+        regions_filename = os.path.join(args.dataset_dir, 'split', args.split_group, args.region_set + '_regions.txt')
+    return regions_filename
+
+
+def get_features_dir(args):
+    if args.split_group == 'orig':
+        regions_filename = os.path.join(args.dataset_dir, 'classifiers/data/features', args.region_set)
+    else:
+        regions_filename = os.path.join(args.dataset_dir, 'vgg_features', args.split_group, args.region_set)
+    return regions_filename
+
+
 # Read batches i and j of regions. Compute an i x j matrix of cosine similarities
 # Store k nearest neighbours of each point and summed similarities
 def process_batch_pair(args):
     print 'Reading regions ...'
-    if args.in_train_set:
-        regions_filename = os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt')
-    else:
-        regions_filename = os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt')
+    regions_filename = get_regions_file(args)
     with open(regions_filename) as regions_file:
         regions = regions_file.read().split('\n')
 
     print 'Loading batch i =', args.batch_num_i, '...'
 
-    sum_cosine_sims_dir = os.path.join(args.dataset_dir, 'tmp_sum_cosine_sims/')
-    if not os.path.isdir(sum_cosine_sims_dir):
-        os.mkdir(sum_cosine_sims_dir)
-    nbrs_dir = os.path.join(args.dataset_dir, 'tmp_nbrs/')
-    if not os.path.isdir(nbrs_dir):
-        os.mkdir(nbrs_dir)
+    sum_cosine_sims_dir = os.path.join(args.dataset_dir, 'tmp_sum_cosine_sims', args.split_group, args.region_set)
+    create_dir(sum_cosine_sims_dir)
+    nbrs_dir = os.path.join(args.dataset_dir, 'tmp_nbrs', args.split_group, args.region_set)
+    create_dir(nbrs_dir)
+    farthest_nbrs_dir = os.path.join(args.dataset_dir, 'tmp_farthest_nbrs', args.split_group, args.region_set)
+    create_dir(farthest_nbrs_dir)
 
-    if args.in_train_set:
-        batch_i_file = os.path.join(args.dataset_dir, 'classifiers/data/features/train/'
-                                    + str(args.batch_num_i) + '.csv')
-
-        sum_cosine_sims_dir = sum_cosine_sims_dir + 'train/'
-        if not os.path.isdir(sum_cosine_sims_dir):
-            os.mkdir(sum_cosine_sims_dir)
-        nbrs_dir = nbrs_dir + 'train/'
-        if not os.path.isdir(nbrs_dir):
-            os.mkdir(nbrs_dir)
-    else:
-        batch_i_file = os.path.join(args.dataset_dir, 'classifiers/data/features/test/'
-                                    + str(args.batch_num_i) + '.csv')
-
-        sum_cosine_sims_dir = sum_cosine_sims_dir + 'test/'
-        if not os.path.isdir(sum_cosine_sims_dir):
-            os.mkdir(sum_cosine_sims_dir)
-        nbrs_dir = nbrs_dir + 'test/'
-        if not os.path.isdir(nbrs_dir):
-            os.mkdir(nbrs_dir)
+    features_dir = get_features_dir(args)
+    batch_i_file = os.path.join(features_dir, str(args.batch_num_i) + '.csv')
+    batch_j_file = os.path.join(features_dir, str(args.batch_num_j) + '.csv')
 
     batch_i = load_batch(batch_i_file)
     print 'Loaded batch i =', args.batch_num_i, '...'
+
+    sum_cosine_sims_file = os.path.join(sum_cosine_sims_dir,
+                                        str(args.batch_num_i) + '_' + str(args.batch_num_j)
+                                        + '_' + str(args.sub_batch_num) + '.csv')
+    nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_j)
+                             + '_' + str(args.sub_batch_num) + '.csv')
+    farthest_nbrs_file = os.path.join(farthest_nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_j)
+                                      + '_' + str(args.sub_batch_num) + '.csv')
 
     if args.batch_num_j is None or args.batch_num_i == args.batch_num_j:
         print 'Computing cosine sims ...'
@@ -81,19 +86,8 @@ def process_batch_pair(args):
             batch_j_regions = batch_j_regions[args.sub_batch_num * args.sub_batch_size:
                                               min((args.sub_batch_num + 1) * args.sub_batch_size, len(batch_j_regions))]
 
-        sum_cosine_sims_file = os.path.join(sum_cosine_sims_dir,
-                                            str(args.batch_num_i) + '_' + str(args.batch_num_i)
-                                            + '_' + str(args.sub_batch_num) + '.csv')
-        nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_i)
-                                 + '_' + str(args.sub_batch_num) + '.csv')
     else:
         print 'Loading batch j =', args.batch_num_j, '...'
-        if args.in_train_set:
-            batch_j_file = os.path.join(args.dataset_dir, 'classifiers/data/features/train/'
-                                        + str(args.batch_num_j) + '.csv')
-        else:
-            batch_j_file = os.path.join(args.dataset_dir, 'classifiers/data/features/test/'
-                                        + str(args.batch_num_j) + '.csv')
         batch_j = load_batch(batch_j_file, sub_batch_num=args.sub_batch_num, sub_batch_size=args.sub_batch_size)
         print 'Loaded batch j =', args.batch_num_j, '...'
 
@@ -106,12 +100,6 @@ def process_batch_pair(args):
         print 'Computing cosine sims ...'
         cosine_sims = cosine_similarity(batch_i, batch_j)
         print 'Computed cosine sims ...'
-
-        sum_cosine_sims_file = os.path.join(sum_cosine_sims_dir,
-                                            str(args.batch_num_i) + '_' + str(args.batch_num_j)
-                                            + '_' + str(args.sub_batch_num) + '.csv')
-        nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '_' + str(args.batch_num_j)
-                                 + '_' + str(args.sub_batch_num) + '.csv')
 
     # Compute row sums of cosine sims
     print 'Computing row sums of cosine sims ...'
@@ -141,22 +129,27 @@ def process_batch_pair(args):
             handle.write(output_row)
     print 'Finished writing neighbours ...'
 
+    # Compute farthest nbrs
+    sims_argmin = np.argmin(cosine_sims, axis=1)
+    print 'Computed argmin ...'
+    print 'Computing and writing farthest neighbours ...'
+    with open(farthest_nbrs_file, 'w') as handle:
+        for row_num in range(cosine_sims.shape[0]):
+            farthest_nbr_idx = sims_argmin[row_num]
+            farthest_nbr_sim = cosine_sims[row_num, farthest_nbr_idx]
+            farthest_nbr = batch_j_regions[farthest_nbr_idx]
+            output_row = str([(farthest_nbr, farthest_nbr_sim)]) + '\n'
+            handle.write(output_row)
+    print 'Finished writing farthest neighbours ...'
+
 
 # Aggregate batchwise sums of cosine sims
 def aggregate_batch_cosine_sims(args):
-    partial_sum_cosine_sims_dir = os.path.join(args.dataset_dir, 'tmp_sum_cosine_sims/')
-    densities_file = os.path.join(args.dataset_dir, 'densities/')
-    if not os.path.isdir(densities_file):
-        os.mkdir(densities_file)
-    if args.in_train_set:
-        partial_sum_cosine_sims_dir = partial_sum_cosine_sims_dir + 'train/'
-        densities_file = densities_file + 'train/'
-    else:
-        partial_sum_cosine_sims_dir = partial_sum_cosine_sims_dir + 'test/'
-        densities_file = densities_file + 'test/'
-    if not os.path.isdir(densities_file):
-        os.mkdir(densities_file)
-    densities_file += str(args.batch_num_i) + '.csv'
+    partial_sum_cosine_sims_dir = os.path.join(args.dataset_dir, 'tmp_sum_cosine_sims', args.split_group,
+                                               args.region_set)
+    densities_dir = os.path.join(args.dataset_dir, 'densities', args.split_group, args.region_set)
+    create_dir(densities_dir)
+    densities_file = os.path.join(densities_dir, str(args.batch_num_i) + '.csv')
 
     # Fetch files relevant to batch i
     partial_sum_cosine_sims_files = [os.path.join(partial_sum_cosine_sims_dir, f)
@@ -171,19 +164,12 @@ def aggregate_batch_cosine_sims(args):
             sum_cosine_sims += partial_sum
         print idx + 1, 'partial sums added ...'
 
-    print 'Reading regions ...'
-    if args.in_train_set:
-        regions_filename = os.path.join(args.dataset_dir, 'classifiers/data/train_regions.txt')
-    else:
-        regions_filename = os.path.join(args.dataset_dir, 'classifiers/data/test_regions.txt')
+    regions_filename = get_regions_file(args)
     with open(regions_filename) as regions_file:
         regions = regions_file.read().split('\n')
 
     print 'Computing and writing densities ...'
     densities = sum_cosine_sims / len(regions)
-    #print 'densities.shape =', densities.shape
-    #print len(densities.T.tolist())
-    #print densities.T.tolist()
     with open(densities_file, 'w') as handle:
         writer = csv.writer(handle, delimiter=',')
         writer.writerow([float(x) for [x] in densities.T.tolist()])
@@ -193,19 +179,10 @@ def aggregate_batch_cosine_sims(args):
 # Aggregate nearest neighbours
 def aggregate_nbrs(args):
     print 'Computing nbrs'
-    partial_nbrs_dir = os.path.join(args.dataset_dir, 'tmp_nbrs/')
-    nbrs_file = os.path.join(args.dataset_dir, 'nbrs/')
-    if not os.path.isdir(nbrs_file):
-        os.mkdir(nbrs_file)
-    if args.in_train_set:
-        partial_nbrs_dir = partial_nbrs_dir + 'train/'
-        nbrs_file = nbrs_file + 'train/'
-    else:
-        partial_nbrs_dir = partial_nbrs_dir + 'test/'
-        nbrs_file = nbrs_file + 'test/'
-    if not os.path.isdir(nbrs_file):
-        os.mkdir(nbrs_file)
-    nbrs_file += str(args.batch_num_i) + '.txt'
+    partial_nbrs_dir = os.path.join(args.dataset_dir, 'tmp_nbrs', args.split_group, args.region_set)
+    nbrs_dir = os.path.join(args.dataset_dir, 'nbrs', args.split_group, args.region_set)
+    create_dir(nbrs_dir)
+    nbrs_file = os.path.join(nbrs_dir, str(args.batch_num_i) + '.txt')
     print 'Created needed directories ...'
 
     # Fetch files relevant to batch i
@@ -226,11 +203,48 @@ def aggregate_nbrs(args):
                 except StopIteration:
                     print 'Handle', handle_num, 'done'
                     handles_done.append(handle_num)
-            for handle_num in handles_done:
-                handles.remove(handles[handle_num])
+            leftover_handles = [h for (idx, h) in enumerate(handles) if idx not in handles_done]
+            handles = leftover_handles
             partial_nbrs.sort(key=operator.itemgetter(1), reverse=True)
             nbrs = partial_nbrs[:args.num_nbrs]
             output_file.write(str(nbrs) + '\n')
+            num_regions_done += 1
+            if num_regions_done % 1 == 0:
+                print num_regions_done, 'regions done'
+
+
+# Aggregate farthest neighbours
+def aggregate_farthest_nbrs(args):
+    print 'Computing farthest nbrs'
+    partial_nbrs_dir = os.path.join(args.dataset_dir, 'tmp_farthest_nbrs', args.split_group, args.region_set)
+    farthest_nbrs_dir = os.path.join(args.dataset_dir, 'farthest_nbrs', args.split_group, args.region_set)
+    create_dir(farthest_nbrs_dir)
+    farthest_nbrs_file = os.path.join(farthest_nbrs_dir, str(args.batch_num_i) + '.csv')
+    print 'Created needed directories ...'
+
+    # Fetch files relevant to batch i
+    partial_nbrs_files = [os.path.join(partial_nbrs_dir, f) for f in os.listdir(partial_nbrs_dir)
+                          if f.startswith(str(args.batch_num_i) + '_')]
+    handles = [open(filename) for filename in partial_nbrs_files]
+    print 'Fetched', len(handles), 'files ...'
+
+    num_regions_done = 0
+    with open(farthest_nbrs_file, 'w') as output_file:
+        while len(handles) > 0:
+            partial_nbrs = list()
+            handles_done = list()
+            for (handle_num, handle) in enumerate(handles):
+                try:
+                    line = handle.next().strip()
+                    partial_nbrs += ast.literal_eval(line)
+                except StopIteration:
+                    print 'Handle', handle_num, 'done'
+                    handles_done.append(handle_num)
+            leftover_handles = [h for (idx, h) in enumerate(handles) if idx not in handles_done]
+            handles = leftover_handles
+            partial_nbrs.sort(key=operator.itemgetter(1))
+            farthest_nbr = partial_nbrs[0]
+            output_file.write('"' + str(farthest_nbr) + '"\n')
             num_regions_done += 1
             if num_regions_done % 1 == 0:
                 print num_regions_done, 'regions done'
@@ -240,6 +254,12 @@ if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--dataset-dir', type=str, required=True,
                             help='Path to dataset')
+    arg_parser.add_argument('--split-group', type=str, required=True,
+                            help='Which split of dataset - one of "orig", "predicate_novelty", "8_way"')
+    arg_parser.add_argument('--region-set', type=str, required=True,
+                            help='orig: train, test; '
+                                 'predicate_novelty: policy_[train,val,test]_classifier_[train,val,test]; '
+                                 '8_way: policy_[pretrain, train, val, test]_classifier_[train,test]')
 
     arg_parser.add_argument('--process-batch-pair', action="store_true", default=False,
                             help='Initial processing with a pair of batches i and j')
@@ -247,6 +267,8 @@ if __name__ == '__main__':
                             help='Compute densities for batch i')
     arg_parser.add_argument('--aggregate-nbrs', action="store_true", default=False,
                             help='Compute neighbours for batch i')
+    arg_parser.add_argument('--aggregate-farthest-nbrs', action="store_true", default=False,
+                            help='Compute farthest neighbours for batch i')
 
     arg_parser.add_argument('--batch-num-i', type=int, required=True,
                             help='For processing a pair of batches - i; Also use this to specify batch num ' +
@@ -259,10 +281,8 @@ if __name__ == '__main__':
                             help='For processing a pair of batches, number of rows of batch j to take')
     arg_parser.add_argument('--sub-batch-num', type=int, default=None,
                             help='For processing a pair of batches, start of sub-batch in batch j')
-    arg_parser.add_argument('--num-nbrs', type=int, required=True,
+    arg_parser.add_argument('--num-nbrs', type=int, default=50,
                             help='Number of nearest neighbours to be found per region')
-    arg_parser.add_argument('--in-train-set', action="store_true", default=False,
-                            help='To distinguish between whether batches are in train or test set')
 
     args = arg_parser.parse_args()
 
@@ -274,3 +294,7 @@ if __name__ == '__main__':
 
     if args.aggregate_nbrs:
         aggregate_nbrs(args)
+
+    if args.aggregate_farthest_nbrs:
+        aggregate_farthest_nbrs(args)
+
