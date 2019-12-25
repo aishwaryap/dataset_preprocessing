@@ -4,6 +4,7 @@
 #   - a mapping from regions to attributes associated with objects in it
 
 from argparse import ArgumentParser
+from gensim.models import KeyedVectors
 import json
 import sys
 import csv
@@ -16,11 +17,11 @@ __author__ = 'aishwarya'
 
 def create_contents_list(args):
     attributes = load_json(os.path.join(args.dataset_dir, 'attributes.json'))
-    print 'Loaded attributes ...'
+    print('Loaded attributes ...')
     indexed_attributes = dict()
     for image in attributes:
         indexed_attributes[image['image_id']] = image['attributes']
-    print 'Indexed attributes ...'
+    print('Indexed attributes ...')
 
     region_graphs_filename = os.path.join(args.dataset_dir, 'region_graphs.txt')
     region_graphs_file = open(region_graphs_filename)
@@ -67,7 +68,7 @@ def create_contents_list(args):
         region_synsets_writer.writerow(synsets_row_ascii)
         num_regions_processed += 1
         if num_regions_processed % 10000 == 0:
-            print num_regions_processed, 'regions processed ...'
+            print(num_regions_processed, 'regions processed ...')
 
     region_graphs_file.close()
     region_objects_file.close()
@@ -78,11 +79,11 @@ def create_contents_list(args):
     attributes_file.close()
     synsets_file.close()
 
-    print 'Complete ...'
+    print('Complete ...')
 
 
 # In the region attributes/objects file, check that the list of attributes/objects per row is unique
-def make_region_contents_unique(input_filename, output_filename, normalize=True):
+def make_region_contents_unique(input_filename, output_filename, normalize=True, word_vectors=None):
     input_file = open(input_filename)
     reader = csv.reader(input_file, delimiter=',')
     output_file = open(output_filename, 'w')
@@ -91,8 +92,8 @@ def make_region_contents_unique(input_filename, output_filename, normalize=True)
     for row in reader:
         contents_list = row[1:]
         if normalize:
-            new_row = [row[0]] + list(set([normalize_string(content_item) for content_item in contents_list
-                                       if len(normalize_string(content_item)) > 0]))
+            new_row = [row[0]] + list(set([normalize_string(content_item, word_vectors) for content_item in
+                                           contents_list if len(normalize_string(content_item, word_vectors)) > 0]))
         else:
             new_row = [row[0]] + list(set([content_item.strip() for content_item in contents_list
                                            if len(content_item.strip()) > 0]))
@@ -100,18 +101,18 @@ def make_region_contents_unique(input_filename, output_filename, normalize=True)
 
     input_file.close()
     output_file.close()
-    print 'Fixed file', input_filename
+    print('Fixed file', input_filename)
 
 
 # For making list of objects and attributes unique
-def make_list_unique(input_filename, output_filename, normalize=True):
+def make_list_unique(input_filename, output_filename, normalize=True, word_vectors=None):
     input_file = open(input_filename)
     contents_list = input_file.read().split('\n')
     input_file.close()
 
     if normalize:
-        contents = set([normalize_string(content_item) for content_item in contents_list
-                        if len(normalize_string(content_item)) > 0])
+        contents = set([normalize_string(content_item, word_vectors) for content_item in contents_list
+                        if len(normalize_string(content_item, word_vectors)) > 0])
     else:
         contents = set([content_item.strip() for content_item in contents_list
                         if len(content_item.strip()) > 0])
@@ -121,13 +122,15 @@ def make_list_unique(input_filename, output_filename, normalize=True):
     output_file = open(output_filename, 'w')
     output_file.write('\n'.join(contents))
     output_file.close()
-    print 'Fixed file', input_filename
+    print('Fixed file', input_filename)
 
 
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--dataset-dir', type=str, required=True,
                             help='Path to dataset')
+    arg_parser.add_argument('--gensim-word-vectors-dir', type=str, default=None,
+                            help='Path to Gensim word vectors')
 
     arg_parser.add_argument('--create-contents-list', action="store_true", default=False,
                             help='Create files that have lists of region objects and attributes')
@@ -141,26 +144,42 @@ if __name__ == '__main__':
         create_contents_list(args)
 
     if args.make_region_contents_unique:
+        if args.gensim_word_vectors_dir is not None:
+            print('Reading word vectors ...')
+            word_vectors_file = os.path.join(args.gensim_word_vectors_dir,
+                                             'word2vec/GoogleNews-vectors-negative300.bin')
+            word_vectors = KeyedVectors.load_word2vec_format(word_vectors_file, binary=True)
+        else:
+            word_vectors = None
+
         input_file = os.path.join(args.dataset_dir, 'region_objects.csv')
         output_file = os.path.join(args.dataset_dir, 'region_objects_unique.csv')
-        make_region_contents_unique(input_file, output_file)
+        make_region_contents_unique(input_file, output_file, word_vectors=word_vectors)
 
         input_file = os.path.join(args.dataset_dir, 'region_attributes.csv')
         output_file = os.path.join(args.dataset_dir, 'region_attributes_unique.csv')
-        make_region_contents_unique(input_file, output_file)
+        make_region_contents_unique(input_file, output_file, word_vectors=word_vectors)
 
         input_file = os.path.join(args.dataset_dir, 'region_synsets.csv')
         output_file = os.path.join(args.dataset_dir, 'region_synsets_unique.csv')
         make_region_contents_unique(input_file, output_file, False)
 
     if args.make_contents_list_unique:
+        if args.gensim_word_vectors_dir is not None:
+            print('Reading word vectors ...')
+            word_vectors_file = os.path.join(args.gensim_word_vectors_dir,
+                                             'word2vec/GoogleNews-vectors-negative300.bin')
+            word_vectors = KeyedVectors.load_word2vec_format(word_vectors_file, binary=True)
+        else:
+            word_vectors = None
+
         input_file = os.path.join(args.dataset_dir, 'objects_list.txt')
         output_file = os.path.join(args.dataset_dir, 'objects_list_unique.txt')
-        make_list_unique(input_file, output_file)
+        make_list_unique(input_file, output_file, word_vectors=word_vectors)
 
         input_file = os.path.join(args.dataset_dir, 'attributes_list.txt')
         output_file = os.path.join(args.dataset_dir, 'attributes_list_unique.txt')
-        make_list_unique(input_file, output_file)
+        make_list_unique(input_file, output_file, word_vectors=word_vectors)
 
         input_file = os.path.join(args.dataset_dir, 'synsets_list.txt')
         output_file = os.path.join(args.dataset_dir, 'synsets_list_unique.txt')

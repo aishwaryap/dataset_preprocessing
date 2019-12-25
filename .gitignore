@@ -6,3 +6,7 @@ KitchenDataset/*.pyc
 ReferIt/my_run.txt
 ReferIt/*.pyc
 utils/__pycache__/
+utils/__pycache__/*
+VisualGenome/__pycache__/
+VisualGenome/__pycache__/*
+VisualGenome/new_split_run.txt
